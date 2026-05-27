@@ -17,10 +17,42 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.4}
 
+/* MODERN BACKGROUND GLOW */
+body {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(0,229,160,0.12), transparent 28%),
+    radial-gradient(circle at 80% 20%, rgba(124,109,250,0.16), transparent 30%),
+    radial-gradient(circle at 50% 90%, rgba(247,195,95,0.08), transparent 35%),
+    var(--bg);
+}
+
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(10,10,15,0.9);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border)}
 .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.5px;cursor:pointer;display:flex;align-items:center;gap:6px}
-.logo-icon{width:30px;height:30px;background:var(--accent);color:#000;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;flex-shrink:0}
+/* FANCY MONEY LOGO */
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, #00e5a0, #7c6dfa, #f7c35f);
+  color: #050508;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  font-weight: 900;
+  flex-shrink: 0;
+  box-shadow: 0 0 22px rgba(0,229,160,0.35);
+  position: relative;
+  overflow: hidden;
+}
+.logo-icon::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.45);
+}
 .logo span{color:var(--accent)}
 .nav-right{display:flex;align-items:center;gap:16px}
 .nav-plan{font-size:13px;padding:6px 14px;border-radius:8px;border:0.5px solid var(--border2);color:var(--muted2);cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all .2s}
@@ -170,7 +202,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .advisor-section{padding:60px 40px;background:var(--surface);border-bottom:0.5px solid var(--border)}
 .advisor-inner{max-width:760px;margin:0 auto}
 .section-tag{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
-.advisor-box{background:var(--bg);border:0.5px solid var(--border2);border-radius:18px;overflow:hidden;margin-top:32px}
+.advisor-box {
+  background: rgba(10,10,15,0.72);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 26px;
+  overflow: hidden;
+  margin-top: 32px;
+  box-shadow:
+    0 25px 80px rgba(0,0,0,0.45),
+    0 0 60px rgba(0,229,160,0.08);
+  backdrop-filter: blur(18px);
+}
 .advisor-head{padding:20px 28px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:12px}
 .advisor-head-icon{width:38px;height:38px;background:rgba(0,229,160,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
 .advisor-head h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:2px}
@@ -185,9 +227,22 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .msg-av{width:28px;height:28px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
 .msg-av.ai{background:rgba(0,229,160,.15);color:var(--accent)}
 .msg-av.user{background:rgba(124,109,250,.15);color:var(--accent2)}
-.msg-bub{background:var(--surface2);border-radius:4px 12px 12px 12px;padding:11px 15px;font-size:14px;line-height:1.6;max-width:640px}
+.msg-bub {
+  background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px 18px 18px 18px;
+  padding: 13px 17px;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 640px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+}
 .msg.user-msg{flex-direction:row-reverse}
-.user-msg .msg-bub{background:rgba(124,109,250,.15);border-radius:12px 4px 12px 12px}
+.user-msg .msg-bub {
+  background: linear-gradient(135deg, rgba(124,109,250,0.35), rgba(0,229,160,0.18));
+  border: 1px solid rgba(124,109,250,0.35);
+  border-radius: 18px 8px 18px 18px;
+}
 .pills-row{display:flex;gap:7px;flex-wrap:wrap;padding:14px 28px;border-top:0.5px solid var(--border)}
 .pill{background:transparent;border:0.5px solid var(--border2);color:var(--muted2);font-size:12px;font-family:'DM Sans',sans-serif;padding:5px 12px;border-radius:100px;cursor:pointer;transition:all .2s}
 .pill:hover{border-color:var(--accent);color:var(--accent)}
@@ -195,8 +250,23 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .adv-input{flex:1;background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 16px;border-radius:9px;outline:none;transition:border-color .2s}
 .adv-input::placeholder{color:var(--muted)}
 .adv-input:focus{border-color:rgba(0,229,160,.4)}
-.send-btn{background:var(--accent);color:#000;border:none;padding:10px 18px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s}
-.send-btn:hover{opacity:.85}
+.send-btn {
+  background: linear-gradient(135deg, #00e5a0, #29f5c5);
+  color: #000;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all .2s;
+  box-shadow: 0 0 22px rgba(0,229,160,0.25);
+}
+.send-btn:hover {
+  opacity: .9;
+  transform: translateY(-1px);
+}
 .send-btn:disabled{opacity:.4;cursor:not-allowed}
 
 /* ADVISOR LOCK */
@@ -443,10 +513,9 @@ footer p{font-size:12px;color:var(--muted)}
         <button class="pill" onclick="askPill(this)">How do I start with $100?</button>
       </div>
       <div id="advisorLock" class="advisor-lock-banner" style="display:none">
-        <p>🔒 <strong>Free plan:</strong> 3 questions used. Upgrade for unlimited AI advice.</p>
+        <p>🔒 <strong>Free preview used.</strong> Upgrade to Cash Flo Pro for unlimited AI investing explanations.</p>
         <button class="unlock-btn" onclick="openModal()">Unlock Unlimited →</button>
       </div>
-
       <div class="input-row" id="inputRow">
         <input class="adv-input" id="advisorInput" placeholder="Ask about any stock or concept..." />
         <button class="send-btn" id="sendBtn" onclick="sendQ()">Ask →</button>
@@ -454,6 +523,7 @@ footer p{font-size:12px;color:var(--muted)}
     </div>
   </div>
 </section>
+
 <!-- PRICING -->
 <section class="pricing-section">
   <div class="pricing-inner">
@@ -506,7 +576,7 @@ footer p{font-size:12px;color:var(--muted)}
 // STATE
 let isPro = false;
 let questionsUsed = 0;
-const FREE_Q_LIMIT = 3;
+const FREE_Q_LIMIT = 1;
 let currentSort = 'top';
 let currentSector = 'all';
 
@@ -635,13 +705,17 @@ function activatePro() {
   document.getElementById('inputRow').style.display = 'flex';
   renderStocks();
 }
+
 // AI ADVISOR
 async function sendQ() {
   const input = document.getElementById('advisorInput');
   const q = input.value.trim();
   if (!q) return;
 
+  // Free users get only 1 AI preview question
   if (!isPro && questionsUsed >= FREE_Q_LIMIT) {
+    document.getElementById('advisorLock').style.display = 'flex';
+    document.getElementById('inputRow').style.display = 'none';
     openModal();
     return;
   }
@@ -656,45 +730,70 @@ async function sendQ() {
 
   addThinking();
 
-  try {
-    const res = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        message: q
-      })
-    });
-
-    const data = await res.json();
+  // Fake AI response for GitHub Pages.
+  // This works without an API key and keeps your site safe.
+  setTimeout(() => {
     removeThinking();
 
-    if (!res.ok) {
-      addMsg(data.error || 'Something went wrong. Try again.', 'ai');
-    } else {
-      addMsg(data.reply, 'ai');
-      questionsUsed++;
-    }
+    const answer = getCashFloAnswer(q);
+    addMsg(answer, 'ai');
+
+    questionsUsed++;
 
     if (!isPro && questionsUsed >= FREE_Q_LIMIT) {
-      document.getElementById('advisorLock').style.display = 'flex';
-      document.getElementById('inputRow').style.display = 'none';
+      setTimeout(() => {
+        document.getElementById('advisorLock').style.display = 'flex';
+        document.getElementById('inputRow').style.display = 'none';
+      }, 600);
     }
-  } catch (e) {
-    removeThinking();
-    addMsg('Something went wrong — try again in a moment.', 'ai');
+
+    btn.disabled = false;
+    btn.textContent = 'Ask →';
+  }, 900);
+}
+
+function getCashFloAnswer(question) {
+  const q = question.toLowerCase();
+
+  if (q.includes('nvda') || q.includes('nvidia')) {
+    return "NVDA is one of the biggest companies in AI chips, which makes it exciting, but also risky because expectations are already very high. The upside is AI demand, data centers, and strong growth. The downside is that if growth slows or the stock gets too expensive, it can drop fast. For beginners, it may be better to compare NVDA with safer broad ETFs before putting too much into one stock. Educational only — not financial advice.";
   }
 
-  btn.disabled = false;
-  btn.textContent = 'Ask →';
+  if (q.includes('apple') || q.includes('aapl')) {
+    return "Apple is a strong company with a huge brand, loyal customers, and steady cash flow. The risk is that Apple is already massive, so future growth may be slower than smaller tech companies. It can be a solid long-term company to study, but beginners should still avoid putting all their money into one stock. Educational only — not financial advice.";
+  }
+
+  if (q.includes('tesla') || q.includes('tsla')) {
+    return "Tesla is a high-growth company, but it is also very volatile. People like it because of electric vehicles, energy, AI, and Elon Musk’s vision. The risk is competition, price cuts, and the stock often moving more on hype than fundamentals. It may fit risk-tolerant investors, but it is not a safe beginner-only stock. Educational only — not financial advice.";
+  }
+
+  if (q.includes('p/e') || q.includes('pe ratio')) {
+    return "A P/E ratio means price-to-earnings ratio. It tells you how expensive a stock is compared to how much profit the company makes. A high P/E can mean investors expect big growth, but it can also mean the stock is overpriced. A low P/E can look cheap, but it may also mean the company has problems.";
+  }
+
+  if (q.includes('etf') || q.includes('voo') || q.includes('spy') || q.includes('vti')) {
+    return "An ETF is a basket of stocks you can buy all at once. For beginners, broad market ETFs like VOO, SPY, or VTI are popular because they spread your money across many companies instead of betting on one. This usually lowers risk compared to buying only individual stocks. Educational only — not financial advice.";
+  }
+
+  if (q.includes('start') || q.includes('$100') || q.includes('100')) {
+    return "If you are starting with $100, the smartest goal is learning and building consistency. A beginner could research broad ETFs, use fractional shares, and avoid risky hype stocks at first. Even small amounts can grow over time if you invest consistently and understand the risks. Educational only — not financial advice.";
+  }
+
+  return "Good question. A smart investor should look at the company, risk, long-term potential, price, and competition before buying anything. Beginners usually do better by learning first, avoiding hype, and not putting all their money into one stock. Educational only — not financial advice.";
 }
 
 function addMsg(text, role) {
   const area = document.getElementById('chatArea');
   const d = document.createElement('div');
-  d.className = `msg${role === 'user' ? ' user-msg' : ''}`;
-  d.innerHTML = `<div class="msg-av ${role === 'ai' ? 'ai' : 'user'}">${role === 'ai' ? 'CF' : 'You'}</div><div class="msg-bub">${text.replace(/\n/g, '<br>')}</div>`;
+  d.className = `msg${role==='user'?' user-msg':''}`;
+
+  const safeText = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\n/g, "<br>");
+
+  d.innerHTML = `<div class="msg-av ${role==='ai'?'ai':'user'}">${role==='ai'?'CF':'You'}</div><div class="msg-bub">${safeText}</div>`;
   area.appendChild(d);
   area.scrollTop = area.scrollHeight;
 }
@@ -702,16 +801,14 @@ function addMsg(text, role) {
 function addThinking() {
   const area = document.getElementById('chatArea');
   const d = document.createElement('div');
-  d.className = 'msg';
-  d.id = 'thinking';
-  d.innerHTML = `<div class="msg-av ai">CF</div><div class="msg-bub" style="color:var(--muted)"><span class="spin"></span></div>`;
-  area.appendChild(d);
-  area.scrollTop = area.scrollHeight;
+  d.className='msg'; d.id='thinking';
+  d.innerHTML=`<div class="msg-av ai">CF</div><div class="msg-bub" style="color:var(--muted)"><span class="spin"></span></div>`;
+  area.appendChild(d); area.scrollTop=area.scrollHeight;
 }
 
 function removeThinking() {
   const el = document.getElementById('thinking');
-  if (el) el.remove();
+  if(el) el.remove();
 }
 
 function askPill(btn) {
@@ -719,9 +816,7 @@ function askPill(btn) {
   sendQ();
 }
 
-document.getElementById('advisorInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') sendQ();
-});
+document.getElementById('advisorInput').addEventListener('keydown', e => { if(e.key==='Enter') sendQ(); });
 
 // INIT
 renderStocks();
