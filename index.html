@@ -2875,6 +2875,96 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
 }
 
+
+/* HERO RIGHT START-HERE CTA */
+.hero {
+  min-height: 620px;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-start-card {
+  position: absolute;
+  right: clamp(34px, 7vw, 120px);
+  top: 50%;
+  transform: translateY(-44%);
+  width: min(360px, 31vw);
+  padding: 26px;
+  border-radius: 26px;
+  border: 1px solid rgba(255,255,255,0.11);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(82,214,255,0.12), transparent 38%),
+    rgba(16,20,29,0.68);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.34);
+  backdrop-filter: blur(18px);
+}
+
+.hero-start-card .mini-label {
+  color: var(--future, #38f2b5);
+  font-size: 11px;
+  font-weight: 1000;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.hero-start-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px;
+  line-height: 1.08;
+  letter-spacing: -0.7px;
+  margin-bottom: 10px;
+}
+
+.hero-start-card p {
+  color: var(--muted2);
+  font-size: 14px;
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+
+.hero-start-btn {
+  width: 100%;
+  border: none;
+  border-radius: 16px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, var(--future2, #52d6ff), var(--future, #38f2b5));
+  color: #041018;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 1000;
+  cursor: pointer;
+  box-shadow: 0 16px 38px rgba(56,242,181,0.13);
+}
+
+.hero-start-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.hero-start-card .small-note {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+@media(max-width: 1050px) {
+  .hero-start-card {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 520px;
+    margin-top: 34px;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3051,7 +3141,7 @@ body {
       </button>
       <div class="menu-section-content">
         <button class="menu-link" onclick="openInvestorQuiz()">Learn Your Investing Style</button>
-        <button class="menu-link" onclick="jumpToSection('startHere')">Start Here</button>
+        <button class="menu-link" onclick="scrollToStartHere()">Start Here</button>
       </div>
     </div>
 
@@ -3216,6 +3306,15 @@ body {
     </div>
     <p class="free-note"><strong>Build your edge.</strong> Cash Flo helps you learn smarter strategies, compare risks, and approach the market with more confidence than random advice.</p>
   </div>
+
+  <div class="hero-start-card">
+    <div class="mini-label">Start here</div>
+    <h3>Not sure where to begin?</h3>
+    <p>Jump to the guide cards and choose the best path: profile quiz, AI guide, Pro tools, or stock tracker.</p>
+    <button class="hero-start-btn" onclick="jumpToSection('startHere')">Start Here ↓</button>
+    <div class="small-note">Built to help beginners find the right next step.</div>
+  </div>
+
 </section>
 
 
@@ -6189,6 +6288,14 @@ document.addEventListener('DOMContentLoaded', () => {
   showAppPage('home');
 });
 
+
+
+function scrollToStartHere() {
+  if (typeof showAppPage === 'function') showAppPage('home');
+  setTimeout(() => {
+    document.getElementById('startHere')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+}
 
 // INIT
 showPlanChoiceOnLoad();
