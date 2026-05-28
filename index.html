@@ -2974,16 +2974,11 @@ body {
   grid-template-columns: 1fr !important;
 }
 
-.dashboard-section .dashboard-card:first-child,
-.dashboard-section .profile-card:first-child,
-.dashboard-section .profile-summary-card,
-.dashboard-section .dashboard-profile-card {
-  display: none !important;
-}
+/* old dashboard broad hide disabled: final fix uses data-dashboard-profile only */
 
 .dashboard-section .flow-card,
 .dashboard-section .recommended-flow,
-.dashboard-section .dashboard-card:nth-child(2) {
+.dashboard-section [data-dashboard-flow="true"] {
   width: 100% !important;
   max-width: 1180px !important;
   margin-left: 0 !important;
@@ -3009,6 +3004,46 @@ body {
 
 .stat-strip.page-section.active-page {
   display: grid !important;
+}
+
+
+/* DASHBOARD FINAL FIX: SHOW FLOW, REMOVE PROFILE SUMMARY ONLY */
+.dashboard-section.page-section.active-page {
+  display: block !important;
+}
+
+.dashboard-section .dashboard-grid,
+.dashboard-section .dashboard-cards,
+.dashboard-section .dashboard-layout,
+.dashboard-section .profile-dashboard-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 22px !important;
+  max-width: 1180px !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+.dashboard-section .dashboard-profile-card,
+.dashboard-section .profile-summary-card,
+.dashboard-section .hype-profile-card,
+.dashboard-section [data-dashboard-profile="true"] {
+  display: none !important;
+}
+
+.dashboard-section .flow-card,
+.dashboard-section .recommended-flow,
+.dashboard-section [data-dashboard-flow="true"] {
+  display: block !important;
+  width: 100% !important;
+  max-width: 1180px !important;
+  min-height: 360px !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+.dashboard-section .dashboard-card {
+  display: block;
 }
 
 </style>
@@ -5727,6 +5762,7 @@ function calculateInvestorProfile() {
   localStorage.setItem('cashFloInvestorProfile', JSON.stringify({ type, risk, longTerm, etf, hype, answers: investorQuizAnswers }));
   updateProfileMiniCard();
 cleanDashboardLayout();
+ensureDashboardHasFlow();
   updateProfileGuidance();
   updateDashboardProfileCard();
   renderStocks();
@@ -6176,7 +6212,7 @@ function showAppPage(page, btn) {
 
   const tabs = document.getElementById('appPageTabs');
   if (tabs) setTimeout(() => tabs.scrollIntoView({ behavior: 'smooth', block: 'start' }), 20);
-  setTimeout(cleanDashboardLayout, 40);
+  setTimeout(ensureDashboardHasFlow, 40);
 }
 
 function navigateToAppItem(item) {
@@ -6353,20 +6389,9 @@ function cleanDashboardLayout() {
   const dashboard = document.getElementById('dashboard');
   if (!dashboard) return;
 
-  const allCards = Array.from(dashboard.querySelectorAll('div'));
-  const profileCard = allCards.find(el => {
-    const text = (el.textContent || '').toLowerCase();
-    return text.includes('risk comfort') &&
-           text.includes('best first tool') &&
-           text.includes('profile matches') &&
-           text.includes('retake quiz');
-  });
-
-  if (profileCard) {
-    profileCard.style.display = 'none';
-  }
-
-  const flowCard = allCards.find(el => {
+  // Find the actual Recommended Flow card first.
+  const candidates = Array.from(dashboard.querySelectorAll('div'));
+  const flowCard = candidates.find(el => {
     const text = (el.textContent || '').toLowerCase();
     return text.includes('recommended flow') &&
            text.includes('find your profile') &&
@@ -6374,22 +6399,79 @@ function cleanDashboardLayout() {
   });
 
   if (flowCard) {
+    flowCard.dataset.dashboardFlow = 'true';
+    flowCard.style.display = 'block';
     flowCard.style.width = '100%';
     flowCard.style.maxWidth = '1180px';
+    flowCard.style.minHeight = '360px';
     flowCard.style.marginLeft = '0';
     flowCard.style.marginRight = 'auto';
+
+    const parent = flowCard.parentElement;
+    if (parent) {
+      parent.style.display = 'grid';
+      parent.style.gridTemplateColumns = '1fr';
+      parent.style.gap = '22px';
+      parent.style.maxWidth = '1180px';
+      parent.style.marginLeft = '0';
+      parent.style.marginRight = 'auto';
+    }
   }
 
-  const grid = flowCard?.parentElement;
-  if (grid) {
-    grid.style.display = 'grid';
-    grid.style.gridTemplateColumns = '1fr';
+  // Hide only the sibling profile summary card that contains Hype Chaser/Growth Explorer and Retake Quiz.
+  if (flowCard && flowCard.parentElement) {
+    Array.from(flowCard.parentElement.children).forEach(child => {
+      if (child === flowCard) return;
+      const text = (child.textContent || '').toLowerCase();
+      const looksLikeProfileSummary =
+        text.includes('risk comfort') &&
+        text.includes('best first tool') &&
+        text.includes('profile matches') &&
+        text.includes('retake quiz');
+
+      if (looksLikeProfileSummary) {
+        child.dataset.dashboardProfile = 'true';
+        child.style.display = 'none';
+      } else {
+        child.style.display = '';
+      }
+    });
   }
+}
+
+
+function ensureDashboardHasFlow() {
+  const dashboard = document.getElementById('dashboard');
+  if (!dashboard) return;
+
+  cleanDashboardLayout();
+
+  const visibleText = (dashboard.innerText || '').trim().toLowerCase();
+  if (visibleText.includes('recommended flow')) return;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'dashboard-generated-flow';
+  wrap.style.maxWidth = '1180px';
+  wrap.style.margin = '70px 40px';
+  wrap.innerHTML = `
+    <div class="flow-card" data-dashboard-flow="true" style="background:rgba(16,20,29,0.84);border:1px solid rgba(255,255,255,0.10);border-radius:24px;padding:34px;max-width:1180px;">
+      <div class="section-tag">Your Cash Flo Dashboard</div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:clamp(34px,4vw,58px);line-height:1.05;margin-bottom:14px;">Your future money dashboard.</h2>
+      <p style="color:var(--muted2);font-size:17px;max-width:560px;margin-bottom:26px;">Start with your goals, learn your risk style, then research stocks in a way that actually makes sense.</p>
+      <h3 style="font-family:'Syne',sans-serif;color:var(--accent);font-size:28px;margin-bottom:18px;">Recommended flow</h3>
+      <div style="display:grid;gap:14px;">
+        <div class="compare-box"><h4>1&nbsp; Find your profile</h4><p>Risk comfort, time horizon, ETF readiness, and investing habits.</p></div>
+        <div class="compare-box"><h4>2&nbsp; Use the right Pro tool</h4><p>Risk Check, ETF Compare, Mistake Detector, or Before You Buy.</p></div>
+        <div class="compare-box"><h4>3&nbsp; Review Top Stocks For Me</h4><p>See profile-based rankings after the quiz. Educational only.</p></div>
+      </div>
+    </div>
+  `;
+  dashboard.appendChild(wrap);
 }
 
 // INIT
 showPlanChoiceOnLoad();
-setTimeout(cleanDashboardLayout, 300);
+setTimeout(ensureDashboardHasFlow, 300);
 updateProfileMiniCard();
 updateProfileGuidance();
 updateDashboardProfileCard();
