@@ -2401,6 +2401,88 @@ body {
   box-shadow: 0 0 0 1px rgba(82,214,255,0.18), 0 22px 70px rgba(82,214,255,0.10);
 }
 
+
+/* MONEY GOAL MINI CALCULATOR */
+.money-goal-card {
+  margin-top: 18px;
+  background: rgba(255,255,255,0.032);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 20px;
+  padding: 18px;
+}
+
+.money-goal-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  margin-bottom: 6px;
+  color: var(--future2, var(--accent));
+}
+
+.money-goal-card p {
+  color: var(--muted2);
+  font-size: 13px;
+  line-height: 1.55;
+  margin-bottom: 13px;
+}
+
+.money-goal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.money-goal-input {
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text);
+  border-radius: 13px;
+  padding: 10px 11px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  outline: none;
+}
+
+.money-goal-input:focus {
+  border-color: rgba(82,214,255,0.42);
+  box-shadow: 0 0 0 1px rgba(82,214,255,0.10);
+}
+
+.money-goal-actions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.money-goal-result {
+  margin-top: 14px;
+  border-radius: 16px;
+  padding: 14px;
+  background: rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted2);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.money-goal-result strong {
+  color: var(--text);
+}
+
+.money-goal-result .good { color: var(--green); font-weight: 900; }
+.money-goal-result .warn { color: var(--amber); font-weight: 900; }
+.money-goal-result .bad { color: var(--red); font-weight: 900; }
+
+.money-mini-note {
+  margin-top: 10px;
+  font-size: 11.5px !important;
+  color: var(--muted) !important;
+}
+
+@media(max-width:650px){
+  .money-goal-grid { grid-template-columns: 1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -2971,10 +3053,6 @@ body {
             <div class="quiz-bar-label"><span>Long-term mindset</span><span>—</span></div>
             <div class="quiz-bar"><span style="width:0%"></span></div>
           </div>
-          <div class="quiz-bar-row">
-            <div class="quiz-bar-label"><span>ETF readiness</span><span>—</span></div>
-            <div class="quiz-bar"><span style="width:0%"></span></div>
-          </div>
         </div>
 
         <div class="quiz-plan-box">
@@ -2986,6 +3064,31 @@ body {
           </ul>
         </div>
       </div>
+
+
+      <div class="money-goal-card" id="moneyGoalCalculator">
+        <h3>Future Money Goal Calculator</h3>
+        <p>Enter your goal and Cash Flo will estimate the average yearly return needed. It will then suggest what to research based on your quiz profile.</p>
+
+        <div class="money-goal-grid">
+          <input class="money-goal-input" id="goalAgeNow" type="number" min="1" max="100" placeholder="Age now" />
+          <input class="money-goal-input" id="goalMonthly" type="number" min="0" placeholder="Monthly investing ($)" />
+          <input class="money-goal-input" id="goalAmount" type="number" min="1" placeholder="Goal amount ($)" />
+          <input class="money-goal-input" id="goalAgeTarget" type="number" min="1" max="120" placeholder="Goal age" />
+        </div>
+
+        <div class="money-goal-actions">
+          <button class="btn-primary" onclick="calculateMoneyGoal()">Calculate Goal →</button>
+          <button class="btn-ghost" onclick="fillMillionExample()">Example: $1M</button>
+        </div>
+
+        <div class="money-goal-result" id="moneyGoalResult">
+          Fill in the boxes to see how realistic your goal is.
+        </div>
+
+        <p class="money-mini-note">Educational only. This does not tell you what to buy and does not guarantee returns.</p>
+      </div>
+
     </div>
   </div>
 </section>
@@ -5034,10 +5137,6 @@ function calculateInvestorProfile() {
         <div class="quiz-bar-label"><span>Long-term mindset</span><span>${longTerm}%</span></div>
         <div class="quiz-bar"><span style="width:${longTerm}%"></span></div>
       </div>
-      <div class="quiz-bar-row">
-        <div class="quiz-bar-label"><span>ETF readiness</span><span>${etf}%</span></div>
-        <div class="quiz-bar"><span style="width:${etf}%"></span></div>
-      </div>
     </div>
 
     <div class="quiz-plan-box">
@@ -5072,7 +5171,6 @@ function resetInvestorQuiz() {
     <div class="quiz-score-bars">
       <div class="quiz-bar-row"><div class="quiz-bar-label"><span>Risk comfort</span><span>—</span></div><div class="quiz-bar"><span style="width:0%"></span></div></div>
       <div class="quiz-bar-row"><div class="quiz-bar-label"><span>Long-term mindset</span><span>—</span></div><div class="quiz-bar"><span style="width:0%"></span></div></div>
-      <div class="quiz-bar-row"><div class="quiz-bar-label"><span>ETF readiness</span><span>—</span></div><div class="quiz-bar"><span style="width:0%"></span></div></div>
     </div>
     <div class="quiz-plan-box">
       <h4>Why this helps</h4>
@@ -5128,6 +5226,144 @@ function fillBeforeBuy(symbol){document.getElementById('checkTicker').value=symb
 function setBuilderMode(mode,btn){builderMode=mode;document.querySelectorAll('.builder-option').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active');}
 function buildWatchlist(){ if(!requireProTools('builder')) return;let list;if(builderMode==='tech'){list=['Broad foundation: VOO or VTI','Tech ETF: QQQ or XLK','Large tech company to understand: AAPL or MSFT','AI/growth watch-only idea: NVDA','Risk reminder: do not confuse exciting with safe'];}else if(builderMode==='safe'){list=['Broad foundation: VTI or VOO','Dividend/steady ETF example: SCHD or VYM','Company you already understand: AAPL, COST, or KO','Growth stock only as a small watchlist idea','Risk reminder: simple and diversified first'];}else{list=['Broad market ETF: VOO or VTI','Growth/tech ETF: QQQ or XLK','Company you understand: AAPL, AMZN, or MSFT','Riskier growth stock to watch only: TSLA or NVDA','Compare every stock to an ETF before deciding'];} document.getElementById('builderOutput').innerHTML=`<h3>${builderMode==='tech'?'Tech-curious':builderMode==='safe'?'Safer-start':'Balanced'} watchlist structure</h3><ul class="tool-list">${list.map(i=>`<li>${i}</li>`).join('')}</ul><p class="unique-note"><strong>Important:</strong> This is an educational watchlist structure, not a recommendation to buy.</p>`;}
 function runMistakeDetector(){ if(!requireProTools('mistake')) return;const ticker=(document.getElementById('mistakeTicker').value||'this stock').trim().toUpperCase(); const percentRaw=document.getElementById('mistakePercent').value.trim(); const percent=Number(percentRaw.replace('%','')); const reason=(document.getElementById('mistakeReason').value||'').toLowerCase(); const warnings=[]; if(!percentRaw||Number.isNaN(percent)) warnings.push('You did not give a clear percentage. Beginners should know how much of their money one idea represents.'); else if(percent>=40) warnings.push(`Putting ${percent}% into ${ticker} may create major single-stock risk.`); else if(percent>=20) warnings.push(`Putting ${percent}% into ${ticker} may still be concentrated. Compare it to an ETF first.`); else warnings.push(`Your ${percent}% amount may be more controlled, but risk still depends on what else you own.`); if(reason.includes('tiktok')||reason.includes('hype')||reason.includes('everyone')||reason.includes('friend')) warnings.push('Your reason sounds hype-based. Slow down and check fundamentals, risk, and ETF alternatives.'); else if(!reason) warnings.push('You did not explain why you want it. If there is no reason, there is no plan.'); else warnings.push('You gave a reason. Now check if that reason is based on facts, not just excitement.'); warnings.push(`Compare ${ticker} to VOO, SPY, QQQ, or VTI before making any real-money decision.`); warnings.push('Cash Flo does not place trades. You stay responsible for every decision.'); document.getElementById('mistakeOutput').innerHTML=`<h3>${ticker} Mistake Check</h3><ul class="tool-list warning-list">${warnings.map(w=>`<li>${w}</li>`).join('')}</ul>`;}
+
+
+function formatMoneyGoal(num) {
+  const n = Number(num || 0);
+  return n.toLocaleString(undefined, { maximumFractionDigits: 0 });
+}
+
+function futureValueMonthly(monthly, years, annualReturn) {
+  const months = years * 12;
+  const r = annualReturn / 12;
+  if (months <= 0) return 0;
+  if (r === 0) return monthly * months;
+  return monthly * ((Math.pow(1 + r, months) - 1) / r);
+}
+
+function requiredAnnualReturn(monthly, years, target) {
+  const months = years * 12;
+  if (monthly <= 0 || months <= 0 || target <= 0) return null;
+
+  if (monthly * months >= target) return 0;
+
+  let low = 0;
+  let high = 0.40; // 40% yearly cap for estimate
+  for (let i = 0; i < 80; i++) {
+    const mid = (low + high) / 2;
+    const fv = futureValueMonthly(monthly, years, mid);
+    if (fv >= target) high = mid;
+    else low = mid;
+  }
+
+  const needed = high * 100;
+  if (needed >= 39.9) return Infinity;
+  return needed;
+}
+
+function getGoalGuidanceByProfile(requiredPct) {
+  const profile = getSavedProfile();
+
+  if (!profile) {
+    return "Take the Investor Profile Quiz first so Cash Flo can match this goal to your risk comfort. Until then, start by researching broad ETFs and basic risk.";
+  }
+
+  const type = profile.type || "your profile";
+  const risk = Number(profile.risk || 50);
+  const longTerm = Number(profile.longTerm || 50);
+
+  if (requiredPct <= 7) {
+    if (risk < 45) {
+      return `Based on your profile (${type}), this goal may fit a cautious path. Research broad ETFs like VOO, VTI, or SPY and focus on consistency.`;
+    }
+    return `Based on your profile (${type}), this goal looks more realistic. Research broad ETFs first, then compare any individual stocks to ETFs before deciding.`;
+  }
+
+  if (requiredPct <= 10) {
+    if (longTerm >= 70) {
+      return `Based on your profile (${type}), this is possible but more ambitious. Research broad ETFs like VOO/VTI plus growth-heavy ETFs like QQQ before single stocks.`;
+    }
+    return `Based on your profile (${type}), this may require more risk than a basic plan. Use Risk Check and Compare to ETF before focusing on individual growth stocks.`;
+  }
+
+  if (requiredPct <= 15) {
+    if (risk >= 65) {
+      return `Based on your profile (${type}), you may be comfortable with more risk, but this target is aggressive. Research growth ETFs like QQQ/XLK and only treat stocks like NVDA or TSLA as higher-risk watchlist ideas.`;
+    }
+    return `Based on your profile (${type}), this goal likely needs more risk than you may be comfortable with. Consider increasing monthly contributions or giving the money more time instead of chasing risky returns.`;
+  }
+
+  return `Based on your profile (${type}), this goal is very aggressive. It may require unrealistic returns. A safer move is to increase monthly investing, lower the goal, or extend the timeline.`;
+}
+
+function calculateMoneyGoal() {
+  const ageNow = Number(document.getElementById('goalAgeNow')?.value || 0);
+  const monthly = Number(document.getElementById('goalMonthly')?.value || 0);
+  const target = Number(document.getElementById('goalAmount')?.value || 0);
+  const targetAge = Number(document.getElementById('goalAgeTarget')?.value || 0);
+  const result = document.getElementById('moneyGoalResult');
+
+  if (!result) return;
+
+  if (!ageNow || !monthly || !target || !targetAge || targetAge <= ageNow) {
+    result.innerHTML = `<span class="warn">Fill in all boxes.</span> Make sure goal age is higher than age now.`;
+    return;
+  }
+
+  const years = targetAge - ageNow;
+  const needed = requiredAnnualReturn(monthly, years, target);
+  const fv75 = futureValueMonthly(monthly, years, 0.075);
+  const fv10 = futureValueMonthly(monthly, years, 0.10);
+
+  let realismClass = "good";
+  let realism = "Realistic";
+  let explanation = "This is within a more normal long-term market return range, though nothing is guaranteed.";
+
+  if (needed === Infinity) {
+    realismClass = "bad";
+    realism = "Not realistic with this monthly amount";
+    explanation = "Even a very high return estimate may not reach this goal. You likely need more time, more monthly investing, or a lower target.";
+  } else if (needed > 15) {
+    realismClass = "bad";
+    realism = "Very aggressive";
+    explanation = "This would likely require returns that are not realistic to rely on.";
+  } else if (needed > 10) {
+    realismClass = "warn";
+    realism = "Aggressive";
+    explanation = "This may require above-average returns and higher risk.";
+  } else if (needed > 7.5) {
+    realismClass = "warn";
+    realism = "Ambitious but possible";
+    explanation = "This may be possible over time, but it probably needs discipline and some growth exposure.";
+  }
+
+  const requiredText = needed === Infinity ? "Over 40%" : `${needed.toFixed(1)}%`;
+
+  result.innerHTML = `
+    <strong>Goal:</strong> $${formatMoneyGoal(target)} by age ${targetAge}<br>
+    <strong>Time:</strong> ${years} years · <strong>Monthly:</strong> $${formatMoneyGoal(monthly)}<br>
+    <strong>Needed average yearly return:</strong> ${requiredText}<br>
+    <strong>Realism:</strong> <span class="${realismClass}">${realism}</span> — ${explanation}<br><br>
+    At about <strong>7.5%</strong>/year, this could grow to about <strong>$${formatMoneyGoal(fv75)}</strong>.<br>
+    At about <strong>10%</strong>/year, this could grow to about <strong>$${formatMoneyGoal(fv10)}</strong>.<br><br>
+    <strong>What to research next:</strong> ${getGoalGuidanceByProfile(needed === Infinity ? 99 : needed)}
+  `;
+}
+
+function fillMillionExample() {
+  const ageInput = document.getElementById('goalAgeNow');
+  const monthlyInput = document.getElementById('goalMonthly');
+  const amountInput = document.getElementById('goalAmount');
+  const targetAgeInput = document.getElementById('goalAgeTarget');
+
+  if (ageInput) ageInput.value = ageInput.value || 20;
+  if (monthlyInput) monthlyInput.value = monthlyInput.value || 300;
+  if (amountInput) amountInput.value = 1000000;
+  if (targetAgeInput) targetAgeInput.value = targetAgeInput.value || 65;
+
+  calculateMoneyGoal();
+}
+
 
 // STOCK HISTORY CHARTS - PRO ONLY
 // FINAL FIX: chart popups use TradingView iframe, not Finnhub candle/canvas code.
