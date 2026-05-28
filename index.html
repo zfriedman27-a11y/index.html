@@ -1,1491 +1,435 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- TRADINGVIEW_FINAL_FIX_1779938966 -->
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cash Flo — Smart Investing for Everyone</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg:#090b10; --surface:#10141d; --surface2:#151b26;
-  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
-  --accent:#8fb7ff; --accentSoft:#1b2638; --accent2:#a493ff;
-  --text:#f5f7fb; --muted:#828a9a; --muted2:#b5bdcc;
-  --red:#ff4d6a; --green:#22c55e; --amber:#f7c35f;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.4}
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cash Flo — Simple Investing Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-/* MODERN BACKGROUND GLOW - very subtle and modern */
-body {
-  background:
-    radial-gradient(circle at 18% 8%, rgba(143,183,255,0.045), transparent 28%),
-    radial-gradient(circle at 82% 18%, rgba(164,147,255,0.04), transparent 32%),
-    radial-gradient(circle at 50% 95%, rgba(255,255,255,0.025), transparent 35%),
-    var(--bg);
+<style>
+:root{
+  --bg:#080b10;
+  --panel:#10141d;
+  --panel2:#151b26;
+  --card:#111722;
+  --border:rgba(255,255,255,.09);
+  --border2:rgba(255,255,255,.15);
+  --text:#f6f8fc;
+  --muted:#8d96a7;
+  --muted2:#c0c8d6;
+  --accent:#8fb7ff;
+  --accent2:#a493ff;
+  --green:#22c55e;
+  --red:#ff4d6a;
+  --amber:#f7c35f;
 }
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at 12% 5%, rgba(143,183,255,.07), transparent 30%),
+    radial-gradient(circle at 90% 15%, rgba(164,147,255,.05), transparent 30%),
+    linear-gradient(180deg,#080b10 0%, #0b1018 45%, #080b10 100%);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+button,input{font-family:'DM Sans',sans-serif}
+button{cursor:pointer}
+a{color:inherit}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:rgba(10,10,15,0.9);backdrop-filter:blur(20px);border-bottom:0.5px solid var(--border)}
-.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.5px;cursor:pointer;display:flex;align-items:center;gap:6px}
-/* FANCY MONEY LOGO */
-.logo-icon {
-  width: 38px;
-  height: 38px;
-  background: linear-gradient(135deg, #e7eefc, #9fbfff, #a493ff);
-  color: #050508;
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 21px;
-  font-weight: 900;
-  flex-shrink: 0;
-  box-shadow: 0 0 14px rgba(143,183,255,0.14);
-  position: relative;
-  overflow: hidden;
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:54px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 32px;
+  background:rgba(8,11,16,.88);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
 }
-.logo-icon::after {
-  content: "";
-  position: absolute;
-  inset: 2px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.45);
+.logo{display:flex;align-items:center;gap:8px;font-family:'Syne',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.4px}
+.logo-icon{
+  width:32px;height:32px;border-radius:11px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,#eef4ff,#8fb7ff,#a493ff);
+  color:#06080d;font-size:18px;font-weight:900;
+  box-shadow:0 0 16px rgba(143,183,255,.16);
 }
 .logo span{color:var(--accent)}
-.nav-right{display:flex;align-items:center;gap:16px}
-.nav-plan{font-size:13px;padding:6px 14px;border-radius:8px;border:0.5px solid var(--border2);color:var(--muted2);cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;transition:all .2s}
-.nav-plan:hover{color:var(--text);border-color:rgba(255,255,255,0.3)}
-.nav-cta{background:var(--accent);color:#000;font-weight:600;font-size:13px;padding:8px 18px;border-radius:8px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .2s}
-.nav-cta:hover{opacity:.85}
-.premium-badge{background:linear-gradient(135deg,#f7c35f,#ff6b35);color:#000;font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:.5px}
+.nav-right{display:flex;align-items:center;gap:10px}
+#planIndicator{font-size:12px;color:var(--muted)}
+.nav-cta{
+  background:linear-gradient(135deg,#d8e7ff,#9fbfff);
+  color:#05070b;border:0;border-radius:9px;
+  padding:7px 15px;font-size:12.5px;font-weight:800;
+}
+.menu-toggle{
+  width:36px;height:36px;border-radius:10px;border:1px solid var(--border2);
+  background:rgba(255,255,255,.035);display:flex;flex-direction:column;
+  gap:4px;align-items:center;justify-content:center;
+}
+.menu-toggle span{width:16px;height:2px;border-radius:999px;background:var(--text)}
 
 /* TICKER */
-.ticker-wrap{overflow:hidden;border-bottom:0.5px solid var(--border);background:var(--surface);padding:9px 0;margin-top:57px}
-.ticker-inner{display:flex;gap:40px;animation:ticker 25s linear infinite;white-space:nowrap;width:max-content}
-.ticker-item{font-size:13px;font-family:'Syne',sans-serif;font-weight:600;display:flex;gap:7px}
+.ticker-wrap{
+  margin-top:54px;
+  border-bottom:1px solid var(--border);
+  background:rgba(16,20,29,.85);
+  overflow:hidden;
+  padding:6px 0;
+}
+.ticker-inner{display:flex;gap:36px;width:max-content;white-space:nowrap;animation:ticker 42s linear infinite}
+.ticker-item{display:flex;gap:7px;align-items:center;font-size:12px;font-family:'Syne',sans-serif;font-weight:700;opacity:.94}
 .ticker-sym{color:var(--muted2)}
-.up{color:var(--green)} .down{color:var(--red)}
-@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.up{color:var(--green)}.down{color:var(--red)}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* HERO */
-.hero{padding:70px 40px 60px;position:relative;overflow:hidden;border-bottom:0.5px solid var(--border)}
-.hero-glow{position:absolute;top:-150px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(143,183,255,0.035) 0%,transparent 70%);pointer-events:none}
-.hero-inner{max-width:780px}
-.hero-label{display:inline-flex;align-items:center;gap:7px;background:rgba(143,183,255,0.055);border:0.5px solid rgba(143,183,255,0.16);color:var(--accent);font-size:12px;font-weight:600;padding:5px 12px;border-radius:100px;margin-bottom:22px}
-.hero-label::before{content:'●';font-size:7px;animation:blink 1.5s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(38px,6vw,72px);font-weight:800;line-height:1.0;letter-spacing:-2px;margin-bottom:18px}
-.hero h1 em{font-style:normal;color:var(--accent)}
-.hero p{font-size:17px;color:var(--muted2);max-width:480px;margin-bottom:32px;font-weight:300;line-height:1.65}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.btn-primary{background:var(--accent);color:#000;font-weight:600;font-size:14px;padding:13px 26px;border-radius:10px;border:none;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
-.btn-primary:hover{opacity:.85;transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:var(--text);font-size:14px;padding:13px 26px;border-radius:10px;border:0.5px solid var(--border2);cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
-.btn-ghost:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.04)}
-.free-note{font-size:13px;color:var(--muted);margin-top:10px}
-.free-note strong{color:var(--accent)}
-
-/* STATS */
-.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:0.5px solid var(--border)}
-.stat-item{background:var(--surface);padding:28px 32px;text-align:center}
-.stat-num{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;letter-spacing:-2px;color:var(--accent);display:block;margin-bottom:4px}
-.stat-label{font-size:13px;color:var(--muted);line-height:1.4}
-
-.stat-source {
-  display: block;
-  margin-top: 7px;
-  font-size: 10px;
-  line-height: 1.35;
-  color: rgba(181,189,204,0.58);
+/* COMMON */
+.section-tag{
+  font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);margin-bottom:12px;
 }
-
-.stat-source a {
-  color: rgba(143,183,255,0.72);
-  text-decoration: none;
+.section{
+  padding:78px 40px;
+  border-bottom:1px solid var(--border);
 }
-
-.stat-source a:hover {
-  color: var(--accent);
-  text-decoration: underline;
+.inner{max-width:1120px;margin:0 auto}
+.center{text-align:center}
+.title{
+  font-family:'Syne',sans-serif;
+  font-size:clamp(32px,4.6vw,62px);
+  line-height:1.02;
+  letter-spacing:-1.5px;
+  font-weight:800;
+  margin-bottom:14px;
 }
-
-
-.why-section > .section-tag {
-  font-size: clamp(24px, 4vw, 52px);
-  letter-spacing: 3px;
-  margin-bottom: 20px;
-  line-height: 1.05;
+.sub{
+  color:var(--muted2);
+  max-width:680px;
+  margin:0 auto 30px;
+  font-size:16px;
 }
-
-/* WHY CASH FLO */
-.why-section {
-  padding: 70px 40px;
-  border-bottom: 0.5px solid var(--border);
-  background: linear-gradient(180deg, var(--bg), var(--surface));
-  text-align: center;
+.btn-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+.btn-primary,.btn-ghost{
+  border-radius:12px;padding:13px 22px;font-size:14px;font-weight:800;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease, border-color .18s ease;
 }
+.btn-primary{border:0;background:linear-gradient(135deg,#d8e7ff,#8fb7ff);color:#05070b}
+.btn-ghost{background:rgba(255,255,255,.025);border:1px solid var(--border2);color:var(--text)}
+.btn-primary:hover,.btn-ghost:hover{transform:translateY(-1px);box-shadow:0 0 18px rgba(143,183,255,.13);border-color:rgba(143,183,255,.26)}
 
-.why-section h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(30px, 4vw, 54px);
-  font-weight: 800;
-  letter-spacing: -1.5px;
-  margin-bottom: 14px;
+/* WHY */
+.why-section .section-tag{
+  font-size:clamp(22px,3vw,40px);
+  letter-spacing:3px;
+  margin-bottom:18px;
 }
-
-.why-section > p {
-  color: var(--muted2);
-  max-width: 620px;
-  margin: 0 auto 36px;
-  font-size: 16px;
+.why-grid,.guide-grid,.trust-grid,.pricing-grid{
+  display:grid;gap:18px;
 }
-
-.why-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  max-width: 1050px;
-  margin: 0 auto;
+.why-grid,.guide-grid{grid-template-columns:repeat(3,1fr)}
+.card,.advisor-box,.stock-table-wrap,.price-card,.trust-card{
+  background:rgba(16,20,29,.82);
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:0 18px 60px rgba(0,0,0,.18);
 }
-
-.why-card {
-  background: var(--surface);
-  border: 0.5px solid var(--border2);
-  border-radius: 18px;
-  padding: 28px;
-  text-align: left;
+.card{padding:26px;text-align:left;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.card:hover,.trust-card:hover{transform:translateY(-2px);border-color:rgba(143,183,255,.22);background:rgba(255,255,255,.034)}
+.card h3,.trust-card h3{
+  font-family:'Syne',sans-serif;font-size:20px;margin-bottom:10px;color:var(--accent)
 }
-
-.why-card h3 {
-  font-family: 'Syne', sans-serif;
-  font-size: 20px;
-  margin-bottom: 10px;
-  color: var(--accent);
-}
-
-.why-card p {
-  color: var(--muted2);
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.disclaimer {
-  margin-top: 30px !important;
-  font-size: 13px !important;
-  color: var(--muted) !important;
-}
-
-/* EMBEDDED ADVISOR INSIDE WHY SECTION */
-.embedded-advisor {
-  max-width: 900px;
-  margin: 38px auto 54px;
-  text-align: left;
-}
-
-.embedded-advisor .advisor-inner {
-  max-width: 900px;
-}
-
-.embedded-advisor .section-tag {
-  text-align: left;
-}
-
-.moved-lower {
-  margin-top: 18px;
-}
-
-.embedded-advisor .advisor-box {
-  margin-top: 20px;
-}
-
-
-/* STOCKS SECTION */
-.stocks-section{padding:60px 40px;border-bottom:0.5px solid var(--border)}
-.stocks-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:16px}
-.stocks-title{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px}
-.stocks-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-
-
-.stock-search-wrap{display:flex;gap:8px;align-items:center}
-.stock-search{background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 12px;border-radius:9px;outline:none;width:190px}
-.stock-search:focus{border-color:rgba(77,163,255,.45)}
-.stock-search-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:9px;padding:9px 14px;font-size:13px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif}
-.stock-search-btn.secondary{background:rgba(255,255,255,0.045);color:var(--muted2);border:1px solid rgba(255,255,255,0.10)}
-.live-status{font-size:12px;color:var(--muted);margin-top:12px}
-
-
-/* QUICK SORT CHIPS */
-.sort-chip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: -10px 0 22px;
-}
-
-.sort-chip {
-  background: rgba(255,255,255,0.035);
-  border: 1px solid rgba(255,255,255,0.10);
-  color: var(--muted2);
-  font-size: 12px;
-  font-weight: 800;
-  font-family: 'DM Sans', sans-serif;
-  padding: 8px 13px;
-  border-radius: 999px;
-  cursor: pointer;
-}
-
-.sort-chip:hover {
-  color: var(--text);
-  border-color: rgba(143,183,255,0.24);
-  background: rgba(255,255,255,0.055);
-  box-shadow: 0 0 14px rgba(143,183,255,0.12);
-}
-
-.sort-chip.active {
-  color: #050508;
-  background: linear-gradient(135deg, #d8e7ff, #a493ff);
-  border-color: transparent;
-}
-
-.stock-note {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 10px;
-}
-
-/* DROPDOWN */
-.dropdown-wrap{position:relative}
-.dropdown-btn{display:flex;align-items:center;gap:8px;background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;padding:8px 14px;border-radius:9px;cursor:pointer;transition:all .2s;white-space:nowrap}
-.dropdown-btn:hover{border-color:rgba(255,255,255,.3)}
-.dropdown-btn svg{transition:transform .2s}
-.dropdown-btn.open svg{transform:rotate(180deg)}
-.dropdown-menu{position:absolute;top:calc(100% + 6px);right:0;background:var(--surface);border:0.5px solid var(--border2);border-radius:12px;padding:6px;min-width:200px;z-index:50;display:none;box-shadow:0 16px 40px rgba(0,0,0,.4)}
-.dropdown-menu.show{display:block}
-.dropdown-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:7px;cursor:pointer;font-size:13px;color:var(--muted2);transition:all .2s;white-space:nowrap}
-.dropdown-item:hover{background:var(--surface2);color:var(--text)}
-.dropdown-item.active{background:rgba(143,183,255,.06);color:var(--accent)}
-.dropdown-item .lock-icon{margin-left:auto;font-size:11px;color:var(--amber)}
-
-/* STOCK TABLE */
-.stock-table-wrap{overflow:hidden;border:0.5px solid var(--border);border-radius:14px}
-.stock-table{width:100%;border-collapse:collapse}
-.stock-table th{background:var(--surface);padding:11px 16px;text-align:left;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:0.5px solid var(--border)}
-.stock-table th:not(:first-child){text-align:right}
-.stock-row{border-bottom:0.5px solid var(--border);transition:background .15s;cursor:pointer}
-.stock-row:last-child{border-bottom:none}
-.stock-row:hover{background:rgba(255,255,255,.02)}
-.stock-row td{padding:13px 16px;font-size:14px;vertical-align:middle}
-.stock-row td:not(:first-child){text-align:right}
-.stock-info{display:flex;align-items:center;gap:12px}
-.s-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:'Syne',sans-serif;flex-shrink:0}
-.s-ticker{font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
-.s-name{font-size:12px;color:var(--muted)}
-.s-price{font-family:'Syne',sans-serif;font-weight:700}
-.s-badge{font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px;letter-spacing:.4px}
-.badge-buy{background:rgba(143,183,255,.08);color:var(--green)}
-.badge-hold{background:rgba(247,195,95,.12);color:var(--amber)}
-.badge-watch{background:rgba(124,109,250,.12);color:var(--accent2)}
-
-
-/* CLEAN FREE LOCK STATE */
-.clean-lock-banner {
-  min-height: 86px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(143,183,255,0.055), transparent 45%),
-    rgba(255,255,255,0.025);
-}
-
-.clean-lock-banner p {
-  max-width: 680px;
-}
-
-.stock-row.locked-row {
-  display: none;
-}
-
-/* BLUR LOCK */
-.locked-row td{filter:blur(5px);pointer-events:none;user-select:none}
-.lock-overlay-row td{padding:0}
-.lock-overlay-cell{padding:0!important}
-.lock-banner{display:flex;align-items:center;justify-content:center;gap:14px;padding:18px;background:rgba(10,10,15,.7);backdrop-filter:blur(4px);border-top:0.5px solid var(--border)}
-.lock-banner p{font-size:14px;color:var(--muted2)}
-.lock-banner strong{color:var(--text)}
-.unlock-btn{background:var(--amber);color:#000;font-weight:700;font-size:12px;padding:7px 16px;border-radius:7px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:opacity .2s}
-.unlock-btn:hover{opacity:.85}
+.card p,.trust-card li{color:var(--muted2);font-size:14px}
 
 /* ADVISOR */
-.advisor-section{padding:60px 40px;background:var(--surface);border-bottom:0.5px solid var(--border)}
-.advisor-inner{max-width:760px;margin:0 auto}
-.section-tag{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
-.advisor-box {
-  background: rgba(13,18,28,0.82);
-  border: 1px solid rgba(255,255,255,0.105);
-  border-radius: 24px;
-  overflow: hidden;
-  margin-top: 32px;
-  box-shadow:
-    0 22px 70px rgba(0,0,0,0.38),
-    0 0 34px rgba(77,163,255,0.055);
-  backdrop-filter: blur(18px);
+.advisor-wrap{max-width:900px;margin:42px auto 56px;text-align:left}
+.advisor-box{overflow:hidden}
+.advisor-head{
+  padding:18px 24px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
 }
-.advisor-head{padding:20px 28px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:12px}
-.advisor-head-icon{width:38px;height:38px;background:rgba(143,183,255,.07);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.advisor-head h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:2px}
+.advisor-head-icon{
+  width:38px;height:38px;border-radius:12px;background:rgba(143,183,255,.08);
+  display:grid;place-items:center;
+}
+.advisor-head h3{font-family:'Syne',sans-serif;font-size:16px}
 .advisor-head p{font-size:12px;color:var(--muted)}
-.live-dot{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:12px;color:var(--accent);font-weight:600}
+.live-dot{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--accent)}
 .live-dot::before{content:'●';font-size:7px;animation:blink 1.5s infinite}
-.chat-area{min-height:240px;max-height:380px;overflow-y:auto;padding:20px 28px;display:flex;flex-direction:column;gap:14px}
-.chat-area::-webkit-scrollbar{width:3px}
-.chat-area::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
-.msg{display:flex;gap:10px;align-items:flex-start;animation:fadeUp .3s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.msg-av{width:28px;height:28px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
-.msg-av.ai{background:rgba(143,183,255,.08);color:var(--accent)}
-.msg-av.user{background:rgba(124,109,250,.15);color:var(--accent2)}
-.msg-bub {
-  background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 8px 18px 18px 18px;
-  padding: 13px 17px;
-  font-size: 14px;
-  line-height: 1.6;
-  max-width: 640px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-}
+@keyframes blink{50%{opacity:.35}}
+.chat-area{min-height:230px;max-height:380px;overflow:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px}
+.msg{display:flex;gap:10px;align-items:flex-start}
 .msg.user-msg{flex-direction:row-reverse}
-.user-msg .msg-bub {
-  background: linear-gradient(135deg, rgba(124,109,250,0.35), rgba(143,183,255,0.10));
-  border: 1px solid rgba(124,109,250,0.35);
-  border-radius: 18px 8px 18px 18px;
+.msg-av{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:11px;font-weight:900;flex-shrink:0}
+.msg-av.ai{background:rgba(143,183,255,.09);color:var(--accent)}
+.msg-av.user{background:rgba(164,147,255,.14);color:var(--accent2)}
+.msg-bub{
+  max-width:650px;padding:13px 16px;border-radius:10px 18px 18px 18px;
+  background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);
+  color:var(--muted2);font-size:14px;
 }
-.pills-row{display:flex;gap:7px;flex-wrap:wrap;padding:14px 28px;border-top:0.5px solid var(--border)}
-.pill{background:transparent;border:0.5px solid var(--border2);color:var(--muted2);font-size:12px;font-family:'DM Sans',sans-serif;padding:5px 12px;border-radius:100px;cursor:pointer;transition:all .2s}
-.pill:hover{border-color:var(--accent);color:var(--accent)}
-.input-row{display:flex;gap:9px;padding:16px 28px;border-top:0.5px solid var(--border)}
-.adv-input{flex:1;background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 16px;border-radius:9px;outline:none;transition:border-color .2s}
-.adv-input::placeholder{color:var(--muted)}
-.adv-input:focus{border-color:rgba(143,183,255,.22)}
-.send-btn {
-  background: linear-gradient(135deg, #d8e7ff, #9fbfff);
-  color: #000;
-  border: none;
-  padding: 10px 22px;
-  border-radius: 14px;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  transition: all .2s;
-  box-shadow: 0 0 12px rgba(143,183,255,0.11);
-}
-.send-btn:hover {
-  opacity: .9;
-  transform: translateY(-1px);
-}
-.send-btn:disabled{opacity:.4;cursor:not-allowed}
-
-/* ADVISOR LOCK */
-.advisor-lock-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 28px;background:rgba(247,195,95,.06);border-top:1px solid rgba(247,195,95,.2)}
+.user-msg .msg-bub{background:rgba(143,183,255,.12);border-color:rgba(143,183,255,.18);border-radius:18px 10px 18px 18px;color:var(--text)}
+.pills-row{display:flex;gap:8px;flex-wrap:wrap;padding:13px 24px;border-top:1px solid var(--border)}
+.pill{background:transparent;border:1px solid var(--border2);color:var(--muted2);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700}
+.pill:hover{border-color:rgba(143,183,255,.35);color:var(--text)}
+.input-row{display:flex;gap:9px;padding:16px 24px;border-top:1px solid var(--border)}
+.adv-input{flex:1;background:var(--panel);border:1px solid var(--border2);color:var(--text);border-radius:11px;padding:11px 14px;outline:0}
+.adv-input:focus{border-color:rgba(143,183,255,.36)}
+.send-btn{background:linear-gradient(135deg,#d8e7ff,#8fb7ff);color:#05070b;border:0;border-radius:11px;padding:10px 18px;font-weight:900}
+.advisor-lock-banner{display:none;align-items:center;justify-content:space-between;gap:14px;padding:16px 24px;background:rgba(247,195,95,.06);border-top:1px solid rgba(247,195,95,.18)}
 .advisor-lock-banner p{font-size:13px;color:var(--muted2)}
-.advisor-lock-banner strong{color:var(--amber)}
+.unlock-btn{background:var(--amber);color:#05070b;border:0;border-radius:9px;font-size:12px;font-weight:900;padding:8px 14px}
+
+/* HOW / GUIDE */
+.guide-top{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:28px;flex-wrap:wrap}
+.guide-title{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,46px);line-height:1.06;letter-spacing:-1.2px;font-weight:800;max-width:650px}
+.guide-sub{color:var(--muted2);max-width:430px}
+.emoji{font-size:24px;margin-bottom:8px}
+.checklist{margin-top:24px;background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:20px;padding:24px}
+.checklist h3{font-family:'Syne',sans-serif;font-size:20px;margin-bottom:12px}
+.checklist ul{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:10px 18px}
+.checklist li{color:var(--muted2);font-size:14px}
+.checklist li::before{content:'✓';color:var(--accent);font-weight:900;margin-right:8px}
+.disclaimer{margin-top:24px;color:var(--muted);font-size:13px}
+
+/* STOCKS */
+.stocks-top{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+.stocks-title{font-family:'Syne',sans-serif;font-size:30px;font-weight:800;letter-spacing:-.8px}
+.stocks-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.stock-search-wrap{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.stock-search{width:200px;background:var(--panel);border:1px solid var(--border2);color:var(--text);border-radius:10px;padding:9px 12px;outline:0}
+.stock-search-btn,.dropdown-btn{
+  background:rgba(255,255,255,.035);border:1px solid var(--border2);color:var(--text);
+  border-radius:10px;padding:9px 13px;font-size:13px;font-weight:800;
+}
+.stock-search-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:0}
+.stock-search-btn.secondary{background:rgba(255,255,255,.035);border:1px solid var(--border2);color:var(--muted2)}
+.dropdown-wrap{position:relative}
+.dropdown-menu{
+  position:absolute;top:calc(100% + 7px);right:0;display:none;z-index:50;
+  background:var(--panel);border:1px solid var(--border2);border-radius:14px;padding:7px;min-width:220px;
+  box-shadow:0 18px 50px rgba(0,0,0,.42);
+}
+.dropdown-menu.show{display:block}
+.dropdown-item{padding:9px 12px;border-radius:9px;font-size:13px;color:var(--muted2);cursor:pointer}
+.dropdown-item:hover,.dropdown-item.active{background:rgba(143,183,255,.08);color:var(--text)}
+.sort-chip-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.sort-chip{
+  background:rgba(255,255,255,.035);border:1px solid var(--border2);color:var(--muted2);
+  font-size:12px;font-weight:900;border-radius:999px;padding:8px 13px;
+}
+.sort-chip.active{background:linear-gradient(135deg,#d8e7ff,#a493ff);color:#05070b;border-color:transparent}
+.stock-note,.live-status{font-size:12.5px;color:rgba(181,189,204,.75);margin:10px 0 14px}
+.stock-table-wrap{overflow:auto}
+.stock-table{width:100%;border-collapse:collapse;min-width:780px}
+.stock-table th{background:rgba(255,255,255,.025);padding:12px 16px;text-align:left;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+.stock-table th:not(:first-child),.stock-row td:not(:first-child){text-align:right}
+.stock-row{border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.stock-row:hover{background:rgba(143,183,255,.035)}
+.stock-row td{padding:13px 16px;font-size:14px}
+.stock-info{display:flex;align-items:center;gap:12px}
+.s-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-family:'Syne',sans-serif;font-weight:900}
+.s-ticker{font-family:'Syne',sans-serif;font-weight:800}
+.s-name{font-size:12px;color:var(--muted)}
+.s-price{font-family:'Syne',sans-serif;font-weight:800}
+.s-badge{font-size:10px;font-weight:900;padding:3px 7px;border-radius:5px}
+.badge-buy{background:rgba(34,197,94,.1);color:var(--green)}
+.badge-hold{background:rgba(247,195,95,.12);color:var(--amber)}
+.badge-watch{background:rgba(164,147,255,.12);color:var(--accent2)}
+.lock-banner{display:flex;align-items:center;justify-content:center;gap:14px;padding:18px;background:rgba(255,255,255,.025);border-top:1px solid var(--border)}
+.lock-banner p{font-size:14px;color:var(--muted2)}
+
+/* TRUST */
+.trust-grid{grid-template-columns:1fr 1fr}
+.trust-card{padding:26px}
+.trust-card ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.trust-card li::before{content:'✓';color:var(--accent);font-weight:900;margin-right:9px}
+.trust-card.does-not li::before{content:'✕';color:var(--red)}
 
 /* PRICING */
-.pricing-section{padding:70px 40px;border-bottom:0.5px solid var(--border)}
-.pricing-inner{max-width:820px;margin:0 auto;text-align:center}
-.pricing-title{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,46px);font-weight:800;letter-spacing:-1.5px;margin-bottom:12px}
-.pricing-sub{font-size:16px;color:var(--muted2);margin-bottom:48px;font-weight:300}
-.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:680px;margin:0 auto}
-.price-card{background:var(--surface);border:0.5px solid var(--border);border-radius:18px;padding:32px 28px;text-align:left;position:relative}
-.price-card.featured{border:1.5px solid var(--accent);background:rgba(143,183,255,.035)}
-.price-tag{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
-.price-tag.green{color:var(--accent)}
-.price-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;letter-spacing:-2px;margin-bottom:4px}
-.price-num span{font-size:18px;font-weight:400;color:var(--muted);letter-spacing:0}
-.price-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
-.price-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
-.price-features li{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted2)}
-.price-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
+.pricing-grid{grid-template-columns:1fr 1fr;max-width:760px;margin:0 auto}
+.price-card{padding:30px;text-align:left;position:relative}
+.price-card.featured{border-color:rgba(143,183,255,.65);background:rgba(143,183,255,.035)}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f7c35f,#ff8a45);color:#05070b;font-size:11px;font-weight:900;border-radius:999px;padding:5px 14px}
+.price-tag{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:900;margin-bottom:14px}
+.price-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:900}
+.price-num span{font-size:18px;color:var(--muted);font-weight:500}
+.price-sub{font-size:13px;color:var(--muted);margin-bottom:22px}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:9px;margin:20px 0 26px}
+.price-features li{font-size:14px;color:var(--muted2)}
+.price-features li::before{content:'✓';color:var(--accent);font-weight:900;margin-right:9px}
 .price-features li.no{color:var(--muted)}
-.price-features li.no::before{content:'✗';color:var(--muted)}
-.price-btn{width:100%;padding:13px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;border:none}
-.price-btn.free{background:var(--surface2);color:var(--text);border:0.5px solid var(--border2)}
-.price-btn.free:hover{border-color:rgba(255,255,255,.3)}
-.price-btn.pro{background:var(--accent);color:#000}
-.price-btn.pro:hover{opacity:.85}
-.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:11px;font-weight:800;padding:4px 14px;border-radius:100px;letter-spacing:.5px;white-space:nowrap}
-
-
-
-/* SUBTLE MODERN BUTTON HOVERS */
-button,
-.dropdown-btn,
-.pill,
-.price-btn,
-.nav-plan,
-.nav-cta,
-.btn-primary,
-.btn-ghost,
-.unlock-btn,
-.stock-search-btn,
-.auth-btn {
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, filter .18s ease, background .18s ease;
-}
-
-button:hover,
-.dropdown-btn:hover,
-.pill:hover,
-.price-btn:hover,
-.nav-plan:hover,
-.nav-cta:hover,
-.btn-primary:hover,
-.btn-ghost:hover,
-.unlock-btn:hover,
-.stock-search-btn:hover,
-.auth-btn:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.06);
-  box-shadow: 0 0 14px rgba(143,183,255,0.12);
-}
-
-.btn-ghost:hover,
-.nav-plan:hover,
-.dropdown-btn:hover,
-.pill:hover {
-  border-color: rgba(143,183,255,0.24);
-  background: rgba(255,255,255,0.035);
-}
-
-/* AUTH BUTTONS */
-.auth-btn {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 13px 16px;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  font-family: 'DM Sans', sans-serif;
-  border: 1px solid rgba(255,255,255,0.14);
-  transition: all .2s;
-}
-.auth-btn:hover {
-  transform: translateY(-1px);
-}
-.auth-btn.google {
-  background: #fff;
-  color: #111;
-}
-.auth-btn.apple {
-  background: #050508;
-  color: #fff;
-}
-.auth-btn.email {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  color: #fff;
-}
-
-
-/* STOCK CHART MODAL */
-.chart-modal {
-  max-width: 860px;
-  width: 92%;
-}
-
-.chart-modal-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 18px;
-}
-
-.chart-modal h2 {
-  margin-bottom: 2px;
-}
-
-.range-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 14px 0 18px;
-}
-
-.range-btn {
-  background: rgba(255,255,255,0.045);
-  color: var(--muted2);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 999px;
-  padding: 8px 13px;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.range-btn:hover {
-  color: var(--text);
-  border-color: rgba(143,183,255,0.24);
-  background: rgba(255,255,255,0.06);
-}
-
-.range-btn.active {
-  color: #050508;
-  background: linear-gradient(135deg, #d8e7ff, #a493ff);
-  border-color: transparent;
-}
-
-.chart-wrap {
-  position: relative;
-  width: 100%;
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
-  padding: 14px;
-  overflow: hidden;
-}
-
-# {
-  width: 100%;
-  height: 360px;
-  display: block;
-}
-
-.chart-loading {
-  position: absolute;
-  inset: 0;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: rgba(9,11,16,0.55);
-  color: var(--muted2);
-  font-size: 13px;
-  backdrop-filter: blur(4px);
-}
-
-.stock-row {
-  cursor: pointer;
-}
-
-.stock-row.free-chart {
-  cursor: not-allowed;
-}
-
-
-/* HAMBURGER APP MENU */
-.menu-toggle {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  border: 1px solid var(--border2);
-  background: rgba(255,255,255,0.035);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  flex-direction: column;
-}
-
-.menu-toggle span {
-  width: 18px;
-  height: 2px;
-  background: var(--text);
-  border-radius: 999px;
-  display: block;
-}
-
-.app-menu-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 180;
-  background: rgba(0,0,0,0.62);
-  backdrop-filter: blur(6px);
-}
-
-.app-menu-overlay.show {
-  display: block;
-}
-
-.app-menu {
-  position: fixed;
-  top: 74px;
-  right: 24px;
-  width: min(390px, calc(100vw - 32px));
-  max-height: calc(100vh - 96px);
-  overflow-y: auto;
-  background: rgba(16,20,29,0.96);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 22px;
-  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
-  padding: 16px;
-}
-
-.menu-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 6px 4px 14px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 12px;
-}
-
-.menu-head h3 {
-  font-family: 'Syne', sans-serif;
-  font-size: 18px;
-  letter-spacing: -0.5px;
-}
-
-.menu-head p {
-  color: var(--muted);
-  font-size: 12px;
-  margin-top: 2px;
-}
-
-.menu-section {
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.025);
-  border-radius: 16px;
-  margin-bottom: 10px;
-  overflow: hidden;
-}
-
-.menu-section-btn {
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: var(--text);
-  padding: 14px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: 800;
-  font-size: 14px;
-  text-align: left;
-}
-
-.menu-section-btn small {
-  display: block;
-  color: var(--muted);
-  font-weight: 500;
-  margin-top: 2px;
-  font-size: 12px;
-}
-
-.menu-section-content {
-  display: none;
-  padding: 0 14px 14px;
-}
-
-.menu-section.open .menu-section-content {
-  display: block;
-}
-
-.menu-link {
-  width: 100%;
-  display: block;
-  text-align: left;
-  padding: 10px 12px;
-  border-radius: 11px;
-  border: 1px solid transparent;
-  background: rgba(255,255,255,0.025);
-  color: var(--muted2);
-  margin-top: 8px;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.menu-link:hover {
-  color: var(--text);
-  border-color: rgba(143,183,255,0.20);
-  background: rgba(255,255,255,0.055);
-}
-
-.menu-pill-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.menu-mini-pill {
-  border: 1px solid rgba(255,255,255,0.10);
-  background: rgba(255,255,255,0.035);
-  color: var(--muted2);
-  border-radius: 999px;
-  padding: 7px 10px;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-/* EDUCATION GUIDE SECTION */
-.guide-section {
-  padding: 70px 40px;
-  border-bottom: 0.5px solid var(--border);
-  background:
-    radial-gradient(circle at 16% 15%, rgba(143,183,255,0.05), transparent 34%),
-    var(--bg);
-}
-
-.guide-inner {
-  max-width: 1050px;
-  margin: 0 auto;
-}
-
-.guide-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 24px;
-  margin-bottom: 28px;
-  flex-wrap: wrap;
-}
-
-.guide-title {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(28px, 4vw, 46px);
-  line-height: 1.05;
-  font-weight: 800;
-  letter-spacing: -1.3px;
-  max-width: 620px;
-}
-
-.guide-sub {
-  color: var(--muted2);
-  max-width: 420px;
-  font-size: 15px;
-}
-
-.guide-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.guide-card {
-  background: rgba(16,20,29,0.82);
-  border: 1px solid rgba(255,255,255,0.09);
-  border-radius: 18px;
-  padding: 22px;
-  text-align: left;
-}
-
-.guide-card .emoji {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.guide-card h3 {
-  font-family: 'Syne', sans-serif;
-  font-size: 18px;
-  margin-bottom: 8px;
-  color: var(--accent);
-}
-
-.guide-card p {
-  color: var(--muted2);
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.checklist {
-  margin-top: 24px;
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 20px;
-  padding: 22px;
-}
-
-.checklist h3 {
-  font-family: 'Syne', sans-serif;
-  font-size: 20px;
-  margin-bottom: 12px;
-}
-
-.checklist ul {
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px 18px;
-}
-
-.checklist li {
-  color: var(--muted2);
-  font-size: 14px;
-}
-
-.checklist li::before {
-  content: "✓";
-  color: var(--accent);
-  font-weight: 900;
-  margin-right: 8px;
-}
-
-@media(max-width:800px){
-  .guide-section{padding-left:18px;padding-right:18px}
-  .guide-grid,.checklist ul{grid-template-columns:1fr}
-  .app-menu{right:16px;top:68px}
-}
-
-
-.accuracy-note {
-  margin-top: 14px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: rgba(247,195,95,0.07);
-  border: 1px solid rgba(247,195,95,0.20);
-  color: var(--muted2);
-  font-size: 13px;
-  line-height: 1.5;
-}
-.accuracy-note strong { color: var(--amber); }
-
-.tradingview-wrap {
-  height: 520px;
-  min-height: 520px;
-  padding: 0 !important;
-  background: #0d1118 !important;
-}
-
-#tradingViewChartBox {
-  width: 100%;
-  height: 520px;
-}
-
-#tradingViewChartBox iframe {
-  width: 100% !important;
-  height: 520px !important;
-  border: 0 !important;
-  border-radius: 16px;
-}
-
-
-/* OPENING PLAN CHOOSER */
-.plan-choice-modal {
-  max-width: 980px;
-  width: 94%;
-  padding: 34px;
-}
-
-.plan-choice-head {
-  text-align: center;
-  margin-bottom: 26px;
-}
-
-.plan-choice-head .section-tag {
-  text-align: center;
-}
-
-.plan-choice-head h2 {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(30px, 4vw, 52px);
-  line-height: 1.05;
-  letter-spacing: -1.5px;
-  margin-bottom: 10px;
-}
-
-.plan-choice-head p {
-  max-width: 620px;
-  margin: 0 auto;
-  color: var(--muted2);
-  font-size: 15px;
-}
-
-.plan-choice-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-.plan-choice-card {
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 22px;
-  padding: 26px;
-  text-align: left;
-  position: relative;
-  overflow: hidden;
-}
-
-.plan-choice-card.pro {
-  border-color: rgba(143,183,255,0.75);
-  box-shadow: 0 0 40px rgba(143,183,255,0.10);
-}
-
-.choice-badge {
-  position: absolute;
-  top: -1px;
-  right: 22px;
-  background: linear-gradient(135deg,#f7c35f,#ff8a45);
-  color: #050508;
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  padding: 7px 12px;
-  border-radius: 0 0 10px 10px;
-}
-
-.plan-choice-label {
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-
-.plan-choice-price {
-  font-family: 'Syne', sans-serif;
-  font-size: 58px;
-  font-weight: 900;
-  letter-spacing: -2px;
-  margin-bottom: 8px;
-}
-
-.plan-choice-price span {
-  font-size: 18px;
-  color: var(--muted2);
-  letter-spacing: 0;
-}
-
-.plan-choice-desc {
-  color: var(--muted2);
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-.plan-choice-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  margin-bottom: 24px;
-}
-
-.plan-choice-list li {
-  color: var(--muted2);
-  font-size: 14px;
-}
-
-.plan-choice-list li::before {
-  content: "✓";
-  color: var(--accent);
-  font-weight: 900;
-  margin-right: 9px;
-}
-
-.plan-choice-list li.no {
-  color: var(--muted);
-}
-
-.plan-choice-list li.no::before {
-  content: "✕";
-  color: var(--muted);
-}
-
-.plan-choice-btn {
-  width: 100%;
-  padding: 13px 16px;
-  border-radius: 13px;
-  font-size: 14px;
-  font-weight: 900;
-  border: 1px solid rgba(255,255,255,0.13);
-}
-
-.plan-choice-btn.free {
-  background: rgba(255,255,255,0.035);
-  color: var(--text);
-}
-
-.plan-choice-btn.pro {
-  background: linear-gradient(135deg,#d8e7ff,#8fb7ff);
-  color: #050508;
-  border-color: transparent;
-}
-
-.plan-choice-small {
-  margin-top: 16px;
-  text-align: center;
-  color: var(--muted);
-  font-size: 12px;
-}
-
-@media(max-width:800px){
-  .plan-choice-grid{grid-template-columns:1fr}
-  .plan-choice-modal{padding:24px}
-}
-
-
-/* SMALLER OPENING PLAN POPUP */
-.plan-choice-modal {
-  max-width: 760px !important;
-  width: min(92vw, 760px) !important;
-  padding: 24px !important;
-  border-radius: 22px !important;
-}
-
-.plan-choice-modal .modal-close {
-  width: 38px;
-  height: 38px;
-  top: 14px;
-  right: 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-}
-
-.plan-choice-head {
-  margin-bottom: 18px !important;
-  padding: 0 34px;
-}
-
-.plan-choice-head h2 {
-  font-size: clamp(24px, 3vw, 36px) !important;
-  line-height: 1.08 !important;
-  margin-bottom: 8px !important;
-}
-
-.plan-choice-head p {
-  font-size: 13px !important;
-  max-width: 520px !important;
-}
-
-.plan-choice-grid {
-  gap: 12px !important;
-}
-
-.plan-choice-card {
-  padding: 20px !important;
-  border-radius: 18px !important;
-}
-
-.plan-choice-label {
-  margin-bottom: 10px !important;
-}
-
-.plan-choice-price {
-  font-size: 44px !important;
-  margin-bottom: 4px !important;
-}
-
-.plan-choice-desc {
-  font-size: 13px !important;
-  margin-bottom: 14px !important;
-}
-
-.plan-choice-list {
-  gap: 6px !important;
-  margin-bottom: 18px !important;
-}
-
-.plan-choice-list li {
-  font-size: 12.5px !important;
-  line-height: 1.35 !important;
-}
-
-.plan-choice-btn {
-  padding: 11px 14px !important;
-  border-radius: 12px !important;
-  font-size: 13px !important;
-}
-
-.plan-choice-small {
-  margin-top: 12px !important;
-  font-size: 11px !important;
-}
-
-.choice-badge {
-  right: 16px !important;
-  font-size: 10px !important;
-  padding: 6px 10px !important;
-}
-
-@media(max-width:800px){
-  .plan-choice-modal {
-    max-height: 88vh;
-    overflow-y: auto;
-    padding: 20px !important;
-  }
-
-  .plan-choice-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .plan-choice-head {
-    padding: 0 32px 0 0;
-    text-align: left;
-  }
-
-  .plan-choice-head .section-tag {
-    text-align: left;
-  }
-}
-
-/* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
+.price-features li.no::before{content:'✕';color:var(--muted)}
+.price-btn{width:100%;border-radius:12px;border:1px solid var(--border2);padding:12px;font-weight:900;color:var(--text);background:rgba(255,255,255,.035)}
+.price-btn.pro{border:0;background:linear-gradient(135deg,#d8e7ff,#8fb7ff);color:#05070b}
+
+/* MODALS */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;padding:18px}
 .modal-overlay.show{display:flex}
-.modal{background:var(--surface);border:0.5px solid var(--border2);border-radius:20px;padding:36px;max-width:420px;width:90%;position:relative;animation:modalIn .25s ease}
-@keyframes modalIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
-.modal-close{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:20px;line-height:1;font-family:'DM Sans',sans-serif}
-.modal h2{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
-.modal p{font-size:14px;color:var(--muted2);margin-bottom:24px;line-height:1.6}
-.modal-features{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
-.modal-feat{display:flex;align-items:center;gap:10px;font-size:14px}
-.modal-feat::before{content:'✓';color:var(--accent);font-weight:700}
-.modal-trial-note{text-align:center;font-size:13px;color:var(--muted);margin-top:12px}
-.modal-trial-note strong{color:var(--accent)}
+.modal{background:var(--panel);border:1px solid var(--border2);border-radius:22px;max-width:430px;width:100%;padding:32px;position:relative;box-shadow:0 28px 80px rgba(0,0,0,.45)}
+.modal-close{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:999px;border:1px solid var(--border2);background:rgba(255,255,255,.06);color:var(--text);font-size:18px}
+.modal h2{font-family:'Syne',sans-serif;font-size:24px;letter-spacing:-.6px;margin-bottom:8px}
+.modal p{font-size:14px;color:var(--muted2);margin-bottom:22px}
+.auth-btn{width:100%;padding:13px;border-radius:12px;border:1px solid var(--border2);font-weight:900;margin-bottom:10px}
+.auth-btn.google{background:#fff;color:#111}
+.modal-trial-note{font-size:12.5px!important;color:var(--muted)!important;text-align:center;margin-top:10px!important}
+.plan-choice-modal{max-width:740px}
+.plan-choice-head{text-align:center;margin-bottom:18px}
+.plan-choice-head h2{font-family:'Syne',sans-serif;font-size:clamp(24px,3vw,36px);line-height:1.08;margin-bottom:8px}
+.plan-choice-head p{font-size:13px;color:var(--muted2)}
+.plan-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.plan-choice-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:18px;padding:20px;position:relative}
+.plan-choice-card.pro{border-color:rgba(143,183,255,.65)}
+.choice-badge{position:absolute;top:-1px;right:16px;background:var(--amber);color:#05070b;font-size:10px;font-weight:900;padding:6px 10px;border-radius:0 0 10px 10px}
+.plan-choice-label{font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:900;margin-bottom:10px}
+.plan-choice-price{font-family:'Syne',sans-serif;font-size:42px;font-weight:900}
+.plan-choice-price span{font-size:16px;color:var(--muted2)}
+.plan-choice-desc{color:var(--muted2);font-size:13px;margin-bottom:14px}
+.plan-choice-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.plan-choice-list li{font-size:12.5px;color:var(--muted2)}
+.plan-choice-list li::before{content:'✓';color:var(--accent);font-weight:900;margin-right:8px}
+.plan-choice-list li.no{color:var(--muted)}
+.plan-choice-list li.no::before{content:'✕';color:var(--muted)}
+.plan-choice-btn{width:100%;border-radius:12px;border:1px solid var(--border2);padding:11px 14px;font-weight:900;color:var(--text);background:rgba(255,255,255,.035)}
+.plan-choice-btn.pro{border:0;background:linear-gradient(135deg,#d8e7ff,#8fb7ff);color:#05070b}
+.plan-choice-small{margin-top:12px!important;font-size:11px!important;text-align:center!important}
+
+/* CHART */
+.chart-modal{max-width:980px}
+.chart-modal-head{display:flex;justify-content:space-between;gap:16px;margin-bottom:14px}
+.range-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 16px}
+.range-btn{border:1px solid var(--border2);background:rgba(255,255,255,.04);color:var(--muted2);border-radius:999px;padding:8px 12px;font-weight:900;font-size:12px}
+.range-btn.active{background:linear-gradient(135deg,#d8e7ff,#a493ff);color:#05070b;border-color:transparent}
+.tradingview-wrap{position:relative;height:500px!important;min-height:500px!important;padding:0!important;background:#0d1118!important;border-radius:18px;overflow:hidden;border:1px solid var(--border)}
+#tradingViewIframe{width:100%!important;height:500px!important;border:0!important;background:#0d1118!important}
+.chart-loading{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(9,11,16,.55);backdrop-filter:blur(4px);color:var(--muted2)}
+.accuracy-note{margin-top:12px;padding:11px 13px;border-radius:12px;background:rgba(143,183,255,.045);border:1px solid rgba(143,183,255,.12);font-size:12.5px;color:var(--muted2)}
+
+/* MENU */
+.app-menu-overlay{display:none;position:fixed;inset:0;z-index:180;background:rgba(0,0,0,.62);backdrop-filter:blur(6px)}
+.app-menu-overlay.show{display:block}
+.app-menu{position:fixed;top:62px;right:24px;width:min(390px,calc(100vw - 32px));max-height:calc(100vh - 90px);overflow:auto;background:rgba(16,20,29,.97);border:1px solid var(--border2);border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,.55);padding:16px}
+.menu-head{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);padding:6px 4px 14px;margin-bottom:12px}
+.menu-head h3{font-family:'Syne',sans-serif;font-size:18px}.menu-head p{font-size:12px;color:var(--muted)}
+.menu-section{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02);border-radius:16px;margin-bottom:10px;overflow:hidden}
+.menu-section-btn{width:100%;border:0;background:transparent;color:var(--text);padding:14px;text-align:left;display:flex;justify-content:space-between;font-weight:900}
+.menu-section-btn small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:2px}
+.menu-section-content{display:none;padding:0 14px 14px}.menu-section.open .menu-section-content{display:block}
+.menu-link{width:100%;text-align:left;padding:10px 12px;margin-top:8px;border-radius:11px;border:1px solid transparent;background:rgba(255,255,255,.025);color:var(--muted2);font-size:13px;font-weight:800}
+.menu-link:hover{border-color:rgba(143,183,255,.2);color:var(--text)}
+.menu-pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.menu-mini-pill{border:1px solid var(--border);background:rgba(255,255,255,.035);color:var(--muted2);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800}
 
 /* FOOTER */
-footer{padding:32px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-footer p{font-size:12px;color:var(--muted)}
+footer{padding:38px 40px;border-top:1px solid var(--border);background:rgba(255,255,255,.018)}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:28px;max-width:1100px;margin:0 auto}
+.footer-col h4{font-family:'Syne',sans-serif;font-size:14px;margin-bottom:10px}
+.footer-col p,.footer-col a{display:block;color:var(--muted);font-size:12px;text-decoration:none;margin-bottom:7px}
+.footer-col a:hover{color:var(--accent)}
 
-/* SPIN */
-.spin{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;display:inline-block}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* COMPACT TOP BAR */
-nav {
-  padding: 8px 32px !important;
-  min-height: 54px !important;
+@media(max-width:850px){
+  nav{padding:8px 16px}
+  #planIndicator{display:none}
+  .section{padding:62px 18px}
+  .why-grid,.guide-grid,.trust-grid,.pricing-grid,.plan-choice-grid,.footer-grid{grid-template-columns:1fr}
+  .checklist ul{grid-template-columns:1fr}
+  .stock-search{flex:1;min-width:180px}
+  .stocks-controls{width:100%}
+  .stock-search-wrap{width:100%}
+  .chart-modal{max-height:90vh;overflow:auto}
+  .tradingview-wrap,#tradingViewIframe{height:420px!important;min-height:420px!important}
 }
-
-.logo {
-  font-size: 18px !important;
-}
-
-.logo-icon {
-  width: 32px !important;
-  height: 32px !important;
-  border-radius: 11px !important;
-  font-size: 18px !important;
-}
-
-.logo-icon::after {
-  border-radius: 9px !important;
-}
-
-.nav-right {
-  gap: 11px !important;
-}
-
-.nav-cta {
-  padding: 7px 15px !important;
-  font-size: 12.5px !important;
-  border-radius: 8px !important;
-}
-
-.nav-plan {
-  padding: 5px 11px !important;
-  font-size: 12px !important;
-}
-
-.menu-toggle {
-  width: 36px !important;
-  height: 36px !important;
-  border-radius: 10px !important;
-}
-
-.menu-toggle span {
-  width: 16px !important;
-  height: 2px !important;
-}
-
-.ticker-wrap {
-  margin-top: 49px !important;
-  padding: 6px 0 !important;
-}
-
-.ticker-item {
-  font-size: 12px !important;
-}
-
-.app-menu {
-  top: 62px !important;
-}
-
-@media(max-width:800px){
-  nav {
-    padding: 8px 16px !important;
-  }
-
-  .logo {
-    font-size: 16px !important;
-  }
-
-  .logo-icon {
-    width: 30px !important;
-    height: 30px !important;
-  }
-
-  .nav-right {
-    gap: 7px !important;
-  }
-
-  #planIndicator {
-    display: none;
-  }
-
-  .ticker-wrap {
-    margin-top: 47px !important;
-  }
-}
-
-
-/* TRADINGVIEW REAL CHARTS */
-.accuracy-note {
-  margin-top: 14px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: rgba(247,195,95,0.07);
-  border: 1px solid rgba(247,195,95,0.20);
-  color: var(--muted2);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.accuracy-note strong {
-  color: var(--amber);
-}
-
-.tradingview-wrap {
-  height: 560px !important;
-  min-height: 560px !important;
-  padding: 0 !important;
-  background: #0d1118 !important;
-  border-radius: 18px !important;
-  overflow: hidden !important;
-}
-
-#tradingViewChartBox {
-  width: 100%;
-  height: 560px;
-}
-
-#tradingViewChartBox iframe {
-  width: 100% !important;
-  height: 560px !important;
-  border: 0 !important;
-  border-radius: 18px;
-}
-
-
-/* TRADINGVIEW CHART FIX */
-.accuracy-note {
-  margin-top: 14px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: rgba(247,195,95,0.07);
-  border: 1px solid rgba(247,195,95,0.20);
-  color: var(--muted2);
-  font-size: 13px;
-  line-height: 1.5;
-}
-.accuracy-note strong { color: var(--amber); }
-
-.tradingview-wrap {
-  height: 560px !important;
-  min-height: 560px !important;
-  padding: 0 !important;
-  background: #0d1118 !important;
-  border-radius: 18px !important;
-  overflow: hidden !important;
-}
-
-#tradingViewChartBox {
-  width: 100% !important;
-  height: 560px !important;
-}
-
-#tradingViewChartBox iframe {
-  width: 100% !important;
-  height: 560px !important;
-  border: 0 !important;
-  border-radius: 18px !important;
-}
-
-
-/* TRADINGVIEW IFRAME CHART FIX */
-.tradingview-wrap {
-  height: 560px !important;
-  min-height: 560px !important;
-  padding: 0 !important;
-  background: #0d1118 !important;
-  border-radius: 18px !important;
-  overflow: hidden !important;
-}
-
-#tradingViewIframe {
-  width: 100% !important;
-  height: 560px !important;
-  border: 0 !important;
-  border-radius: 18px !important;
-  background: #0d1118 !important;
-}
-
-.accuracy-note {
-  margin-top: 14px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: rgba(247,195,95,0.07);
-  border: 1px solid rgba(247,195,95,0.20);
-  color: var(--muted2);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.accuracy-note strong {
-  color: var(--amber);
-}
-
-.version-marker {
-  position: fixed;
-  left: -9999px;
-  top: -9999px;
-}
-
-
-/* FINAL TRADINGVIEW IFRAME CHART FIX */
-.tradingview-wrap {
-  height: 560px !important;
-  min-height: 560px !important;
-  padding: 0 !important;
-  background: #0d1118 !important;
-  border-radius: 18px !important;
-  overflow: hidden !important;
-}
-
-#tradingViewIframe {
-  width: 100% !important;
-  height: 560px !important;
-  border: 0 !important;
-  border-radius: 18px !important;
-  background: #0d1118 !important;
-}
-
-.accuracy-note {
-  margin-top: 14px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: rgba(247,195,95,0.07);
-  border: 1px solid rgba(247,195,95,0.20);
-  color: var(--muted2);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.accuracy-note strong { color: var(--amber); }
-
 </style>
 </head>
-<body>
-<div class="version-marker">TRADINGVIEW_IFRAME_FIX_1779938882</div>
 
-<!-- MODAL -->
+<body>
+
+<!-- PRO MODAL -->
 <div class="modal-overlay" id="upgradeModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <div style="font-size:28px;margin-bottom:12px">🔓</div>
-    <h2>Unlock Cash Flo Pro</h2>
-    <p>Pro will be <strong style="color:var(--accent)">$5/month</strong>. Payment setup is coming later.</p>
-    <div class="modal-features">
-      <div class="modal-feat">Full live stock screener with all filters</div>
-      <div class="modal-feat">AI Advisor — unlimited questions</div>
-      <div class="modal-feat">Stock history charts and cleaner research tools</div>
-      <div class="modal-feat">Weekly educational watchlist ideas</div>
-      <div class="modal-feat">Portfolio simulator and alerts later</div>
-    </div>
-    <button class="btn-primary" style="width:100%;font-size:15px;padding:14px" onclick="activatePro()">Pro Coming Soon →</button>
-    <p class="modal-trial-note"><strong>Payment coming later.</strong> Google sign-up works first.</p>
+    <div style="font-size:28px;margin-bottom:10px">🔓</div>
+    <h2>Cash Flo Pro</h2>
+    <p>Pro is planned at <strong style="color:var(--accent)">$5/month</strong>. Payment setup is coming later.</p>
+    <ul class="price-features" style="margin-top:0">
+      <li>Full market watchlist</li>
+      <li>Advanced filters</li>
+      <li>TradingView chart access in Pro test mode</li>
+      <li>More AI guidance later</li>
+    </ul>
+    <button class="btn-primary" style="width:100%" onclick="activatePro()">Preview Pro →</button>
+    <p class="modal-trial-note">Educational only. No trading or brokerage services.</p>
   </div>
 </div>
 
-
-
-<!-- OPENING PLAN CHOOSER MODAL -->
+<!-- OPENING PLAN POPUP -->
 <div class="modal-overlay" id="planChoiceModal">
   <div class="modal plan-choice-modal">
     <button class="modal-close" onclick="closePlanChoice()">✕</button>
-
     <div class="plan-choice-head">
-      <div class="section-tag">Choose your Cash Flo setup</div>
-      <h2>Choose your setup.</h2>
-      <p>Start free or preview Pro. You can close this anytime.</p>
+      <div class="section-tag">Welcome to Cash Flo</div>
+      <h2>Choose how to start.</h2>
+      <p>Start with the free workspace or preview the Pro research tools.</p>
     </div>
-
     <div class="plan-choice-grid">
       <div class="plan-choice-card">
         <div class="plan-choice-label">Free</div>
         <div class="plan-choice-price">$0<span>/mo</span></div>
-        <p class="plan-choice-desc">Simple and calm.</p>
+        <p class="plan-choice-desc">For learning the basics.</p>
         <ul class="plan-choice-list">
-          <li>TSLA, AMZN, and NVDA basic view</li>
-          <li>1 AI Advisor preview question</li>
-          <li>Live ticker tape</li>
-          <li>Investor guide and checklist</li>
-          <li class="no">Full research view</li>
-          <li class="no">Pro stock history charts</li>
+          <li>TSLA, AMZN, and NVDA view</li>
+          <li>1 Cash Flo Guide preview question</li>
+          <li>Investor checklist</li>
+          <li class="no">Full watchlist</li>
+          <li class="no">Pro charts</li>
         </ul>
-        <button class="plan-choice-btn free" onclick="chooseFreePlan()">Continue Free →</button>
+        <button class="plan-choice-btn free" onclick="chooseFreePlan()">Continue with Free →</button>
       </div>
-
       <div class="plan-choice-card pro">
-        <div class="choice-badge">MOST POPULAR</div>
+        <div class="choice-badge">PRO</div>
         <div class="plan-choice-label">Pro</div>
         <div class="plan-choice-price">$5<span>/mo</span></div>
-        <p class="plan-choice-desc">Full tools later.</p>
+        <p class="plan-choice-desc">For deeper research tools.</p>
         <ul class="plan-choice-list">
-          <li>Everything in Free</li>
-          <li>Full stock table with true filters</li>
-          <li>Stock history chart popups</li>
-          <li>Unlimited AI Advisor later</li>
-          <li>Biggest movers and dividend watchlists</li>
-          <li>Portfolio simulator and alerts later</li>
+          <li>Full market watchlist</li>
+          <li>Advanced filters</li>
+          <li>TradingView chart popups</li>
+          <li>Expanded AI guidance later</li>
+          <li>Portfolio simulator later</li>
         </ul>
-        <button class="plan-choice-btn pro" onclick="chooseProPlan()">View Pro →</button>
+        <button class="plan-choice-btn pro" onclick="chooseProPlan()">Preview Pro →</button>
       </div>
     </div>
-
-    <p class="plan-choice-small">Educational only. Cash Flo does not control your money.</p>
+    <p class="plan-choice-small">Cash Flo is educational only and does not control your money.</p>
   </div>
 </div>
 
-<!-- SIGN UP MODAL -->
+<!-- AUTH MODAL -->
 <div class="modal-overlay" id="authModal">
   <div class="modal">
     <button class="modal-close" onclick="closeAuthModal()">✕</button>
-    <div style="font-size:30px;margin-bottom:12px">💸</div>
+    <div style="font-size:30px;margin-bottom:10px">💸</div>
     <h2>Create your Cash Flo account</h2>
-    <p>Save your watchlist, unlock your free AI preview, and upgrade to Pro whenever you are ready.</p>
-
+    <p>Use Google sign-in to create a free Cash Flo account.</p>
     <button class="auth-btn google" onclick="signInWithGoogleNow()">Continue with Google</button>
-
     <p class="modal-trial-note" id="authNote">Google sign-up is connected with Firebase.</p>
   </div>
 </div>
 
-
-<!-- STOCK CHART MODAL -->
+<!-- CHART MODAL -->
 <div class="modal-overlay" id="chartModal">
   <div class="modal chart-modal">
     <button class="modal-close" onclick="closeChartModal()">✕</button>
     <div class="chart-modal-head">
       <div>
-        <div class="section-tag">Pro Stock History</div>
+        <div class="section-tag">Pro Chart</div>
         <h2 id="chartTitle">Stock Chart</h2>
-        <p id="chartSubtitle">Click a range to view price history.</p>
+        <p id="chartSubtitle">TradingView chart</p>
       </div>
       <div class="premium-badge">PRO</div>
     </div>
-
     <div class="range-row">
       <button class="range-btn active" onclick="changeChartRange('1D', this)">1D</button>
       <button class="range-btn" onclick="changeChartRange('1W', this)">1W</button>
@@ -1495,16 +439,11 @@ nav {
       <button class="range-btn" onclick="changeChartRange('2Y', this)">2Y</button>
       <button class="range-btn" onclick="changeChartRange('5Y', this)">5Y</button>
     </div>
-
-    <div class="chart-wrap tradingview-wrap">
+    <div class="tradingview-wrap">
       <iframe id="tradingViewIframe" title="TradingView real stock chart" loading="lazy"></iframe>
       <div class="chart-loading" id="chartLoading">Loading TradingView chart...</div>
     </div>
-
-    <div class="accuracy-note">
-      <strong>Real chart mode:</strong> Charts are loaded directly from TradingView. Cash Flo does not use Finnhub candles for charts.
-    </div>
-
+    <div class="accuracy-note"><strong>Chart mode:</strong> Charts are displayed through TradingView. Cash Flo does not draw or calculate chart prices.</div>
     <p class="modal-trial-note" id="chartNote">Chart data is displayed by TradingView.</p>
   </div>
 </div>
@@ -1513,106 +452,55 @@ nav {
 <nav>
   <div class="logo"><div class="logo-icon">$</div><span>Cash Flo</span></div>
   <div class="nav-right">
-    <span id="planIndicator" style="font-size:13px;color:var(--muted)">Free Plan</span>
+    <span id="planIndicator">Free Plan</span>
     <button class="nav-cta" onclick="openAuthModal()">Sign Up →</button>
-    <button class="menu-toggle" onclick="toggleAppMenu()" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="menu-toggle" onclick="toggleAppMenu()" aria-label="Open menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
-<!-- APP MENU -->
+<!-- MENU -->
 <div class="app-menu-overlay" id="appMenuOverlay" onclick="closeAppMenu(event)">
   <div class="app-menu" onclick="event.stopPropagation()">
     <div class="menu-head">
-      <div>
-        <h3>Cash Flo Menu</h3>
-        <p>Simple investing tools, organized.</p>
-      </div>
+      <div><h3>Cash Flo Menu</h3><p>Simple tools, organized.</p></div>
       <button class="modal-close" onclick="toggleAppMenu()">✕</button>
     </div>
-
     <div class="menu-section open">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>🤖 AI Guide <small>Ask simple investing questions</small></span>
-        <span>⌄</span>
-      </button>
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)"><span>🤖 Cash Flo Guide <small>Ask simple investing questions</small></span><span>⌄</span></button>
       <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('advisor')">Open AI Advisor</button>
-        <button class="menu-link" onclick="quickAskFromMenu('What is the safest way for a beginner to start investing?')">Beginner starting advice</button>
+        <button class="menu-link" onclick="jumpToSection('advisor')">Open Cash Flo Guide</button>
         <button class="menu-link" onclick="quickAskFromMenu('Explain ETFs in simple words')">Explain ETFs</button>
       </div>
     </div>
-
     <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>📈 Investor Guide <small>Learn before using real money</small></span>
-        <span>⌄</span>
-      </button>
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)"><span>📘 How it works <small>Simple research process</small></span><span>⌄</span></button>
       <div class="menu-section-content">
+        <button class="menu-link" onclick="jumpToSection('howItWorks')">Open How it works</button>
         <button class="menu-link" onclick="jumpToSection('investorGuide')">Open Investor Guide</button>
-        <button class="menu-link" onclick="jumpToSection('decisionChecklist')">Decision Checklist</button>
-        <div class="menu-pill-row">
-          <span class="menu-mini-pill">No trade placing</span>
-          <span class="menu-mini-pill">Educational only</span>
-          <span class="menu-mini-pill">You stay in control</span>
-        </div>
       </div>
     </div>
-
     <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>📊 Stocks & Filters <small>Sort the watchlist</small></span>
-        <span>⌄</span>
-      </button>
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)"><span>📊 Market Watchlist <small>Stocks, filters, and charts</small></span><span>⌄</span></button>
       <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('stocks')">Open Stock Tracker</button>
+        <button class="menu-link" onclick="jumpToSection('stocks')">Open Watchlist</button>
         <button class="menu-link" onclick="quickSort('gainers', document.querySelector('.sort-chip:nth-child(2)')); jumpToSection('stocks')">Biggest Gainers</button>
         <button class="menu-link" onclick="quickSort('losers', document.querySelector('.sort-chip:nth-child(3)')); jumpToSection('stocks')">Biggest Losers</button>
-        <button class="menu-link" onclick="quickSort('alphabetical', document.querySelector('.sort-chip:nth-child(7)')); jumpToSection('stocks')">A–Z Stocks</button>
       </div>
     </div>
-
     <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>📉 Charts <small>Pro stock history popups</small></span>
-        <span>⌄</span>
-      </button>
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)"><span>👤 Account <small>Google sign-in and Pro</small></span><span>⌄</span></button>
       <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('stocks')">Click a stock to open chart</button>
-        <button class="menu-link" onclick="openModal()">Unlock Pro Charts</button>
-        <div class="menu-pill-row">
-          <span class="menu-mini-pill">1D</span>
-          <span class="menu-mini-pill">1W</span>
-          <span class="menu-mini-pill">1M</span>
-          <span class="menu-mini-pill">YTD</span>
-          <span class="menu-mini-pill">5Y</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>👤 Account <small>Google sign-up and Pro later</small></span>
-        <span>⌄</span>
-      </button>
-      <div class="menu-section-content">
-        <button class="menu-link" onclick="openAuthModal()">Sign up / sign in with Google</button>
+        <button class="menu-link" onclick="openAuthModal()">Sign in with Google</button>
         <button class="menu-link" onclick="openPlanChoice()">Choose plan popup</button>
-        <button class="menu-link" onclick="openModal()">View Pro plan</button>
+        <button class="menu-link" onclick="openModal()">Preview Pro</button>
       </div>
     </div>
-
     <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>⚠️ Legal / Safety <small>No financial advice</small></span>
-        <span>⌄</span>
-      </button>
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)"><span>⚠️ Trust & Safety <small>No trading or money control</small></span><span>⌄</span></button>
       <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('safetyDisclosure')">View disclosure</button>
+        <button class="menu-link" onclick="jumpToSection('trust')">View Trust & Safety</button>
         <div class="menu-pill-row">
           <span class="menu-mini-pill">No trading</span>
-          <span class="menu-mini-pill">No money control</span>
           <span class="menu-mini-pill">No brokerage link</span>
           <span class="menu-mini-pill">Education only</span>
         </div>
@@ -1621,156 +509,91 @@ nav {
   </div>
 </div>
 
-
 <!-- TICKER -->
-<div class="ticker-wrap">
-  <div class="ticker-inner">
-    <span class="ticker-item"><span class="ticker-sym">Loading</span><span class="up">Live stock prices...</span></span>
-    <span class="ticker-item"><span class="ticker-sym">Cash Flo</span><span class="up">Updating every 60 seconds</span></span>
-    <span class="ticker-item"><span class="ticker-sym">Loading</span><span class="up">Live stock prices...</span></span>
-    <span class="ticker-item"><span class="ticker-sym">Cash Flo</span><span class="up">Updating every 60 seconds</span></span>
-  </div>
-</div>
+<div class="ticker-wrap"><div class="ticker-inner" id="tickerInner">
+  <span class="ticker-item"><span class="ticker-sym">Loading</span><span class="up">Market data...</span></span>
+  <span class="ticker-item"><span class="ticker-sym">Cash Flo</span><span class="up">Educational only</span></span>
+</div></div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-inner">
-    <h1>Investing,<br><em>finally simple.</em></h1>
-    <p>A simple investing guide that explains stocks, ETFs, risks, and market ideas without controlling your money.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="openModal()">Start Free — Google Sign-Up →</button>
-      <button class="btn-ghost" onclick="document.getElementById('stocks').scrollIntoView({behavior:'smooth'})">See Live Stocks</button>
+<!-- WHY / HERO -->
+<section class="section why-section" id="why">
+  <div class="inner center">
+    <div class="section-tag">Why Cash Flo</div>
+    <h1 class="title">Investing,<br><em style="color:var(--accent);font-style:normal">finally simple.</em></h1>
+    <p class="sub">A calmer way to understand stocks, ETFs, risks, and market ideas — without controlling your money.</p>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="openAuthModal()">Start Free →</button>
+      <button class="btn-ghost" onclick="document.getElementById('stocks').scrollIntoView({behavior:'smooth'})">View Watchlist</button>
     </div>
-    <p class="free-note"><strong>You stay in control.</strong> Cash Flo explains ideas, but never places trades.</p>
+    <p class="disclaimer"><strong style="color:var(--accent)">You stay in control.</strong> Cash Flo explains ideas, but does not place trades.</p>
+
+    <div class="advisor-wrap" id="advisor">
+      <div class="section-tag">Cash Flo Guide</div>
+      <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.8px;margin-bottom:8px">Ask investing questions in plain English</div>
+      <p style="color:var(--muted2);margin-bottom:18px">Simple explanations about stocks, ETFs, risk, and investing terms.</p>
+
+      <div class="advisor-box">
+        <div class="advisor-head">
+          <div class="advisor-head-icon">📊</div>
+          <div><h3>Cash Flo Guide</h3><p>Claude based AI · Educational only · Not financial advice</p></div>
+          <div class="live-dot">LIVE</div>
+        </div>
+        <div class="chat-area" id="chatArea">
+          <div class="msg"><div class="msg-av ai">CF</div><div class="msg-bub">Hey! Ask me about a stock, ETF, or investing concept. I’ll explain it in simple language.</div></div>
+        </div>
+        <div class="pills-row" id="pillsRow">
+          <button class="pill" onclick="askPill(this)">Is NVDA still a buy?</button>
+          <button class="pill" onclick="askPill(this)">What is a P/E ratio?</button>
+          <button class="pill" onclick="askPill(this)">Best ETF for beginners?</button>
+          <button class="pill" onclick="askPill(this)">How do I start with $100?</button>
+        </div>
+        <div id="advisorLock" class="advisor-lock-banner">
+          <p>🔒 <strong>Free preview used.</strong> Pro will include expanded AI guidance later.</p>
+          <button class="unlock-btn" onclick="openModal()">Preview Pro →</button>
+        </div>
+        <div class="input-row" id="inputRow">
+          <input class="adv-input" id="advisorInput" placeholder="Ask about any stock or concept..." />
+          <button class="send-btn" id="sendBtn" onclick="sendQ()">Ask →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="why-grid">
+      <div class="card"><h3>Clear explanations</h3><p>Understand strengths, risks, and context without “buy now” hype.</p></div>
+      <div class="card"><h3>Built for beginners</h3><p>Ask normal questions and get simple answers about stocks, ETFs, and investing terms.</p></div>
+      <div class="card"><h3>Everything organized</h3><p>Watchlists, filters, TradingView charts, AI explanations, and beginner checklists in one workspace.</p></div>
+    </div>
+    <p class="disclaimer">Educational only. Cash Flo does not place trades, connect to brokerage accounts, manage your money, or tell you exactly what to buy.</p>
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stat-strip">
-  <div class="stat-item">
-    <span class="stat-num">10.5%</span>
-    <span class="stat-label">S&P 500 average annual return since 1957</span>
-    <span class="stat-source">Source: <a href="https://www.investopedia.com/ask/answers/042415/what-average-annual-return-sp-500.asp" target="_blank" rel="noopener">Investopedia, S&P 500 historical average</a></span>
-  </div>
-
-  <div class="stat-item">
-    <span class="stat-num">$1.4M</span>
-    <span class="stat-label">$300/month from age 20–65 at about 7.6% yearly return</span>
-    <span class="stat-source">Source: <a href="https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator" target="_blank" rel="noopener">Investor.gov compound interest calculator</a> · Cash Flo example assumption</span>
-  </div>
-
-  <div class="stat-item">
-    <span class="stat-num">-18%</span>
-    <span class="stat-label">Buying power lost over 5 years if inflation averages 4%/year</span>
-    <span class="stat-source">Source: <a href="https://www.bls.gov/data/inflation_calculator.htm" target="_blank" rel="noopener">BLS CPI inflation calculator</a> · Cash Flo 4% inflation example</span>
-  </div>
-
-  <div class="stat-item">
-    <span class="stat-num">$5</span>
-    <span class="stat-label">Planned monthly Cash Flo Pro subscription price</span>
-    <span class="stat-source">Source: Cash Flo planned pricing · payment setup coming later</span>
-  </div>
-</div>
-<!-- WHY CASH FLO -->
-<section class="why-section">
-  <div class="section-tag">Why Cash Flo?</div>
-  <h2>Better than guessing from random videos.</h2>
-  <p>Cash Flo helps beginners understand investing without confusion or hours of searching.</p>
-
-  <div class="embedded-advisor" id="advisor">
-    <div class="advisor-inner">
-    <div class="section-tag">AI Advisor</div>
-    <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:8px">Ask anything about stocks</div>
-    <p style="font-size:15px;color:var(--muted2);font-weight:300">Plain-English answers about any stock, strategy, or concept.</p>
-
-    <div class="advisor-box">
-      <div class="advisor-head">
-        <div class="advisor-head-icon">📊</div>
-        <div>
-          <h3>Cash Flo AI</h3>
-          <p>Claude based AI · Educational only · Not financial advice</p>
-        </div>
-        <div class="live-dot">LIVE</div>
-      </div>
-      <div class="chat-area" id="chatArea">
-        <div class="msg">
-          <div class="msg-av ai">CF</div>
-          <div class="msg-bub">Hey! Ask me about any stock, what a term means, or where to start investing. I'll give you a real, complete answer.</div>
-        </div>
-      </div>
-      <div class="pills-row" id="pillsRow">
-        <button class="pill" onclick="askPill(this)">Is NVDA still a buy?</button>
-        <button class="pill" onclick="askPill(this)">What is a P/E ratio?</button>
-        <button class="pill" onclick="askPill(this)">Best ETF for beginners?</button>
-        <button class="pill" onclick="askPill(this)">How do I start with $100?</button>
-      </div>
-      <div id="advisorLock" class="advisor-lock-banner" style="display:none">
-        <p>🔒 <strong>Free preview used.</strong> Upgrade to Cash Flo Pro for unlimited AI investing explanations.</p>
-        <button class="unlock-btn" onclick="openModal()">Unlock Unlimited →</button>
-      </div>
-      <div class="input-row" id="inputRow">
-        <input class="adv-input" id="advisorInput" placeholder="Ask about any stock or concept..." />
-        <button class="send-btn" id="sendBtn" onclick="sendQ()">Ask →</button>
-      </div>
+<!-- HOW IT WORKS -->
+<section class="section" id="howItWorks">
+  <div class="inner">
+    <div class="guide-top">
+      <div><div class="section-tag">How it works</div><div class="guide-title">Research without the noise.</div></div>
+      <p class="guide-sub">Cash Flo keeps the process simple: search, understand the risk, compare alternatives, then make your own decision outside the app.</p>
+    </div>
+    <div class="guide-grid">
+      <div class="card"><div class="emoji">1</div><h3>Search a stock</h3><p>Look up tickers, compare movers, and keep the watchlist focused instead of overwhelming.</p></div>
+      <div class="card"><div class="emoji">2</div><h3>Understand the risk</h3><p>Use plain-English explanations and checklists to understand what you are looking at.</p></div>
+      <div class="card"><div class="emoji">3</div><h3>Decide yourself</h3><p>Cash Flo does not place trades, connect to brokerage accounts, or control your money.</p></div>
     </div>
   </div>
-  </div>
-
-  <div class="why-grid moved-lower">
-    <div class="why-card">
-      <h3>No hype</h3>
-      <p>We explain the good, the bad, and the risk instead of pushing “buy now” advice.</p>
-    </div>
-
-    <div class="why-card">
-      <h3>Made for beginners</h3>
-      <p>Ask simple questions and get normal answers about stocks, ETFs, and investing terms.</p>
-    </div>
-
-    <div class="why-card">
-      <h3>Everything in one place</h3>
-      <p>Stock rankings, filters, AI explanations, charts, and beginner checklists without feeling overstimulated.</p>
-    </div>
-  </div>
-
-  <p class="disclaimer">
-    Educational only. Not financial advice. Cash Flo does not place trades, connect to brokerage accounts, manage your money, or tell you exactly what to buy.
-  </p>
 </section>
 
 <!-- INVESTOR GUIDE -->
-<section class="guide-section" id="investorGuide">
-  <div class="guide-inner">
+<section class="section" id="investorGuide">
+  <div class="inner">
     <div class="guide-top">
-      <div>
-        <div class="section-tag">Investor Guide</div>
-        <div class="guide-title">Cash Flo guides you — it does not trade for you.</div>
-      </div>
-      <p class="guide-sub">
-        Cash Flo is built for people who feel overwhelmed by investing apps. It explains the market in plain English,
-        helps you compare options, and gives you a calmer path to learn before using real money.
-      </p>
+      <div><div class="section-tag">Investor Guide</div><div class="guide-title">Cash Flo guides you — it does not trade for you.</div></div>
+      <p class="guide-sub">Cash Flo is built for people who feel overwhelmed by investing apps. It explains the market in plain English and gives you a calmer path to learn before using real money.</p>
     </div>
-
     <div class="guide-grid">
-      <div class="guide-card">
-        <div class="emoji">🧭</div>
-        <h3>Guidance, not control</h3>
-        <p>Cash Flo can explain stocks, ETFs, risk, and beginner strategy ideas, but it does not place trades or manage your money.</p>
-      </div>
-      <div class="guide-card">
-        <div class="emoji">🧠</div>
-        <h3>Simple explanations</h3>
-        <p>No confusing dashboards. Get normal-language breakdowns of what a company does, why people like it, and what risks to check.</p>
-      </div>
-      <div class="guide-card">
-        <div class="emoji">🧪</div>
-        <h3>Practice first</h3>
-        <p>Use watchlists, charts, and simulated thinking before making real decisions inside your own brokerage account.</p>
-      </div>
+      <div class="card"><div class="emoji">🧭</div><h3>Guidance, not control</h3><p>Cash Flo can explain stocks, ETFs, risk, and beginner strategy ideas, but it does not place trades or manage your money.</p></div>
+      <div class="card"><div class="emoji">🧠</div><h3>Simple explanations</h3><p>No confusing dashboards. Get normal-language breakdowns of what a company does and what risks to check.</p></div>
+      <div class="card"><div class="emoji">🧪</div><h3>Practice first</h3><p>Use watchlists, charts, and checklists before making real decisions in your own brokerage account.</p></div>
     </div>
-
     <div class="checklist" id="decisionChecklist">
       <h3>Before investing, ask yourself:</h3>
       <ul>
@@ -1782,135 +605,120 @@ nav {
         <li>Do I understand that Cash Flo is educational only?</li>
       </ul>
     </div>
-
-    <p class="disclaimer" id="safetyDisclosure">
-      Cash Flo is an educational investing guide. It does not provide financial advice, place trades, manage money,
-      connect to brokerage accounts, or guarantee returns. Users stay responsible for every investment decision.
-    </p>
+    <p class="disclaimer" id="safetyDisclosure">Cash Flo is an educational investing guide. It does not provide financial advice, place trades, manage money, connect to brokerage accounts, or guarantee returns. Users stay responsible for every investment decision.</p>
   </div>
 </section>
 
 <!-- STOCKS -->
-<section id="stocks" class="stocks-section">
-  <div class="stocks-top">
-    <div class="stocks-title">Live Stock Tracker</div>
-    <div class="stocks-controls">
-      <div class="stock-search-wrap">
-        <input class="stock-search" id="stockSearch" placeholder="Search any ticker, ex: AAPL" />
-        <button class="stock-search-btn" onclick="addTickerFromSearch()">Search</button>
-        <button class="stock-search-btn secondary" onclick="showAllStocks()">Show All</button>
-      </div>
-      <button class="dropdown-btn" onclick="loadLiveStocks(true)">↻ Refresh</button>
-      <!-- SORT DROPDOWN -->
-      <div class="dropdown-wrap" id="sortWrap">
-        <button class="dropdown-btn" id="sortBtn" onclick="toggleDropdown('sort')">
-          <span id="sortLabel">⭐ Top Picks</span>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-        <div class="dropdown-menu" id="sortMenu">
-          <div class="dropdown-item active" onclick="setSort('top','⭐ Top Today')">⭐ Top Today</div>
-          <div class="dropdown-item" onclick="setSort('gainers','📈 Biggest Gainers')">📈 Biggest Gainers</div>
-          <div class="dropdown-item" onclick="setSort('losers','📉 Biggest Losers')">📉 Biggest Losers</div>
-          <div class="dropdown-item" onclick="setSort('movers','🚀 Biggest Movers')">🚀 Biggest Movers</div>
-          <div class="dropdown-item" onclick="setSort('priceHigh','💵 Highest Price')">💵 Highest Price</div>
-          <div class="dropdown-item" onclick="setSort('priceLow','🪙 Lowest Price')">🪙 Lowest Price</div>
-          <div class="dropdown-item" onclick="setSort('alphabetical','🔤 A–Z')">🔤 A–Z</div>
-          <div class="dropdown-item" onclick="setSort('longterm','🏆 Long-Term Ideas')">🏆 Long-Term Ideas</div>
-          <div class="dropdown-item" onclick="setSort('etf','🛡 ETFs Only')">🛡 ETFs Only</div>
-          <div class="dropdown-item" onclick="setSort('dividend','💰 Dividend Watchlist')">💰 Dividend Watchlist</div>
+<section class="section" id="stocks">
+  <div class="inner">
+    <div class="stocks-top">
+      <div><div class="section-tag">Market Watchlist</div><div class="stocks-title">Simple stock research workspace</div></div>
+      <div class="stocks-controls">
+        <div class="stock-search-wrap">
+          <input class="stock-search" id="stockSearch" placeholder="Search ticker, ex: AAPL" />
+          <button class="stock-search-btn" onclick="addTickerFromSearch()">Search</button>
+          <button class="stock-search-btn secondary" onclick="showAllStocks()">Show All</button>
         </div>
-      </div>
-      <!-- SECTOR DROPDOWN -->
-      <div class="dropdown-wrap" id="sectorWrap">
-        <button class="dropdown-btn" id="sectorBtn" onclick="toggleDropdown('sector')">
-          <span id="sectorLabel">All Sectors</span>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-        <div class="dropdown-menu" id="sectorMenu">
-          <div class="dropdown-item active" onclick="setSector('all','All Sectors')">All Sectors</div>
-          <div class="dropdown-item" onclick="setSector('tech','💻 Tech')">💻 Tech</div>
-          <div class="dropdown-item" onclick="setSector('finance','🏦 Finance')">🏦 Finance</div>
-          <div class="dropdown-item" onclick="setSector('consumer','🛍 Consumer')">🛍 Consumer</div>
-          <div class="dropdown-item" onclick="setSector('healthcare','🧬 Healthcare')">🧬 Healthcare</div>
-          <div class="dropdown-item" onclick="setSector('energy','⚡ Energy')">⚡ Energy</div>
-          <div class="dropdown-item" onclick="setSector('industrial','🏗 Industrial')">🏗 Industrial</div>
-          <div class="dropdown-item" onclick="setSector('etf','🛡 ETFs')">🛡 ETFs</div>
+        <button class="dropdown-btn" onclick="loadLiveStocks(true)">↻ Refresh</button>
+        <div class="dropdown-wrap">
+          <button class="dropdown-btn" id="sortBtn" onclick="toggleDropdown('sort')"><span id="sortLabel">⭐ Top Today</span></button>
+          <div class="dropdown-menu" id="sortMenu">
+            <div class="dropdown-item active" onclick="setSort('top','⭐ Top Today')">⭐ Top Today</div>
+            <div class="dropdown-item" onclick="setSort('gainers','📈 Biggest Gainers')">📈 Biggest Gainers</div>
+            <div class="dropdown-item" onclick="setSort('losers','📉 Biggest Losers')">📉 Biggest Losers</div>
+            <div class="dropdown-item" onclick="setSort('movers','🚀 Biggest Movers')">🚀 Biggest Movers</div>
+            <div class="dropdown-item" onclick="setSort('priceHigh','💵 Highest Price')">💵 Highest Price</div>
+            <div class="dropdown-item" onclick="setSort('priceLow','🪙 Lowest Price')">🪙 Lowest Price</div>
+            <div class="dropdown-item" onclick="setSort('alphabetical','🔤 A–Z')">🔤 A–Z</div>
+            <div class="dropdown-item" onclick="setSort('etf','🛡 ETFs Only')">🛡 ETFs Only</div>
+          </div>
+        </div>
+        <div class="dropdown-wrap">
+          <button class="dropdown-btn" id="sectorBtn" onclick="toggleDropdown('sector')"><span id="sectorLabel">All Sectors</span></button>
+          <div class="dropdown-menu" id="sectorMenu">
+            <div class="dropdown-item active" onclick="setSector('all','All Sectors')">All Sectors</div>
+            <div class="dropdown-item" onclick="setSector('tech','💻 Tech')">💻 Tech</div>
+            <div class="dropdown-item" onclick="setSector('finance','🏦 Finance')">🏦 Finance</div>
+            <div class="dropdown-item" onclick="setSector('consumer','🛍 Consumer')">🛍 Consumer</div>
+            <div class="dropdown-item" onclick="setSector('healthcare','🧬 Healthcare')">🧬 Healthcare</div>
+            <div class="dropdown-item" onclick="setSector('energy','⚡ Energy')">⚡ Energy</div>
+            <div class="dropdown-item" onclick="setSector('industrial','🏗 Industrial')">🏗 Industrial</div>
+            <div class="dropdown-item" onclick="setSector('etf','🛡 ETFs')">🛡 ETFs</div>
+          </div>
         </div>
       </div>
     </div>
-</div>
-  </div>
 
-  <div class="sort-chip-row" id="quickSortRow">
-    <button class="sort-chip active" onclick="quickSort('top', this)">Top Today</button>
-    <button class="sort-chip" onclick="quickSort('gainers', this)">Biggest Gainers</button>
-    <button class="sort-chip" onclick="quickSort('losers', this)">Biggest Losers</button>
-    <button class="sort-chip" onclick="quickSort('movers', this)">Biggest Movers</button>
-    <button class="sort-chip" onclick="quickSort('priceHigh', this)">Highest Price</button>
-    <button class="sort-chip" onclick="quickSort('priceLow', this)">Lowest Price</button>
-    <button class="sort-chip" onclick="quickSort('alphabetical', this)">A–Z</button>
-    <button class="sort-chip" onclick="quickSort('etf', this)">ETFs</button>
-  </div>
+    <div class="sort-chip-row">
+      <button class="sort-chip active" onclick="quickSort('top', this)">Top Today</button>
+      <button class="sort-chip" onclick="quickSort('gainers', this)">Biggest Gainers</button>
+      <button class="sort-chip" onclick="quickSort('losers', this)">Biggest Losers</button>
+      <button class="sort-chip" onclick="quickSort('movers', this)">Biggest Movers</button>
+      <button class="sort-chip" onclick="quickSort('priceHigh', this)">Highest Price</button>
+      <button class="sort-chip" onclick="quickSort('priceLow', this)">Lowest Price</button>
+      <button class="sort-chip" onclick="quickSort('alphabetical', this)">A–Z</button>
+      <button class="sort-chip" onclick="quickSort('etf', this)">ETFs</button>
+    </div>
 
-  <div class="stock-note">Free users see TSLA, AMZN, and NVDA with one clean unlock message. Pro users see all stocks normally with no blur or shaded locked rows.</div>
+    <div class="stock-note">Free users see TSLA, AMZN, and NVDA. Pro users unlock the full market watchlist and true filter order.</div>
 
-  <div class="stock-table-wrap">
-    <table class="stock-table">
-      <thead>
-        <tr>
-          <th>Stock</th>
-          <th>Price</th>
-          <th>Today</th>
-          <th>Change</th>
-          <th>Updated</th>
-          <th>Rating</th>
-        </tr>
-      </thead>
-      <tbody id="stockBody"></tbody>
-    </table>
+    <div class="stock-table-wrap">
+      <table class="stock-table">
+        <thead><tr><th>Stock</th><th>Price</th><th>Today</th><th>Change</th><th>Updated</th><th>Rating</th></tr></thead>
+        <tbody id="stockBody"></tbody>
+      </table>
+    </div>
+    <div class="live-status" id="liveStatus">Market data loads from Finnhub when available.</div>
   </div>
-  <div class="live-status" id="liveStatus">Add your Finnhub API key for real live prices. Demo fallback numbers may become outdated.</div>
 </section>
 
-
+<!-- TRUST -->
+<section class="section" id="trust">
+  <div class="inner center">
+    <div class="section-tag">Trust & Safety</div>
+    <h2 class="title">Built to guide, not control.</h2>
+    <p class="sub">Cash Flo is designed as an educational research workspace. It helps users understand investing while keeping every real-money decision outside the app.</p>
+    <div class="trust-grid">
+      <div class="trust-card"><h3>What Cash Flo does</h3><ul><li>Explains investing terms in plain English</li><li>Helps compare stocks, ETFs, risks, and alternatives</li><li>Shows watchlists, filters, and TradingView charts</li><li>Provides beginner-friendly checklists and guidance</li></ul></div>
+      <div class="trust-card does-not"><h3>What Cash Flo does not do</h3><ul><li>Does not place trades</li><li>Does not connect to brokerage accounts</li><li>Does not manage or control user money</li><li>Does not guarantee returns or tell users exactly what to buy</li></ul></div>
+    </div>
+  </div>
+</section>
 
 <!-- PRICING -->
-<section class="pricing-section">
-  <div class="pricing-inner">
-    <div class="section-tag" style="text-align:center">Pricing</div>
-    <div class="pricing-title">Start free. Stay for $5.</div>
-    <p class="pricing-sub">Google sign-up works now. Payment setup is coming later.</p>
+<section class="section pricing-section" id="pricing">
+  <div class="inner center">
+    <div class="section-tag">Pricing</div>
+    <h2 class="title">Simple pricing.</h2>
+    <p class="sub">Start free today. Pro is planned at $5/month when payment setup is ready.</p>
     <div class="pricing-grid">
       <div class="price-card">
         <div class="price-tag">Free</div>
         <div class="price-num">$0<span>/mo</span></div>
-        <div class="price-sub">Always free, no card needed</div>
+        <div class="price-sub">Always free</div>
         <ul class="price-features">
-          <li>Top 3 stocks (basic view)</li>
-          <li>1 AI Advisor preview question</li>
-          <li>Live ticker tape</li>
-          <li class="no">Advanced filters & sorts</li>
-          <li class="no">Full stock screener (50+)</li>
-          <li class="no">Weekly curated picks</li>
-          <li class="no">Portfolio tracker</li>
+          <li>TSLA, AMZN, and NVDA starter watchlist</li>
+          <li>1 Cash Flo Guide preview question</li>
+          <li>Investor guide and checklist</li>
+          <li class="no">Full watchlist</li>
+          <li class="no">Pro charts</li>
         </ul>
-        <button class="price-btn free">Current Plan</button>
+        <button class="price-btn">Current Plan</button>
       </div>
       <div class="price-card featured">
-        <div class="popular-badge">🔥 MOST POPULAR</div>
-        <div class="price-tag green">Pro</div>
+        <div class="popular-badge">PRO</div>
+        <div class="price-tag">Pro</div>
         <div class="price-num">$5<span>/mo</span></div>
-        <div class="price-sub" style="color:var(--accent)">Payment setup coming later</div>
+        <div class="price-sub">Payment setup coming later</div>
         <ul class="price-features">
-          <li>Everything in Free</li>
-          <li>Full research view</li>
-          <li>All sort & filter options</li>
-          <li>Unlimited AI Advisor</li>
-          <li>Weekly curated picks</li>
-          <li>Biggest movers and dividend watchlists</li>
-          <li>Portfolio simulator and alerts later</li>
+          <li>Full market watchlist</li>
+          <li>Advanced filters</li>
+          <li>TradingView chart popups</li>
+          <li>Expanded AI guidance later</li>
+          <li>Portfolio simulator later</li>
         </ul>
-        <button class="price-btn pro" onclick="openModal()">Pro Coming Soon →</button>
+        <button class="price-btn pro" onclick="openModal()">Preview Pro →</button>
       </div>
     </div>
   </div>
@@ -1918,1005 +726,232 @@ nav {
 
 <!-- FOOTER -->
 <footer>
-  <div class="logo"><div class="logo-icon">$</div><span>Cash Flo</span></div>
-  <p>© 2026 Cash Flo · Educational only · Not financial advice · No trading or brokerage services · Past performance ≠ future results</p>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="logo"><div class="logo-icon">$</div><span>Cash Flo</span></div>
+      <p>Educational investing guide for beginners. Cash Flo helps users research and understand the market without controlling their money.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <a href="#advisor">Cash Flo Guide</a>
+      <a href="#howItWorks">How it works</a>
+      <a href="#stocks">Market Watchlist</a>
+      <a href="#trust">Trust & Safety</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <p>Educational only</p>
+      <p>Not financial advice</p>
+      <p>No trading or brokerage services</p>
+      <p>Past performance ≠ future results</p>
+    </div>
+  </div>
 </footer>
 
 <script>
-// STATE
 let isPro = false;
+window.isCashFloPro = function(){ return isPro; };
 let questionsUsed = 0;
 const FREE_Q_LIMIT = 1;
 let currentSort = 'top';
 let currentSector = 'all';
 let currentSearchSymbol = '';
-
-// LIVE STOCK DATA
-// Step 1: Create a free Finnhub account.
-// Step 2: Replace the placeholder below with your token.
-// Example: const FINNHUB_API_KEY = "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
-const FINNHUB_API_KEY = "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
-
-// This is your starting watchlist. Users can add any ticker with the search box.
-let stockSymbols = ["TSLA", "AMZN", "NVDA", "AAPL", "MSFT", "GOOGL", "GOOG", "META", "AMD", "AVGO", "NFLX", "ORCL", "ADBE", "CRM", "INTC", "QCOM", "CSCO", "TXN", "IBM", "NOW", "SHOP", "UBER", "PYPL", "SQ", "SNOW", "PLTR", "MU", "AMAT", "LRCX", "PANW", "JPM", "BAC", "WFC", "GS", "MS", "V", "MA", "AXP", "C", "BLK", "SCHW", "COF", "USB", "WMT", "COST", "HD", "LOW", "TGT", "NKE", "SBUX", "MCD", "DIS", "CMG", "PEP", "KO", "PG", "EL", "LULU", "ABNB", "JNJ", "LLY", "UNH", "MRK", "PFE", "ABBV", "TMO", "ABT", "ISRG", "AMGN", "GILD", "CVS", "XOM", "CVX", "COP", "SLB", "EOG", "OXY", "BA", "CAT", "GE", "HON", "LMT", "RTX", "DE", "UPS", "VOO", "SPY", "QQQ", "VTI", "DIA", "IWM", "SCHD", "VYM", "XLK", "XLF", "XLE", "XLV", "ARKK"];
 let liveStocks = [];
 let lastUpdated = null;
 
-const stockNames = {
-  "AAPL": "Apple",
-  "MSFT": "Microsoft",
-  "NVDA": "Nvidia",
-  "AMZN": "Amazon",
-  "GOOGL": "Alphabet Class A",
-  "GOOG": "Alphabet Class C",
-  "META": "Meta Platforms",
-  "TSLA": "Tesla",
-  "AMD": "Advanced Micro Devices",
-  "AVGO": "Broadcom",
-  "NFLX": "Netflix",
-  "ORCL": "Oracle",
-  "ADBE": "Adobe",
-  "CRM": "Salesforce",
-  "INTC": "Intel",
-  "QCOM": "Qualcomm",
-  "CSCO": "Cisco",
-  "TXN": "Texas Instruments",
-  "IBM": "IBM",
-  "NOW": "ServiceNow",
-  "SHOP": "Shopify",
-  "UBER": "Uber",
-  "PYPL": "PayPal",
-  "SQ": "Block",
-  "SNOW": "Snowflake",
-  "PLTR": "Palantir",
-  "MU": "Micron",
-  "AMAT": "Applied Materials",
-  "LRCX": "Lam Research",
-  "PANW": "Palo Alto Networks",
-  "JPM": "JPMorgan Chase",
-  "BAC": "Bank of America",
-  "WFC": "Wells Fargo",
-  "GS": "Goldman Sachs",
-  "MS": "Morgan Stanley",
-  "V": "Visa",
-  "MA": "Mastercard",
-  "AXP": "American Express",
-  "C": "Citigroup",
-  "BLK": "BlackRock",
-  "SCHW": "Charles Schwab",
-  "COF": "Capital One",
-  "USB": "U.S. Bancorp",
-  "WMT": "Walmart",
-  "COST": "Costco",
-  "HD": "Home Depot",
-  "LOW": "Lowe’s",
-  "TGT": "Target",
-  "NKE": "Nike",
-  "SBUX": "Starbucks",
-  "MCD": "McDonald’s",
-  "DIS": "Disney",
-  "CMG": "Chipotle",
-  "PEP": "PepsiCo",
-  "KO": "Coca-Cola",
-  "PG": "Procter & Gamble",
-  "EL": "Estée Lauder",
-  "LULU": "Lululemon",
-  "ABNB": "Airbnb",
-  "JNJ": "Johnson & Johnson",
-  "LLY": "Eli Lilly",
-  "UNH": "UnitedHealth",
-  "MRK": "Merck",
-  "PFE": "Pfizer",
-  "ABBV": "AbbVie",
-  "TMO": "Thermo Fisher",
-  "ABT": "Abbott Labs",
-  "ISRG": "Intuitive Surgical",
-  "AMGN": "Amgen",
-  "GILD": "Gilead Sciences",
-  "CVS": "CVS Health",
-  "XOM": "Exxon Mobil",
-  "CVX": "Chevron",
-  "COP": "ConocoPhillips",
-  "SLB": "Schlumberger",
-  "EOG": "EOG Resources",
-  "OXY": "Occidental Petroleum",
-  "BA": "Boeing",
-  "CAT": "Caterpillar",
-  "GE": "GE Aerospace",
-  "HON": "Honeywell",
-  "LMT": "Lockheed Martin",
-  "RTX": "RTX",
-  "DE": "Deere",
-  "UPS": "UPS",
-  "VOO": "Vanguard S&P 500 ETF",
-  "SPY": "SPDR S&P 500 ETF",
-  "QQQ": "Invesco QQQ ETF",
-  "VTI": "Vanguard Total Market ETF",
-  "DIA": "SPDR Dow Jones ETF",
-  "IWM": "iShares Russell 2000 ETF",
-  "SCHD": "Schwab Dividend ETF",
-  "VYM": "Vanguard High Dividend ETF",
-  "XLK": "Technology Select Sector ETF",
-  "XLF": "Financial Select Sector ETF",
-  "XLE": "Energy Select Sector ETF",
-  "XLV": "Health Care Select Sector ETF",
-  "ARKK": "ARK Innovation ETF"
-};
+// Keep Finnhub for quote prices only.
+const FINNHUB_API_KEY = "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
 
-const symbolSector = {
-  "AAPL": "tech",
-  "MSFT": "tech",
-  "NVDA": "tech",
-  "GOOGL": "tech",
-  "GOOG": "tech",
-  "META": "tech",
-  "AMD": "tech",
-  "AVGO": "tech",
-  "NFLX": "tech",
-  "ORCL": "tech",
-  "ADBE": "tech",
-  "CRM": "tech",
-  "INTC": "tech",
-  "QCOM": "tech",
-  "CSCO": "tech",
-  "TXN": "tech",
-  "IBM": "tech",
-  "NOW": "tech",
-  "SHOP": "tech",
-  "UBER": "tech",
-  "PYPL": "tech",
-  "SQ": "tech",
-  "SNOW": "tech",
-  "PLTR": "tech",
-  "MU": "tech",
-  "AMAT": "tech",
-  "LRCX": "tech",
-  "PANW": "tech",
-  "JPM": "finance",
-  "BAC": "finance",
-  "WFC": "finance",
-  "GS": "finance",
-  "MS": "finance",
-  "V": "finance",
-  "MA": "finance",
-  "AXP": "finance",
-  "C": "finance",
-  "BLK": "finance",
-  "SCHW": "finance",
-  "COF": "finance",
-  "USB": "finance",
-  "AMZN": "consumer",
-  "TSLA": "consumer",
-  "WMT": "consumer",
-  "COST": "consumer",
-  "HD": "consumer",
-  "LOW": "consumer",
-  "TGT": "consumer",
-  "NKE": "consumer",
-  "SBUX": "consumer",
-  "MCD": "consumer",
-  "DIS": "consumer",
-  "CMG": "consumer",
-  "PEP": "consumer",
-  "KO": "consumer",
-  "PG": "consumer",
-  "EL": "consumer",
-  "LULU": "consumer",
-  "ABNB": "consumer",
-  "JNJ": "healthcare",
-  "LLY": "healthcare",
-  "UNH": "healthcare",
-  "MRK": "healthcare",
-  "PFE": "healthcare",
-  "ABBV": "healthcare",
-  "TMO": "healthcare",
-  "ABT": "healthcare",
-  "ISRG": "healthcare",
-  "AMGN": "healthcare",
-  "GILD": "healthcare",
-  "CVS": "healthcare",
-  "XOM": "energy",
-  "CVX": "energy",
-  "COP": "energy",
-  "SLB": "energy",
-  "EOG": "energy",
-  "OXY": "energy",
-  "BA": "industrial",
-  "CAT": "industrial",
-  "GE": "industrial",
-  "HON": "industrial",
-  "LMT": "industrial",
-  "RTX": "industrial",
-  "DE": "industrial",
-  "UPS": "industrial",
-  "VOO": "etf",
-  "SPY": "etf",
-  "QQQ": "etf",
-  "VTI": "etf",
-  "DIA": "etf",
-  "IWM": "etf",
-  "SCHD": "etf",
-  "VYM": "etf",
-  "XLK": "etf",
-  "XLF": "etf",
-  "XLE": "etf",
-  "XLV": "etf",
-  "ARKK": "etf"
-};
+let stockSymbols = ["TSLA","AMZN","NVDA","AAPL","MSFT","GOOGL","GOOG","META","AMD","AVGO","NFLX","ORCL","ADBE","CRM","INTC","QCOM","CSCO","TXN","IBM","NOW","SHOP","UBER","PYPL","SQ","SNOW","PLTR","MU","AMAT","LRCX","PANW","JPM","BAC","WFC","GS","MS","V","MA","AXP","C","BLK","SCHW","COF","USB","WMT","COST","HD","LOW","TGT","NKE","SBUX","MCD","DIS","CMG","PEP","KO","PG","EL","LULU","ABNB","JNJ","LLY","UNH","MRK","PFE","ABBV","TMO","ABT","ISRG","AMGN","GILD","CVS","XOM","CVX","COP","SLB","EOG","OXY","BA","CAT","GE","HON","LMT","RTX","DE","UPS","VOO","SPY","QQQ","VTI","DIA","IWM","SCHD","VYM","XLK","XLF","XLE","XLV","ARKK"];
+
+const stockNames = {"TSLA":"Tesla","AMZN":"Amazon","NVDA":"Nvidia","AAPL":"Apple","MSFT":"Microsoft","GOOGL":"Alphabet Class A","GOOG":"Alphabet Class C","META":"Meta Platforms","AMD":"Advanced Micro Devices","AVGO":"Broadcom","NFLX":"Netflix","ORCL":"Oracle","ADBE":"Adobe","CRM":"Salesforce","INTC":"Intel","QCOM":"Qualcomm","CSCO":"Cisco","TXN":"Texas Instruments","IBM":"IBM","NOW":"ServiceNow","SHOP":"Shopify","UBER":"Uber","PYPL":"PayPal","SQ":"Block","SNOW":"Snowflake","PLTR":"Palantir","MU":"Micron","AMAT":"Applied Materials","LRCX":"Lam Research","PANW":"Palo Alto Networks","JPM":"JPMorgan Chase","BAC":"Bank of America","WFC":"Wells Fargo","GS":"Goldman Sachs","MS":"Morgan Stanley","V":"Visa","MA":"Mastercard","AXP":"American Express","C":"Citigroup","BLK":"BlackRock","SCHW":"Charles Schwab","COF":"Capital One","USB":"U.S. Bancorp","WMT":"Walmart","COST":"Costco","HD":"Home Depot","LOW":"Lowe’s","TGT":"Target","NKE":"Nike","SBUX":"Starbucks","MCD":"McDonald’s","DIS":"Disney","CMG":"Chipotle","PEP":"PepsiCo","KO":"Coca-Cola","PG":"Procter & Gamble","EL":"Estée Lauder","LULU":"Lululemon","ABNB":"Airbnb","JNJ":"Johnson & Johnson","LLY":"Eli Lilly","UNH":"UnitedHealth","MRK":"Merck","PFE":"Pfizer","ABBV":"AbbVie","TMO":"Thermo Fisher","ABT":"Abbott Labs","ISRG":"Intuitive Surgical","AMGN":"Amgen","GILD":"Gilead Sciences","CVS":"CVS Health","XOM":"Exxon Mobil","CVX":"Chevron","COP":"ConocoPhillips","SLB":"Schlumberger","EOG":"EOG Resources","OXY":"Occidental Petroleum","BA":"Boeing","CAT":"Caterpillar","GE":"GE Aerospace","HON":"Honeywell","LMT":"Lockheed Martin","RTX":"RTX","DE":"Deere","UPS":"UPS","VOO":"Vanguard S&P 500 ETF","SPY":"SPDR S&P 500 ETF","QQQ":"Invesco QQQ ETF","VTI":"Vanguard Total Market ETF","DIA":"SPDR Dow Jones ETF","IWM":"iShares Russell 2000 ETF","SCHD":"Schwab Dividend ETF","VYM":"Vanguard High Dividend ETF","XLK":"Technology Select Sector ETF","XLF":"Financial Select Sector ETF","XLE":"Energy Select Sector ETF","XLV":"Health Care Select Sector ETF","ARKK":"ARK Innovation ETF"};
+const symbolSector = {};
+["AAPL","MSFT","NVDA","GOOGL","GOOG","META","AMD","AVGO","NFLX","ORCL","ADBE","CRM","INTC","QCOM","CSCO","TXN","IBM","NOW","SHOP","UBER","PYPL","SQ","SNOW","PLTR","MU","AMAT","LRCX","PANW"].forEach(s=>symbolSector[s]="tech");
+["JPM","BAC","WFC","GS","MS","V","MA","AXP","C","BLK","SCHW","COF","USB"].forEach(s=>symbolSector[s]="finance");
+["AMZN","TSLA","WMT","COST","HD","LOW","TGT","NKE","SBUX","MCD","DIS","CMG","PEP","KO","PG","EL","LULU","ABNB"].forEach(s=>symbolSector[s]="consumer");
+["JNJ","LLY","UNH","MRK","PFE","ABBV","TMO","ABT","ISRG","AMGN","GILD","CVS"].forEach(s=>symbolSector[s]="healthcare");
+["XOM","CVX","COP","SLB","EOG","OXY"].forEach(s=>symbolSector[s]="energy");
+["BA","CAT","GE","HON","LMT","RTX","DE","UPS"].forEach(s=>symbolSector[s]="industrial");
+["VOO","SPY","QQQ","VTI","DIA","IWM","SCHD","VYM","XLK","XLF","XLE","XLV","ARKK"].forEach(s=>symbolSector[s]="etf");
 
 const fallbackPrices = {
-  AAPL:{c:310.850, dp:0.834, d:2.570, pc:308.280},
-  MSFT:{c:412.670, dp:-0.800, d:-3.330, pc:416.000},
-  NVDA:{c:212.600, dp:-1.061, d:-2.280, pc:214.880},
-  AMZN:{c:271.850, dp:2.473, d:6.560, pc:265.290},
-  GOOGL:{c:388.830, dp:-0.010, d:-0.040, pc:388.870},
-  META:{c:635.255, dp:3.742, d:22.915, pc:612.340},
-  TSLA:{c:440.360, dp:1.557, d:6.750, pc:433.610},
-  AMD:{c:495.540, dp:-1.613, d:-8.125, pc:503.665},
-  VOO:{c:689.960, dp:0.006, d:0.040, pc:689.920},
-  SPY:{c:750.460, dp:-0.023, d:-0.175, pc:750.635},
-  QQQ:{c:729.450, dp:-0.120, d:-0.880, pc:730.330},
-  VTI:{c:369.360, dp:-0.005, d:-0.020, pc:369.380}
+  TSLA:{c:440.36,dp:1.56,d:6.75,pc:433.61}, AMZN:{c:271.85,dp:2.47,d:6.56,pc:265.29}, NVDA:{c:212.60,dp:-1.06,d:-2.28,pc:214.88},
+  AAPL:{c:310.85,dp:0.83,d:2.57,pc:308.28}, MSFT:{c:412.67,dp:-0.80,d:-3.33,pc:416.00}, GOOGL:{c:388.83,dp:-0.01,d:-0.04,pc:388.87},
+  VOO:{c:689.96,dp:0.01,d:0.04,pc:689.92}, SPY:{c:750.46,dp:-0.02,d:-0.17,pc:750.63}, QQQ:{c:729.45,dp:-0.12,d:-0.88,pc:730.33}, VTI:{c:369.36,dp:-0.01,d:-0.02,pc:369.38}
 };
 
-function getStockMeta(symbol) {
-  const s = symbol.toUpperCase();
-  return {
-    ticker: s,
-    name: stockNames[s] || s,
-    sector: symbolSector[s] || 'other',
-    icon: s.slice(0,1),
-    color: s.includes('V') || s.includes('SPY') || s.includes('QQQ') ? '#7c6dfa' : '#8fb7ff'
-  };
+function getStockMeta(symbol){
+  const s=symbol.toUpperCase();
+  return {ticker:s,name:stockNames[s]||s,sector:symbolSector[s]||"other",icon:s.slice(0,1),color:symbolSector[s]==="etf" ? "#a493ff" : "#8fb7ff"};
 }
-
-async function fetchQuote(symbol) {
-  const s = symbol.toUpperCase();
-
-  if (!FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE") {
-    const f = fallbackPrices[s] || {c:0, dp:0, d:0, pc:0};
-    return {...getStockMeta(s), price:f.c, day:f.dp, change:f.d, previousClose:f.pc, demo:true};
-  }
-
-  const url = `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(s)}&token=${FINNHUB_API_KEY}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('Quote fetch failed for ' + s);
-  const data = await res.json();
-
-  if (!data || !data.c || data.c === 0) {
-    throw new Error('No live quote found for ' + s);
-  }
-
-  return {
-    ...getStockMeta(s),
-    price: Number(data.c),
-    day: Number(data.dp || 0),
-    change: Number(data.d || 0),
-    previousClose: Number(data.pc || 0),
-    demo:false
-  };
+function fallbackQuote(symbol){
+  const s=symbol.toUpperCase(); const f=fallbackPrices[s];
+  if(f) return {...getStockMeta(s),price:f.c,day:f.dp,change:f.d,previousClose:f.pc,demo:true};
+  let seed=0; for(let i=0;i<s.length;i++) seed+=s.charCodeAt(i)*(i+1);
+  const price=40+(seed%500)+((seed%97)/100); const day=((seed%700)/100)-3.5; const change=price*day/100;
+  return {...getStockMeta(s),price,day,change,previousClose:price-change,demo:true};
 }
-
-
-function fallbackQuote(symbol) {
-  const s = symbol.toUpperCase();
-  const f = fallbackPrices[s];
-
-  if (f) {
-    return {
-      ...getStockMeta(s),
-      price: Number(f.c),
-      day: Number(f.dp || 0),
-      change: Number(f.d || 0),
-      previousClose: Number(f.pc || 0),
-      demo: true
-    };
-  }
-
-  // Generated backup so even searched tickers do not make the table disappear.
-  let seed = 0;
-  for (let i = 0; i < s.length; i++) seed += s.charCodeAt(i) * (i + 1);
-  const price = 40 + (seed % 500) + ((seed % 97) / 100);
-  const day = ((seed % 700) / 100) - 3.5;
-  const change = price * day / 100;
-
-  return {
-    ...getStockMeta(s),
-    price,
-    day,
-    change,
-    previousClose: price - change,
-    demo: true
-  };
+async function fetchQuote(symbol){
+  const s=symbol.toUpperCase();
+  if(!FINNHUB_API_KEY) return fallbackQuote(s);
+  const url=`https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(s)}&token=${FINNHUB_API_KEY}`;
+  const res=await fetch(url);
+  if(!res.ok) throw new Error("Quote fetch failed");
+  const data=await res.json();
+  if(!data || !data.c || data.c===0) throw new Error("No quote");
+  return {...getStockMeta(s),price:Number(data.c),day:Number(data.dp||0),change:Number(data.d||0),previousClose:Number(data.pc||0),demo:false};
 }
-
-
-function initializeFallbackStocksNow() {
-  liveStocks = stockSymbols.map(sym => fallbackQuote(sym));
-  lastUpdated = new Date();
-  renderStocks();
-  renderTicker();
-  const status = document.getElementById('liveStatus');
-  if (status) {
-    status.textContent = 'Showing backup prices while live prices load...';
+function initializeFallbackStocksNow(){
+  liveStocks=stockSymbols.map(sym=>fallbackQuote(sym)); lastUpdated=new Date(); renderStocks(); renderTicker();
+}
+async function loadLiveStocks(manual=false){
+  const status=document.getElementById("liveStatus");
+  if(!liveStocks.length) initializeFallbackStocksNow();
+  if(status) status.textContent=manual ? "Refreshing market data..." : "Loading market data...";
+  const settled=await Promise.all(stockSymbols.map(async sym=>{
+    try{return {ok:true,data:await fetchQuote(sym),symbol:sym}}catch(e){return {ok:false,data:fallbackQuote(sym),symbol:sym}}
+  }));
+  const failed=settled.filter(x=>!x.ok).map(x=>x.symbol);
+  if(failed.length < stockSymbols.length){ liveStocks=settled.map(x=>x.data); }
+  lastUpdated=new Date(); renderStocks(); renderTicker();
+  if(status){
+    status.textContent = failed.length === stockSymbols.length
+      ? "Live market data is temporarily unavailable. Prices are hidden/limited until Finnhub responds."
+      : failed.length ? `Market data updated ${lastUpdated.toLocaleTimeString()}. Some symbols may be delayed or limited.`
+      : `Market data updated ${lastUpdated.toLocaleTimeString()}.`;
   }
 }
-
-async function loadLiveStocks(manual=false) {
-  const status = document.getElementById('liveStatus');
-
-  if (!liveStocks || liveStocks.length === 0) {
-    initializeFallbackStocksNow();
-  }
-
-  if (status) {
-    status.textContent = manual ? 'Refreshing live prices...' : 'Loading live prices... backup prices are showing until Finnhub responds.';
-  }
-
-  const quotePromises = stockSymbols.map(async (sym) => {
-    try {
-      return { ok: true, symbol: sym, data: await fetchQuote(sym) };
-    } catch (err) {
-      console.warn(err);
-      return { ok: false, symbol: sym, data: fallbackQuote(sym) };
-    }
-  });
-
-  const settled = await Promise.all(quotePromises);
-  liveStocks = settled.map(item => item.data);
-  lastUpdated = new Date();
-  renderStocks();
-  renderTicker();
-
-  const failed = settled.filter(item => !item.ok).map(item => item.symbol);
-
-  if (status) {
-    if (currentSearchSymbol) {
-      status.textContent = `Showing only ${currentSearchSymbol}. Price updated ${lastUpdated.toLocaleTimeString()}. Click Show All to return to the full watchlist.`;
-    } else if (failed.length === stockSymbols.length) {
-      status.textContent = 'Finnhub did not return live prices, so backup demo prices are showing. Check your API key, internet connection, or API limit.';
-    } else if (failed.length > 0) {
-      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Backup demo prices are showing for some tickers: ${failed.slice(0,8).join(', ')}.`;
-    } else {
-      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Auto-refresh: every 60 seconds.`;
-    }
-  }
-}
-
-async function addTickerFromSearch() {
-  const input = document.getElementById('stockSearch');
-  const symbol = input.value.trim().toUpperCase().replace(/[^A-Z.\-]/g,'');
-  if (!symbol) return;
-
-  currentSearchSymbol = symbol;
-
-  if (!stockSymbols.includes(symbol)) {
-    stockSymbols.unshift(symbol);
-  }
-
-  const status = document.getElementById('liveStatus');
-  if (status) status.textContent = `Searching ${symbol}...`;
-
-  try {
-    const quote = await fetchQuote(symbol);
-    const existingIndex = liveStocks.findIndex(s => s.ticker === symbol);
-
-    if (existingIndex >= 0) {
-      liveStocks[existingIndex] = quote;
-    } else {
-      liveStocks.unshift(quote);
-    }
-
-    lastUpdated = new Date();
-    renderStocks();
-    renderTicker();
-
-    if (status) {
-      status.textContent = `Showing only ${symbol}. Price updated ${lastUpdated.toLocaleTimeString()}. Click Show All to return to the full watchlist.`;
-    }
-  } catch (err) {
-    console.warn(err);
-
-    const backup = fallbackQuote(symbol);
-    const existingIndex = liveStocks.findIndex(s => s.ticker === symbol);
-
-    if (existingIndex >= 0) {
-      liveStocks[existingIndex] = backup;
-    } else {
-      liveStocks.unshift(backup);
-    }
-
-    lastUpdated = new Date();
-    renderStocks();
-    renderTicker();
-
-    if (status) status.textContent = `Could not load live Finnhub data for ${symbol}, so backup demo data is showing. Check the ticker, API key, or Finnhub limit.`;
-  }
-}
-
-function showAllStocks() {
-  currentSearchSymbol = '';
-  const input = document.getElementById('stockSearch');
-  if (input) input.value = '';
-  loadLiveStocks(true);
-}
-
-function getFiltered() {
-  let data = [...liveStocks];
-
-  if (currentSearchSymbol) {
-    data = data.filter(s => s.ticker === currentSearchSymbol);
-    return data;
-  }
-
-  if (currentSector !== 'all') {
-    data = data.filter(s => s.sector === currentSector);
-  }
-
-  if (currentSort === 'top' || currentSort === 'gainers') {
-    data.sort((a,b) => b.day - a.day);
-  } else if (currentSort === 'losers') {
-    data.sort((a,b) => a.day - b.day);
-  } else if (currentSort === 'movers') {
-    data.sort((a,b) => Math.abs(b.day) - Math.abs(a.day));
-  } else if (currentSort === 'priceHigh') {
-    data.sort((a,b) => b.price - a.price);
-  } else if (currentSort === 'priceLow') {
-    data.sort((a,b) => a.price - b.price);
-  } else if (currentSort === 'alphabetical') {
-    data.sort((a,b) => a.ticker.localeCompare(b.ticker));
-  } else if (currentSort === 'longterm') {
-    const longTerm = ['VOO','SPY','VTI','QQQ','SCHD','VYM','AAPL','MSFT','GOOGL','AMZN','JPM','COST'];
-    data.sort((a,b) => {
-      const ai = longTerm.includes(a.ticker) ? longTerm.indexOf(a.ticker) : 999;
-      const bi = longTerm.includes(b.ticker) ? longTerm.indexOf(b.ticker) : 999;
-      return ai - bi || b.day - a.day;
-    });
-  } else if (currentSort === 'etf') {
-    data = data.filter(s => s.sector === 'etf');
-    data.sort((a,b) => b.day - a.day);
-  } else if (currentSort === 'dividend') {
-    const dividend = ['SCHD','VYM','KO','PEP','PG','JNJ','XOM','CVX','JPM','MCD','VZ','T'];
-    data = data.filter(s => dividend.includes(s.ticker));
-    data.sort((a,b) => {
-      const ai = dividend.indexOf(a.ticker);
-      const bi = dividend.indexOf(b.ticker);
-      return ai - bi;
-    });
-  }
-
+function getFiltered(){
+  let data=[...liveStocks];
+  if(currentSearchSymbol) return data.filter(s=>s.ticker===currentSearchSymbol);
+  if(currentSector!=="all") data=data.filter(s=>s.sector===currentSector);
+  if(currentSort==="top"||currentSort==="gainers") data.sort((a,b)=>b.day-a.day);
+  else if(currentSort==="losers") data.sort((a,b)=>a.day-b.day);
+  else if(currentSort==="movers") data.sort((a,b)=>Math.abs(b.day)-Math.abs(a.day));
+  else if(currentSort==="priceHigh") data.sort((a,b)=>b.price-a.price);
+  else if(currentSort==="priceLow") data.sort((a,b)=>a.price-b.price);
+  else if(currentSort==="alphabetical") data.sort((a,b)=>a.ticker.localeCompare(b.ticker));
+  else if(currentSort==="etf") data=data.filter(s=>s.sector==="etf").sort((a,b)=>b.day-a.day);
   return data;
 }
-
-function getRating(s) {
-  if (s.sector === 'etf') return 'BUY';
-  if (s.day >= 2) return 'WATCH';
-  if (s.day <= -2) return 'WATCH';
-  return 'HOLD';
-}
-
-function renderStocks() {
-  // Emergency guard: if live data has not loaded yet, create backup demo prices immediately.
-  if (!liveStocks || liveStocks.length === 0) {
-    liveStocks = stockSymbols.map(sym => fallbackQuote(sym));
-    lastUpdated = new Date();
-  }
-
-  const filtered = getFiltered();
-  const body = document.getElementById('stockBody');
-  const freeTop = ['TSLA','AMZN','NVDA'];
-  let displayList = [];
-
-  if (currentSearchSymbol) {
-    displayList = filtered;
-  } else if (isPro) {
-    // PRO USERS: show the real filter/sort result with no blur or fake shaded rows.
-    displayList = filtered;
-  } else {
-    // FREE USERS: show only TSLA, AMZN, and NVDA, then one clean unlock message.
-    displayList = freeTop.map(t => liveStocks.find(s => s.ticker === t) || fallbackQuote(t));
-  }
-
-  let html = '';
-
-  displayList.forEach((s) => {
-    const dayClass = s.day >= 0 ? 'up' : 'down';
-    const dayStr = (s.day >= 0 ? '+' : '') + s.day.toFixed(2) + '%';
-    const changeStr = (s.change >= 0 ? '+' : '') + s.change.toFixed(2);
-    const rating = getRating(s);
-    const badgeClass = rating === 'BUY' ? 'badge-buy' : rating === 'HOLD' ? 'badge-hold' : 'badge-watch';
-    const proClass = isPro ? '' : ' free-chart';
-
-    html += `<tr class="stock-row${proClass}" onclick="openStockChart('${s.ticker}')">
+function getRating(s){ if(s.sector==="etf") return "BUY"; if(Math.abs(s.day)>=2) return "WATCH"; return "HOLD"; }
+function renderStocks(){
+  const body=document.getElementById("stockBody"); if(!body) return;
+  const filtered=getFiltered(); const freeTop=["TSLA","AMZN","NVDA"];
+  let displayList = currentSearchSymbol ? filtered : isPro ? filtered : freeTop.map(t=>liveStocks.find(s=>s.ticker===t)||fallbackQuote(t));
+  let html="";
+  displayList.forEach(s=>{
+    const dayClass=s.day>=0?"up":"down"; const dayStr=(s.day>=0?"+":"")+s.day.toFixed(2)+"%"; const changeStr=(s.change>=0?"+":"")+s.change.toFixed(2);
+    const rating=getRating(s); const badgeClass=rating==="BUY"?"badge-buy":rating==="HOLD"?"badge-hold":"badge-watch";
+    html+=`<tr class="stock-row" onclick="openStockChart('${s.ticker}')">
       <td><div class="stock-info"><div class="s-icon" style="background:${s.color}22;color:${s.color}">${s.icon}</div><div><div class="s-ticker">${s.ticker}</div><div class="s-name">${s.name}</div></div></div></td>
-      <td class="s-price">$${s.price.toFixed(2)}</td>
-      <td class="${dayClass}" style="font-weight:600">${dayStr}</td>
-      <td class="${dayClass}">${changeStr}</td>
-      <td>${lastUpdated ? lastUpdated.toLocaleTimeString() : '—'}</td>
-      <td><span class="s-badge ${badgeClass}">${rating}</span></td>
-    </tr>`;
+      <td class="s-price">$${s.price.toFixed(2)}</td><td class="${dayClass}" style="font-weight:700">${dayStr}</td><td class="${dayClass}">${changeStr}</td>
+      <td>${lastUpdated?lastUpdated.toLocaleTimeString():"—"}</td><td><span class="s-badge ${badgeClass}">${rating}</span></td></tr>`;
   });
-
-  if (!currentSearchSymbol && !isPro) {
-    const totalLocked = Math.max(0, filtered.length - 3);
-    html += `<tr><td colspan="6" class="lock-overlay-cell">
-      <div class="lock-banner clean-lock-banner">
-        <p>🔒 <strong>${totalLocked} more stocks</strong> unlock with Pro. Free users see TSLA, AMZN, and NVDA.</p>
-        <button class="unlock-btn" onclick="openModal()">Unlock Pro →</button>
-      </div>
-    </td></tr>`;
+  if(!currentSearchSymbol && !isPro){
+    html+=`<tr><td colspan="6" style="padding:0"><div class="lock-banner"><p>🔒 <strong>Unlock the full market watchlist</strong> with Pro.</p><button class="unlock-btn" onclick="openModal()">Preview Pro →</button></div></td></tr>`;
   }
+  if(!displayList.length) html=`<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted)">No stocks match this filter. Try Show All.</td></tr>`;
+  body.innerHTML=html;
+}
+function renderTicker(){
+  const el=document.getElementById("tickerInner"); if(!el || !liveStocks.length) return;
+  const items=liveStocks.slice(0,12).map(s=>`<span class="ticker-item"><span class="ticker-sym">${s.ticker}</span><span class="${s.day>=0?'up':'down'}">$${s.price.toFixed(2)} ${(s.day>=0?'+':'')+s.day.toFixed(2)}%</span></span>`).join("");
+  el.innerHTML=items+items;
+}
+async function addTickerFromSearch(){
+  const input=document.getElementById("stockSearch"); const symbol=input.value.trim().toUpperCase().replace(/[^A-Z.\-]/g,""); if(!symbol) return;
+  currentSearchSymbol=symbol; if(!stockSymbols.includes(symbol)) stockSymbols.unshift(symbol);
+  try{ const q=await fetchQuote(symbol); const idx=liveStocks.findIndex(s=>s.ticker===symbol); if(idx>=0) liveStocks[idx]=q; else liveStocks.unshift(q); }
+  catch(e){ const backup=fallbackQuote(symbol); const idx=liveStocks.findIndex(s=>s.ticker===symbol); if(idx>=0) liveStocks[idx]=backup; else liveStocks.unshift(backup); }
+  lastUpdated=new Date(); renderStocks(); renderTicker();
+}
+function showAllStocks(){ currentSearchSymbol=""; const input=document.getElementById("stockSearch"); if(input) input.value=""; renderStocks(); }
+document.getElementById("stockSearch")?.addEventListener("keydown",e=>{if(e.key==="Enter") addTickerFromSearch();});
 
-  if (displayList.length === 0) {
-    html = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted)">No stocks match this filter. Try All Sectors or Show All.</td></tr>`;
-  }
+function toggleDropdown(which){
+  const menu=document.getElementById(which+"Menu"); if(!menu) return;
+  document.querySelectorAll(".dropdown-menu").forEach(m=>{if(m!==menu)m.classList.remove("show")});
+  menu.classList.toggle("show");
+}
+function closeDropdowns(){document.querySelectorAll(".dropdown-menu").forEach(m=>m.classList.remove("show"))}
+document.addEventListener("click",e=>{if(!e.target.closest(".dropdown-wrap")) closeDropdowns()});
+function quickSort(val,btn){currentSearchSymbol=""; currentSort=val; document.querySelectorAll(".sort-chip").forEach(b=>b.classList.remove("active")); if(btn) btn.classList.add("active"); renderStocks();}
+function setSort(val,label){currentSearchSymbol=""; currentSort=val; document.getElementById("sortLabel").textContent=label; closeDropdowns(); renderStocks();}
+function setSector(val,label){currentSearchSymbol=""; currentSector=val; document.getElementById("sectorLabel").textContent=label; closeDropdowns(); renderStocks();}
 
-  body.innerHTML = html;
+// TradingView charts only in Pro test/Pro mode.
+let currentChartSymbol=null, currentChartRange="1D";
+const tvMap={TSLA:"NASDAQ:TSLA",AMZN:"NASDAQ:AMZN",NVDA:"NASDAQ:NVDA",AAPL:"NASDAQ:AAPL",MSFT:"NASDAQ:MSFT",GOOGL:"NASDAQ:GOOGL",GOOG:"NASDAQ:GOOG",META:"NASDAQ:META",AMD:"NASDAQ:AMD",AVGO:"NASDAQ:AVGO",NFLX:"NASDAQ:NFLX",ORCL:"NYSE:ORCL",LMT:"NYSE:LMT",VOO:"AMEX:VOO",SPY:"AMEX:SPY",QQQ:"NASDAQ:QQQ",VTI:"AMEX:VTI"};
+function openStockChart(symbol){
+  if(!isPro){ openModal(); return; }
+  currentChartSymbol=symbol; currentChartRange="1D";
+  document.querySelectorAll(".range-btn").forEach(b=>b.classList.remove("active")); document.querySelector(".range-btn")?.classList.add("active");
+  document.getElementById("chartTitle").textContent=`${stockNames[symbol]||symbol} Chart`;
+  document.getElementById("chartSubtitle").textContent="Real-time chart powered by TradingView";
+  document.getElementById("chartModal").classList.add("show"); loadTradingViewIframe(symbol,"1D");
+}
+function closeChartModal(){document.getElementById("chartModal").classList.remove("show")}
+function changeChartRange(range,btn){currentChartRange=range; document.querySelectorAll(".range-btn").forEach(b=>b.classList.remove("active")); if(btn) btn.classList.add("active"); loadTradingViewIframe(currentChartSymbol,range);}
+function tvInterval(r){return r==="1D"?"5":r==="1W"?"30":r==="1M"?"60":r==="2Y"||r==="5Y"?"W":"D"}
+function tvRange(r){return r==="1D"?"1D":r==="1W"?"5D":r==="1M"?"1M":r==="1Y"?"12M":r==="YTD"?"YTD":r==="2Y"?"24M":r==="5Y"?"60M":"12M"}
+function loadTradingViewIframe(symbol,range){
+  const iframe=document.getElementById("tradingViewIframe"), loading=document.getElementById("chartLoading"), note=document.getElementById("chartNote");
+  if(!iframe) return; if(loading) loading.style.display="flex";
+  const tvSymbol=encodeURIComponent(tvMap[symbol]||symbol);
+  iframe.src=`https://s.tradingview.com/widgetembed/?symbol=${tvSymbol}&interval=${encodeURIComponent(tvInterval(range))}&range=${encodeURIComponent(tvRange(range))}&hidesidetoolbar=1&symboledit=0&saveimage=0&toolbarbg=0d1118&studies=[]&theme=dark&style=2&timezone=America%2FNew_York&withdateranges=1&hideideas=1&locale=en`;
+  iframe.onload=()=>{if(loading) loading.style.display="none"; if(note) note.textContent=`${symbol} ${range} is displayed through TradingView.`}
+  setTimeout(()=>{if(loading) loading.style.display="none"},2500);
 }
 
-function renderTicker() {
-  const ticker = document.querySelector('.ticker-inner');
-  if (!ticker || liveStocks.length === 0) return;
-  const items = liveStocks.slice(0,12).map(s => {
-    const cls = s.day >= 0 ? 'up' : 'down';
-    const pct = (s.day >= 0 ? '+' : '') + s.day.toFixed(2) + '%';
-    return `<span class="ticker-item"><span class="ticker-sym">${s.ticker}</span><span class="${cls}">$${s.price.toFixed(2)} ${pct}</span></span>`;
-  }).join('');
-  ticker.innerHTML = items + items;
-}
+// Modals/menu
+function openModal(){document.getElementById("upgradeModal").classList.add("show")}
+function closeModal(){document.getElementById("upgradeModal").classList.remove("show")}
+function openAuthModal(){document.getElementById("authModal").classList.add("show")}
+function closeAuthModal(){document.getElementById("authModal").classList.remove("show")}
+function openPlanChoice(){document.getElementById("planChoiceModal").classList.add("show")}
+function closePlanChoice(){document.getElementById("planChoiceModal").classList.remove("show")}
+function chooseFreePlan(){closePlanChoice(); document.getElementById("why").scrollIntoView({behavior:"smooth"})}
+function chooseProPlan(){closePlanChoice(); openModal()}
+function showPlanChoiceOnLoad(){setTimeout(openPlanChoice,650)}
+document.querySelectorAll(".modal-overlay").forEach(m=>m.addEventListener("click",e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove("show")}));
+function toggleAppMenu(){document.getElementById("appMenuOverlay").classList.toggle("show")}
+function closeAppMenu(event){if(!event||event.target.id==="appMenuOverlay")document.getElementById("appMenuOverlay").classList.remove("show")}
+function toggleMenuSection(btn){btn.closest(".menu-section").classList.toggle("open")}
+function jumpToSection(id){document.getElementById("appMenuOverlay").classList.remove("show"); document.getElementById(id)?.scrollIntoView({behavior:"smooth"})}
+function quickAskFromMenu(q){document.getElementById("appMenuOverlay").classList.remove("show"); document.getElementById("advisorInput").value=q; jumpToSection("advisor"); setTimeout(sendQ,400)}
+function activatePro(){alert("Pro payment setup is coming later. To test Pro now, use ?pro=true at the end of your URL.");}
 
-document.getElementById('stockSearch')?.addEventListener('keydown', e => {
-  if (e.key === 'Enter') addTickerFromSearch();
-});
-
-// DROPDOWNS
-function toggleDropdown(which) {
-  const menu = document.getElementById(which+'Menu');
-  const btn = document.getElementById(which+'Btn');
-  const isOpen = menu.classList.contains('show');
-  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
-  document.querySelectorAll('.dropdown-btn').forEach(b => b.classList.remove('open'));
-  if (!isOpen) { menu.classList.add('show'); btn.classList.add('open'); }
-}
-
-
-function quickSort(val, btn) {
-  currentSearchSymbol = '';
-  const input = document.getElementById('stockSearch');
-  if (input) input.value = '';
-  currentSort = val;
-  document.querySelectorAll('.sort-chip').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-
-  const labels = {
-    top:'⭐ Top Today',
-    gainers:'📈 Biggest Gainers',
-    losers:'📉 Biggest Losers',
-    movers:'🚀 Biggest Movers',
-    priceHigh:'💵 Highest Price',
-    priceLow:'🪙 Lowest Price',
-    alphabetical:'🔤 A–Z',
-    etf:'🛡 ETFs Only'
-  };
-  document.getElementById('sortLabel').textContent = labels[val] || '⭐ Top Today';
-  renderStocks();
-}
-
-function setSort(val, label) {
-  currentSearchSymbol = '';
-  const input = document.getElementById('stockSearch');
-  if (input) input.value = '';
-  currentSort = val;
-  document.getElementById('sortLabel').textContent = label;
-  document.querySelectorAll('#sortMenu .dropdown-item').forEach(i => i.classList.remove('active'));
-  if (event && event.target) event.target.classList.add('active');
-
-  document.querySelectorAll('.sort-chip').forEach(b => b.classList.remove('active'));
-  closeDropdowns();
-  renderStocks();
-}
-
-function setSector(val, label) {
-  currentSearchSymbol = '';
-  const input = document.getElementById('stockSearch');
-  if (input) input.value = '';
-  currentSector = val;
-  document.getElementById('sectorLabel').textContent = label;
-  document.querySelectorAll('#sectorMenu .dropdown-item').forEach(i => i.classList.remove('active'));
-  event.target.classList.add('active');
-  closeDropdowns();
-  renderStocks();
-}
-
-function closeDropdowns() {
-  document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
-  document.querySelectorAll('.dropdown-btn').forEach(b => b.classList.remove('open'));
-}
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.dropdown-wrap')) closeDropdowns();
-});
-
-// MODAL
-function openModal() { document.getElementById('upgradeModal').classList.add('show'); }
-function closeModal() { document.getElementById('upgradeModal').classList.remove('show'); }
-function openAuthModal() { document.getElementById('authModal').classList.add('show'); }
-function closeAuthModal() { document.getElementById('authModal').classList.remove('show'); }
-document.getElementById('upgradeModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
-document.getElementById('authModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeAuthModal(); });
-
-function demoSignUp(provider) {
-  if (typeof signInWithGoogleNow === 'function') {
-    signInWithGoogleNow();
-  }
-}
-
-function activatePro() {
-  alert("Payment is coming later. Pro charts will unlock after payment is connected. For testing, add ?pro=true to the end of your website URL.");
-}
-
-// AI ADVISOR
-async function sendQ() {
-  const input = document.getElementById('advisorInput');
-  const q = input.value.trim();
-  if (!q) return;
-
-  // Free users get only 1 AI preview question
-  if (!isPro && questionsUsed >= FREE_Q_LIMIT) {
-    document.getElementById('advisorLock').style.display = 'flex';
-    document.getElementById('inputRow').style.display = 'none';
-    openModal();
-    return;
-  }
-
-  input.value = '';
-  addMsg(q, 'user');
-  document.getElementById('pillsRow').style.display = 'none';
-
-  const btn = document.getElementById('sendBtn');
-  btn.disabled = true;
-  btn.textContent = '...';
-
-  addThinking();
-
-  // Fake AI response for GitHub Pages.
-  // This works without an API key and keeps your site safe.
-  setTimeout(() => {
-    removeThinking();
-
-    const answer = getCashFloAnswer(q);
-    addMsg(answer, 'ai');
-
-    questionsUsed++;
-
-    if (!isPro && questionsUsed >= FREE_Q_LIMIT) {
-      setTimeout(() => {
-        document.getElementById('advisorLock').style.display = 'flex';
-        document.getElementById('inputRow').style.display = 'none';
-      }, 600);
-    }
-
-    btn.disabled = false;
-    btn.textContent = 'Ask →';
-  }, 900);
-}
-
-function getCashFloAnswer(question) {
-  const q = question.toLowerCase();
-
-  if (q.includes('nvda') || q.includes('nvidia')) {
-    return "NVDA is one of the biggest companies in AI chips, which makes it exciting, but also risky because expectations are already very high. The upside is AI demand, data centers, and strong growth. The downside is that if growth slows or the stock gets too expensive, it can drop fast. For beginners, it may be better to compare NVDA with safer broad ETFs before putting too much into one stock. Educational only — not financial advice.";
-  }
-
-  if (q.includes('apple') || q.includes('aapl')) {
-    return "Apple is a strong company with a huge brand, loyal customers, and steady cash flow. The risk is that Apple is already massive, so future growth may be slower than smaller tech companies. It can be a solid long-term company to study, but beginners should still avoid putting all their money into one stock. Educational only — not financial advice.";
-  }
-
-  if (q.includes('tesla') || q.includes('tsla')) {
-    return "Tesla is a high-growth company, but it is also very volatile. People like it because of electric vehicles, energy, AI, and Elon Musk’s vision. The risk is competition, price cuts, and the stock often moving more on hype than fundamentals. It may fit risk-tolerant investors, but it is not a safe beginner-only stock. Educational only — not financial advice.";
-  }
-
-  if (q.includes('p/e') || q.includes('pe ratio')) {
-    return "A P/E ratio means price-to-earnings ratio. It tells you how expensive a stock is compared to how much profit the company makes. A high P/E can mean investors expect big growth, but it can also mean the stock is overpriced. A low P/E can look cheap, but it may also mean the company has problems.";
-  }
-
-  if (q.includes('etf') || q.includes('voo') || q.includes('spy') || q.includes('vti')) {
-    return "An ETF is a basket of stocks you can buy all at once. For beginners, broad market ETFs like VOO, SPY, or VTI are popular because they spread your money across many companies instead of betting on one. This usually lowers risk compared to buying only individual stocks. Educational only — not financial advice.";
-  }
-
-  if (q.includes('start') || q.includes('$100') || q.includes('100')) {
-    return "If you are starting with $100, the smartest goal is learning and building consistency. A beginner could research broad ETFs, use fractional shares, and avoid risky hype stocks at first. Even small amounts can grow over time if you invest consistently and understand the risks. Educational only — not financial advice.";
-  }
-
-  return "Good question. A smart investor should look at the company, risk, long-term potential, price, and competition before buying anything. Beginners usually do better by learning first, avoiding hype, and not putting all their money into one stock. Educational only — not financial advice.";
-}
-
-function addMsg(text, role) {
-  const area = document.getElementById('chatArea');
-  const d = document.createElement('div');
-  d.className = `msg${role==='user'?' user-msg':''}`;
-
-  const safeText = text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\n/g, "<br>");
-
-  d.innerHTML = `<div class="msg-av ${role==='ai'?'ai':'user'}">${role==='ai'?'CF':'You'}</div><div class="msg-bub">${safeText}</div>`;
-  area.appendChild(d);
-  area.scrollTop = area.scrollHeight;
-}
-
-function addThinking() {
-  const area = document.getElementById('chatArea');
-  const d = document.createElement('div');
-  d.className='msg'; d.id='thinking';
-  d.innerHTML=`<div class="msg-av ai">CF</div><div class="msg-bub" style="color:var(--muted)"><span class="spin"></span></div>`;
+// AI preview
+function addMsg(text,role){
+  const area=document.getElementById("chatArea"); const d=document.createElement("div"); d.className=`msg${role==="user"?" user-msg":""}`;
+  const safe=text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");
+  d.innerHTML=`<div class="msg-av ${role==="ai"?"ai":"user"}">${role==="ai"?"CF":"You"}</div><div class="msg-bub">${safe}</div>`;
   area.appendChild(d); area.scrollTop=area.scrollHeight;
 }
-
-function removeThinking() {
-  const el = document.getElementById('thinking');
-  if(el) el.remove();
+function getCashFloAnswer(qRaw){
+  const q=qRaw.toLowerCase();
+  if(q.includes("nvda")||q.includes("nvidia")) return "NVDA is a major AI chip company. The opportunity is strong demand for data centers and AI infrastructure. The risk is that expectations are already very high, so the stock can move sharply if growth slows. Educational only — not financial advice.";
+  if(q.includes("p/e")||q.includes("pe ratio")) return "A P/E ratio compares a company’s stock price to its earnings. A high P/E can mean investors expect growth, but it can also mean the stock is expensive. A low P/E can look cheaper, but it may also reflect weaker expectations.";
+  if(q.includes("etf")||q.includes("voo")||q.includes("spy")||q.includes("vti")) return "An ETF is a basket of investments you can buy as one ticker. Broad ETFs like VOO, SPY, and VTI are popular with beginners because they spread risk across many companies instead of relying on one stock.";
+  if(q.includes("100")||q.includes("start")) return "With $100, the best first step is learning and building consistency. Many beginners research broad ETFs, use fractional shares, and avoid putting everything into one risky stock. Educational only — not financial advice.";
+  return "Good question. A strong research process looks at what the company does, valuation, risks, competitors, and whether it fits a long-term plan. Cash Flo can help explain those pieces, but you stay responsible for every decision.";
 }
-
-function askPill(btn) {
-  document.getElementById('advisorInput').value = btn.textContent;
-  sendQ();
+function sendQ(){
+  const input=document.getElementById("advisorInput"); const q=input.value.trim(); if(!q) return;
+  if(!isPro && questionsUsed>=FREE_Q_LIMIT){document.getElementById("advisorLock").style.display="flex";document.getElementById("inputRow").style.display="none";openModal();return;}
+  input.value=""; addMsg(q,"user"); document.getElementById("pillsRow").style.display="none";
+  setTimeout(()=>{addMsg(getCashFloAnswer(q),"ai"); questionsUsed++; if(!isPro && questionsUsed>=FREE_Q_LIMIT){document.getElementById("advisorLock").style.display="flex";document.getElementById("inputRow").style.display="none";}},500);
 }
+function askPill(btn){document.getElementById("advisorInput").value=btn.textContent; sendQ()}
+document.getElementById("advisorInput")?.addEventListener("keydown",e=>{if(e.key==="Enter")sendQ()});
 
-document.getElementById('advisorInput').addEventListener('keydown', e => { if(e.key==='Enter') sendQ(); });
-
-
-
-
-
-
-
-// STOCK HISTORY CHARTS - PRO ONLY
-// FINAL FIX: chart popups use TradingView iframe, not Finnhub candle/canvas code.
-let currentChartSymbol = null;
-let currentChartRange = '1D';
-
-const tradingViewSymbolMap = {
-  AAPL:'NASDAQ:AAPL', MSFT:'NASDAQ:MSFT', NVDA:'NASDAQ:NVDA', AMZN:'NASDAQ:AMZN',
-  GOOGL:'NASDAQ:GOOGL', GOOG:'NASDAQ:GOOG', META:'NASDAQ:META', TSLA:'NASDAQ:TSLA',
-  AMD:'NASDAQ:AMD', AVGO:'NASDAQ:AVGO', NFLX:'NASDAQ:NFLX', ORCL:'NYSE:ORCL',
-  ADBE:'NASDAQ:ADBE', CRM:'NYSE:CRM', INTC:'NASDAQ:INTC', QCOM:'NASDAQ:QCOM',
-  CSCO:'NASDAQ:CSCO', TXN:'NASDAQ:TXN', IBM:'NYSE:IBM', NOW:'NYSE:NOW',
-  SHOP:'NYSE:SHOP', UBER:'NYSE:UBER', PYPL:'NASDAQ:PYPL', SQ:'NYSE:SQ',
-  SNOW:'NYSE:SNOW', PLTR:'NASDAQ:PLTR', MU:'NASDAQ:MU', AMAT:'NASDAQ:AMAT',
-  LRCX:'NASDAQ:LRCX', PANW:'NASDAQ:PANW', JPM:'NYSE:JPM', BAC:'NYSE:BAC',
-  WFC:'NYSE:WFC', GS:'NYSE:GS', MS:'NYSE:MS', V:'NYSE:V', MA:'NYSE:MA',
-  AXP:'NYSE:AXP', C:'NYSE:C', BLK:'NYSE:BLK', SCHW:'NYSE:SCHW',
-  COF:'NYSE:COF', USB:'NYSE:USB', WMT:'NYSE:WMT', COST:'NASDAQ:COST',
-  HD:'NYSE:HD', LOW:'NYSE:LOW', TGT:'NYSE:TGT', NKE:'NYSE:NKE',
-  SBUX:'NASDAQ:SBUX', MCD:'NYSE:MCD', DIS:'NYSE:DIS', CMG:'NYSE:CMG',
-  PEP:'NASDAQ:PEP', KO:'NYSE:KO', PG:'NYSE:PG', EL:'NYSE:EL',
-  LULU:'NASDAQ:LULU', ABNB:'NASDAQ:ABNB', JNJ:'NYSE:JNJ', LLY:'NYSE:LLY',
-  UNH:'NYSE:UNH', MRK:'NYSE:MRK', PFE:'NYSE:PFE', ABBV:'NYSE:ABBV',
-  TMO:'NYSE:TMO', ABT:'NYSE:ABT', ISRG:'NASDAQ:ISRG', AMGN:'NASDAQ:AMGN',
-  GILD:'NASDAQ:GILD', CVS:'NYSE:CVS', XOM:'NYSE:XOM', CVX:'NYSE:CVX',
-  COP:'NYSE:COP', SLB:'NYSE:SLB', EOG:'NYSE:EOG', OXY:'NYSE:OXY',
-  BA:'NYSE:BA', CAT:'NYSE:CAT', GE:'NYSE:GE', HON:'NASDAQ:HON',
-  LMT:'NYSE:LMT', RTX:'NYSE:RTX', DE:'NYSE:DE', UPS:'NYSE:UPS',
-  VOO:'AMEX:VOO', SPY:'AMEX:SPY', QQQ:'NASDAQ:QQQ', VTI:'AMEX:VTI',
-  DIA:'AMEX:DIA', IWM:'AMEX:IWM', SCHD:'AMEX:SCHD', VYM:'AMEX:VYM',
-  XLK:'AMEX:XLK', XLF:'AMEX:XLF', XLE:'AMEX:XLE', XLV:'AMEX:XLV', ARKK:'AMEX:ARKK'
-};
-
-function openStockChart(symbol) {
-  if (!isPro) {
-    openModal();
-    return;
-  }
-
-  currentChartSymbol = symbol;
-  currentChartRange = '1D';
-
-  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
-  const firstBtn = document.querySelector('.range-btn');
-  if (firstBtn) firstBtn.classList.add('active');
-
-  const modal = document.getElementById('chartModal');
-  const title = document.getElementById('chartTitle');
-  const subtitle = document.getElementById('chartSubtitle');
-
-  if (title) title.textContent = `${symbol} Stock History`;
-  if (subtitle) subtitle.textContent = `${stockNames[symbol] || symbol} · TradingView chart`;
-
-  modal.classList.add('show');
-  loadTradingViewIframe(symbol, '1D');
-}
-
-function closeChartModal() {
-  document.getElementById('chartModal').classList.remove('show');
-}
-
-function changeChartRange(range, btn) {
-  currentChartRange = range;
-
-  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-
-  const subtitle = document.getElementById('chartSubtitle');
-  if (subtitle) subtitle.textContent = `${stockNames[currentChartSymbol] || currentChartSymbol} · ${range} TradingView chart`;
-
-  loadTradingViewIframe(currentChartSymbol, range);
-}
-
-function getTradingViewSymbol(symbol) {
-  return tradingViewSymbolMap[symbol] || symbol;
-}
-
-function getTradingViewInterval(range) {
-  if (range === '1D') return '5';
-  if (range === '1W') return '30';
-  if (range === '1M') return '60';
-  if (range === '1Y') return 'D';
-  if (range === 'YTD') return 'D';
-  if (range === '2Y') return 'W';
-  if (range === '5Y') return 'W';
-  return 'D';
-}
-
-function getTradingViewRange(range) {
-  if (range === '1D') return '1D';
-  if (range === '1W') return '5D';
-  if (range === '1M') return '1M';
-  if (range === '1Y') return '12M';
-  if (range === 'YTD') return 'YTD';
-  if (range === '2Y') return '24M';
-  if (range === '5Y') return '60M';
-  return '12M';
-}
-
-function loadTradingViewIframe(symbol, range) {
-  const iframe = document.getElementById('tradingViewIframe');
-  const loading = document.getElementById('chartLoading');
-  const note = document.getElementById('chartNote');
-  if (!iframe) return;
-
-  if (loading) loading.style.display = 'flex';
-  if (note) note.textContent = `Loading ${symbol} ${range} from TradingView...`;
-
-  const tvSymbol = encodeURIComponent(getTradingViewSymbol(symbol));
-  const interval = encodeURIComponent(getTradingViewInterval(range));
-  const tvRange = encodeURIComponent(getTradingViewRange(range));
-
-  iframe.src =
-    `https://s.tradingview.com/widgetembed/?symbol=${tvSymbol}` +
-    `&interval=${interval}` +
-    `&range=${tvRange}` +
-    `&hidesidetoolbar=1` +
-    `&symboledit=0` +
-    `&saveimage=0` +
-    `&toolbarbg=0d1118` +
-    `&studies=[]` +
-    `&theme=dark` +
-    `&style=2` +
-    `&timezone=America%2FNew_York` +
-    `&withdateranges=1` +
-    `&hideideas=1` +
-    `&locale=en`;
-
-  iframe.onload = () => {
-    if (loading) loading.style.display = 'none';
-    if (note) note.textContent = `${symbol} ${range} is displayed through TradingView. Cash Flo is not using Finnhub candles for charts.`;
-  };
-
-  setTimeout(() => {
-    if (loading) loading.style.display = 'none';
-  }, 2500);
-}
-
-document.getElementById('chartModal')?.addEventListener('click', e => {
-  if (e.target === e.currentTarget) closeChartModal();
-});
-
-
-// Developer testing: add ?pro=true to the URL to preview Pro-only charts before payment is connected.
-if (new URLSearchParams(window.location.search).get('pro') === 'true') {
-  isPro = true;
-  setTimeout(() => {
-    const planIndicator = document.getElementById('planIndicator');
-    if (planIndicator) planIndicator.innerHTML = '<span class="premium-badge">PRO TEST</span>';
-    renderStocks();
-  }, 500);
-}
-
-
-
-// HAMBURGER MENU
-function toggleAppMenu() {
-  const overlay = document.getElementById('appMenuOverlay');
-  if (overlay) overlay.classList.toggle('show');
-}
-
-function closeAppMenu(event) {
-  if (!event || event.target.id === 'appMenuOverlay') {
-    const overlay = document.getElementById('appMenuOverlay');
-    if (overlay) overlay.classList.remove('show');
-  }
-}
-
-function toggleMenuSection(btn) {
-  const section = btn.closest('.menu-section');
-  if (!section) return;
-  section.classList.toggle('open');
-}
-
-function jumpToSection(id) {
-  const overlay = document.getElementById('appMenuOverlay');
-  if (overlay) overlay.classList.remove('show');
-
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function quickAskFromMenu(question) {
-  const overlay = document.getElementById('appMenuOverlay');
-  if (overlay) overlay.classList.remove('show');
-
-  const input = document.getElementById('advisorInput');
-  if (input) {
-    input.value = question;
-    document.getElementById('advisor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    setTimeout(() => sendQ(), 450);
-  }
-}
-
-
-// OPENING PLAN CHOOSER
-function openPlanChoice() {
-  const modal = document.getElementById('planChoiceModal');
-  if (modal) modal.classList.add('show');
-}
-
-function closePlanChoice() {
-  const modal = document.getElementById('planChoiceModal');
-  if (modal) modal.classList.remove('show');
-  sessionStorage.setItem('cashFloPlanChoiceSeen', 'true');
-}
-
-function chooseFreePlan() {
-  closePlanChoice();
-  document.getElementById('stocks')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function chooseProPlan() {
-  closePlanChoice();
-  openModal();
-}
-
-function showPlanChoiceOnLoad() {
-  const alreadySeen = sessionStorage.getItem('cashFloPlanChoiceSeen') === 'true';
-  if (!alreadySeen) {
-    setTimeout(openPlanChoice, 650);
-  }
-}
-
-document.getElementById('planChoiceModal')?.addEventListener('click', e => {
-  if (e.target === e.currentTarget) closePlanChoice();
-});
-
-// INIT
-showPlanChoiceOnLoad();
-initializeFallbackStocksNow();
-loadLiveStocks();
-setInterval(loadLiveStocks, 60000);
+// Firebase Google sign-in
 </script>
 
-<!-- GOOGLE SIGN-UP ONLY: FIREBASE SETUP -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-  import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCcSy9stvMQeJE9pGoM9e0x0uXb-rn9tZg",
@@ -2935,14 +970,11 @@ setInterval(loadLiveStocks, 60000);
   window.signInWithGoogleNow = async function() {
     try {
       await signInWithPopup(auth, googleProvider);
-
       const note = document.getElementById("authNote");
       if (note) note.textContent = "Signed in with Google.";
-
       setTimeout(() => window.closeAuthModal && window.closeAuthModal(), 700);
     } catch (err) {
       console.error(err);
-
       const note = document.getElementById("authNote");
       if (note) note.textContent = err.message || "Google sign-in failed. Check Firebase authorized domains.";
     }
@@ -2953,23 +985,17 @@ setInterval(loadLiveStocks, 60000);
     const signUpButton = document.querySelector(".nav-cta");
 
     if (user) {
-      localStorage.setItem("cashFloUser", user.email || user.displayName || "Google user");
-
-      if (planIndicator && !isPro) {
+      if (planIndicator && !(window.isCashFloPro && window.isCashFloPro())) {
         planIndicator.textContent = user.email ? `Signed in: ${user.email}` : "Signed in";
       }
-
       if (signUpButton) {
         signUpButton.textContent = "Sign Out";
         signUpButton.onclick = window.signOutCashFlo;
       }
     } else {
-      localStorage.removeItem("cashFloUser");
-
-      if (planIndicator && !isPro) {
+      if (planIndicator && !(window.isCashFloPro && window.isCashFloPro())) {
         planIndicator.textContent = "Free Plan";
       }
-
       if (signUpButton) {
         signUpButton.textContent = "Sign Up →";
         signUpButton.onclick = window.openAuthModal;
@@ -2977,10 +1003,21 @@ setInterval(loadLiveStocks, 60000);
     }
   });
 
-  window.signOutCashFlo = async function() {
-    await signOut(auth);
-  };
+  window.signOutCashFlo = async function() { await signOut(auth); };
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  if(new URLSearchParams(window.location.search).get("pro")==="true"){
+    isPro=true;
+    const pi=document.getElementById("planIndicator");
+    if(pi) pi.innerHTML='<span class="premium-badge">PRO TEST</span>';
+  }
+  showPlanChoiceOnLoad();
+  initializeFallbackStocksNow();
+  loadLiveStocks();
+  setInterval(loadLiveStocks,60000);
+});
+</script>
 </body>
 </html>
