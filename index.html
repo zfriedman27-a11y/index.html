@@ -150,6 +150,31 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
   font-size: 13px !important;
   color: var(--muted) !important;
 }
+
+/* EMBEDDED ADVISOR INSIDE WHY SECTION */
+.embedded-advisor {
+  max-width: 900px;
+  margin: 38px auto 54px;
+  text-align: left;
+}
+
+.embedded-advisor .advisor-inner {
+  max-width: 900px;
+}
+
+.embedded-advisor .section-tag {
+  text-align: left;
+}
+
+.moved-lower {
+  margin-top: 18px;
+}
+
+.embedded-advisor .advisor-box {
+  margin-top: 20px;
+}
+
+
 /* STOCKS SECTION */
 .stocks-section{padding:60px 40px;border-bottom:0.5px solid var(--border)}
 .stocks-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:16px}
@@ -527,7 +552,46 @@ footer p{font-size:12px;color:var(--muted)}
   <h2>Better than guessing from random videos.</h2>
   <p>Cash Flo helps beginners understand investing without hype, confusion, or hours of searching.</p>
 
-  <div class="why-grid">
+  <div class="embedded-advisor" id="advisor">
+    <div class="advisor-inner">
+    <div class="section-tag">AI Advisor</div>
+    <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:8px">Ask anything about stocks</div>
+    <p style="font-size:15px;color:var(--muted2);font-weight:300">Plain-English answers about any stock, strategy, or concept.</p>
+
+    <div class="advisor-box">
+      <div class="advisor-head">
+        <div class="advisor-head-icon">📊</div>
+        <div>
+          <h3>Cash Flo AI</h3>
+          <p>Powered by Claude · Educational only · Not financial advice</p>
+        </div>
+        <div class="live-dot">LIVE</div>
+      </div>
+      <div class="chat-area" id="chatArea">
+        <div class="msg">
+          <div class="msg-av ai">CF</div>
+          <div class="msg-bub">Hey! Ask me about any stock, what a term means, or where to start investing. I'll give you a real, complete answer.</div>
+        </div>
+      </div>
+      <div class="pills-row" id="pillsRow">
+        <button class="pill" onclick="askPill(this)">Is NVDA still a buy?</button>
+        <button class="pill" onclick="askPill(this)">What is a P/E ratio?</button>
+        <button class="pill" onclick="askPill(this)">Best ETF for beginners?</button>
+        <button class="pill" onclick="askPill(this)">How do I start with $100?</button>
+      </div>
+      <div id="advisorLock" class="advisor-lock-banner" style="display:none">
+        <p>🔒 <strong>Free preview used.</strong> Upgrade to Cash Flo Pro for unlimited AI investing explanations.</p>
+        <button class="unlock-btn" onclick="openModal()">Unlock Unlimited →</button>
+      </div>
+      <div class="input-row" id="inputRow">
+        <input class="adv-input" id="advisorInput" placeholder="Ask about any stock or concept..." />
+        <button class="send-btn" id="sendBtn" onclick="sendQ()">Ask →</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="why-grid moved-lower">
     <div class="why-card">
       <h3>No hype</h3>
       <p>We explain the good, the bad, and the risk instead of pushing “buy now” advice.</p>
@@ -630,45 +694,7 @@ footer p{font-size:12px;color:var(--muted)}
   <div class="live-status" id="liveStatus">Add your Finnhub API key for real live prices. Demo fallback numbers may become outdated.</div>
 </section>
 
-<!-- AI ADVISOR -->
-<section class="advisor-section" id="advisor">
-  <div class="advisor-inner">
-    <div class="section-tag">AI Advisor</div>
-    <div style="font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-1px;margin-bottom:8px">Ask anything about stocks</div>
-    <p style="font-size:15px;color:var(--muted2);font-weight:300">Plain-English answers about any stock, strategy, or concept.</p>
 
-    <div class="advisor-box">
-      <div class="advisor-head">
-        <div class="advisor-head-icon">📊</div>
-        <div>
-          <h3>Cash Flo AI</h3>
-          <p>Powered by Claude · Educational only · Not financial advice</p>
-        </div>
-        <div class="live-dot">LIVE</div>
-      </div>
-      <div class="chat-area" id="chatArea">
-        <div class="msg">
-          <div class="msg-av ai">CF</div>
-          <div class="msg-bub">Hey! Ask me about any stock, what a term means, or where to start investing. I'll give you a real, complete answer.</div>
-        </div>
-      </div>
-      <div class="pills-row" id="pillsRow">
-        <button class="pill" onclick="askPill(this)">Is NVDA still a buy?</button>
-        <button class="pill" onclick="askPill(this)">What is a P/E ratio?</button>
-        <button class="pill" onclick="askPill(this)">Best ETF for beginners?</button>
-        <button class="pill" onclick="askPill(this)">How do I start with $100?</button>
-      </div>
-      <div id="advisorLock" class="advisor-lock-banner" style="display:none">
-        <p>🔒 <strong>Free preview used.</strong> Upgrade to Cash Flo Pro for unlimited AI investing explanations.</p>
-        <button class="unlock-btn" onclick="openModal()">Unlock Unlimited →</button>
-      </div>
-      <div class="input-row" id="inputRow">
-        <input class="adv-input" id="advisorInput" placeholder="Ask about any stock or concept..." />
-        <button class="send-btn" id="sendBtn" onclick="sendQ()">Ask →</button>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- PRICING -->
 <section class="pricing-section">
