@@ -2913,7 +2913,7 @@ nav {
   </div>
 
   <div class="watchlist-active-banner" id="watchlistBanner"><span>Showing your saved watchlist.</span><button class="unlock-btn" onclick="showAllStocks()">Show All Stocks</button></div>
-  <div class="stock-note" id="personalSortNote">Use <strong>Top Stocks For Me</strong> after the quiz to rank stocks by your risk comfort, time horizon, and ETF readiness. Free users can favorite stocks, while Pro users see the full personalized fit list.</div>
+  <div class="stock-note" id="personalSortNote">Use <strong>Top Stocks For Me</strong> after the quiz to rank stocks by your risk comfort, time horizon, ETF readiness, and investing style. Best matches can now score in the 90s. Free users can favorite stocks, while Pro users see the full personalized fit list.</div>
   <div class="stock-note">Free users see TSLA, AMZN, and NVDA with one clean unlock message. Pro users see all stocks normally with no blur or shaded locked rows.</div>
 
   <div class="stock-table-wrap">
@@ -3957,25 +3957,69 @@ function stockRiskNumber(symbol) {
 function getPersonalFit(stock) {
   const profile = getSavedProfile();
   if (!profile) return { score: null, label: 'Take quiz', cls: 'fit-locked' };
+
   const riskNum = stockRiskNumber(stock.ticker);
   const riskComfort = Number(profile.risk || 50);
   const longTerm = Number(profile.longTerm || 50);
   const etfReady = Number(profile.etf || 50);
+  const hype = Number(profile.hype || 0);
   const isETF = stock.sector === 'etf';
 
-  let score = 70;
-  score -= Math.abs(riskNum - riskComfort) * 0.42;
-  if (isETF) score += (etfReady - 50) * 0.18 + (longTerm - 50) * 0.16;
-  if (!isETF && riskNum > 70 && riskComfort < 55) score -= 18;
-  if (!isETF && longTerm > 70 && riskNum < 55) score += 8;
-  if (stock.day > 3 && riskComfort < 55) score -= 8; // chasing movers warning
-  score = Math.max(5, Math.min(96, Math.round(score)));
+  // New wider scoring system:
+  // 1) Start higher so good matches can reach the 90s.
+  // 2) Reward stocks/ETFs that match the user profile.
+  // 3) Penalize only when risk is truly mismatched.
+  let score = 76;
+
+  // Risk match: close risk = strong boost, bad mismatch = penalty.
+  const riskGap = Math.abs(riskNum - riskComfort);
+  score += Math.max(0, 22 - riskGap * 0.42);
+  score -= Math.max(0, riskGap - 45) * 0.35;
+
+  // ETF-friendly profiles should see ETFs rank very high.
+  if (isETF) {
+    score += (etfReady - 50) * 0.35;
+    score += (longTerm - 50) * 0.25;
+    score += riskComfort < 55 ? 10 : 2;
+  }
+
+  // Long-term users should like broad/steady companies more.
+  const steadyStocks = ['AAPL','MSFT','COST','WMT','KO','PG','JNJ','MCD','PEP','JPM'];
+  if (!isETF && steadyStocks.includes(stock.ticker)) {
+    score += (longTerm - 50) * 0.20;
+    score += riskComfort < 55 ? 8 : 3;
+  }
+
+  // Growth/risk-tolerant users should see growth names score higher.
+  const growthStocks = ['NVDA','TSLA','AMD','PLTR','SNOW','META','AMZN','GOOGL','GOOG','NFLX','SHOP'];
+  if (!isETF && growthStocks.includes(stock.ticker)) {
+    score += (riskComfort - 50) * 0.32;
+    score += hype > 35 ? 6 : 0;
+  }
+
+  // Clear mismatch penalties.
+  if (!isETF && riskNum > 75 && riskComfort < 50) score -= 22;
+  if (isETF && riskComfort > 80 && hype > 45) score -= 4; // still fine, just less exciting
+  if (stock.day > 3 && riskComfort < 45) score -= 7; // chasing movers warning
+
+  score = Math.max(12, Math.min(98, Math.round(score)));
 
   let label = `${score}% fit`;
   let cls = 'fit-mid';
-  if (score >= 75) { label = `${score}% fit · Likely Fit`; cls = 'fit-good'; }
-  else if (score < 45 || (riskNum > 75 && riskComfort < 50)) { label = `${score}% fit · High Risk for You`; cls = 'fit-risk'; }
-  else if (score < 60) { label = `${score}% fit · Use Caution`; cls = 'fit-mid'; }
+
+  if (score >= 90) {
+    label = `${score}% fit · Strong Fit`;
+    cls = 'fit-good';
+  } else if (score >= 78) {
+    label = `${score}% fit · Likely Fit`;
+    cls = 'fit-good';
+  } else if (score < 45 || (riskNum > 75 && riskComfort < 50)) {
+    label = `${score}% fit · High Risk for You`;
+    cls = 'fit-risk';
+  } else if (score < 65) {
+    label = `${score}% fit · Use Caution`;
+    cls = 'fit-mid';
+  }
 
   return { score, label, cls };
 }
