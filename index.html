@@ -474,7 +474,7 @@ footer p{font-size:12px;color:var(--muted)}
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div style="font-size:28px;margin-bottom:12px">🔓</div>
     <h2>Unlock Cash Flo Pro</h2>
-    <p>First month free, then just <strong style="color:var(--accent)">$5/month</strong>. Cancel anytime.</p>
+    <p>Pro will be <strong style="color:var(--accent)">$5/month</strong>. Payment setup is coming later.</p>
     <div class="modal-features">
       <div class="modal-feat">Full live stock screener with all filters</div>
       <div class="modal-feat">AI Advisor — unlimited questions</div>
@@ -482,8 +482,8 @@ footer p{font-size:12px;color:var(--muted)}
       <div class="modal-feat">Weekly curated picks with analysis</div>
       <div class="modal-feat">Portfolio tracker & alerts</div>
     </div>
-    <button class="btn-primary" style="width:100%;font-size:15px;padding:14px" onclick="activatePro()">Start Free Month →</button>
-    <p class="modal-trial-note"><strong>30 days free.</strong> No card charged until trial ends.</p>
+    <button class="btn-primary" style="width:100%;font-size:15px;padding:14px" onclick="activatePro()">Pro Coming Soon →</button>
+    <p class="modal-trial-note"><strong>Payment coming later.</strong> Google sign-up works first.</p>
   </div>
 </div>
 
@@ -496,11 +496,9 @@ footer p{font-size:12px;color:var(--muted)}
     <h2>Create your Cash Flo account</h2>
     <p>Save your watchlist, unlock your free AI preview, and upgrade to Pro whenever you are ready.</p>
 
-    <button class="auth-btn google" onclick="demoSignUp('Google')">Continue with Google</button>
-    <button class="auth-btn apple" onclick="demoSignUp('Apple')">Continue with Apple</button>
-    <button class="auth-btn email" onclick="demoSignUp('Email')">Continue with Email</button>
+    <button class="auth-btn google" onclick="signInWithGoogleNow()">Continue with Google</button>
 
-    <p class="modal-trial-note" id="authNote">Demo sign-up for now. Real Google/Apple login needs Firebase, Auth0, or another auth service.</p>
+    <p class="modal-trial-note" id="authNote">Google sign-up is connected with Firebase.</p>
   </div>
 </div>
 
@@ -701,7 +699,7 @@ footer p{font-size:12px;color:var(--muted)}
   <div class="pricing-inner">
     <div class="section-tag" style="text-align:center">Pricing</div>
     <div class="pricing-title">Start free. Stay for $5.</div>
-    <p class="pricing-sub">First month on us — no credit card needed to start.</p>
+    <p class="pricing-sub">Google sign-up works now. Payment setup is coming later.</p>
     <div class="pricing-grid">
       <div class="price-card">
         <div class="price-tag">Free</div>
@@ -722,7 +720,7 @@ footer p{font-size:12px;color:var(--muted)}
         <div class="popular-badge">🔥 MOST POPULAR</div>
         <div class="price-tag green">Pro</div>
         <div class="price-num">$5<span>/mo</span></div>
-        <div class="price-sub" style="color:var(--accent)">First month completely free</div>
+        <div class="price-sub" style="color:var(--accent)">Payment setup coming later</div>
         <ul class="price-features">
           <li>Everything in Free</li>
           <li>Full screener — 50+ stocks</li>
@@ -732,7 +730,7 @@ footer p{font-size:12px;color:var(--muted)}
           <li>Biggest movers, undervalued, dividends</li>
           <li>Portfolio tracker & alerts</li>
         </ul>
-        <button class="price-btn pro" onclick="openModal()">Start Free Month →</button>
+        <button class="price-btn pro" onclick="openModal()">Pro Coming Soon →</button>
       </div>
     </div>
   </div>
@@ -1295,20 +1293,13 @@ document.getElementById('upgradeModal').addEventListener('click', e => { if(e.ta
 document.getElementById('authModal').addEventListener('click', e => { if(e.target===e.currentTarget) closeAuthModal(); });
 
 function demoSignUp(provider) {
-  localStorage.setItem('cashFloUser', provider);
-  document.getElementById('authNote').textContent = `Signed up with ${provider} demo mode. Real login needs Firebase/Auth0 setup.`;
-  document.getElementById('planIndicator').textContent = 'Free Account';
-  setTimeout(closeAuthModal, 900);
+  if (typeof signInWithGoogleNow === 'function') {
+    signInWithGoogleNow();
+  }
 }
 
 function activatePro() {
-  isPro = true;
-  closeModal();
-  document.getElementById('planIndicator').innerHTML = '<span class="premium-badge">PRO</span>';
-  document.querySelector('.nav-plan').style.display = 'none';
-  document.getElementById('advisorLock').style.display = 'none';
-  document.getElementById('inputRow').style.display = 'flex';
-  renderStocks();
+  alert("Payment is coming later. For now, Google sign-up is active.");
 }
 
 // AI ADVISOR
@@ -1427,5 +1418,81 @@ document.getElementById('advisorInput').addEventListener('keydown', e => { if(e.
 loadLiveStocks();
 setInterval(loadLiveStocks, 60000);
 </script>
+
+<!-- GOOGLE SIGN-UP ONLY: FIREBASE SETUP -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithPopup,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCcSy9stvMQeJE9pGoM9e0x0uXb-rn9tZg",
+    authDomain: "cash-flo-ba60f.firebaseapp.com",
+    projectId: "cash-flo-ba60f",
+    storageBucket: "cash-flo-ba60f.firebasestorage.app",
+    messagingSenderId: "603761605646",
+    appId: "1:603761605646:web:40f440e32afd84ab7d105f",
+    measurementId: "G-GE7SS9EDN5"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const googleProvider = new GoogleAuthProvider();
+
+  window.signInWithGoogleNow = async function() {
+    try {
+      await signInWithPopup(auth, googleProvider);
+
+      const note = document.getElementById("authNote");
+      if (note) note.textContent = "Signed in with Google.";
+
+      setTimeout(() => window.closeAuthModal && window.closeAuthModal(), 700);
+    } catch (err) {
+      console.error(err);
+
+      const note = document.getElementById("authNote");
+      if (note) note.textContent = err.message || "Google sign-in failed. Check Firebase authorized domains.";
+    }
+  };
+
+  onAuthStateChanged(auth, (user) => {
+    const planIndicator = document.getElementById("planIndicator");
+    const signUpButton = document.querySelector(".nav-cta");
+
+    if (user) {
+      localStorage.setItem("cashFloUser", user.email || user.displayName || "Google user");
+
+      if (planIndicator) {
+        planIndicator.textContent = user.email ? `Signed in: ${user.email}` : "Signed in";
+      }
+
+      if (signUpButton) {
+        signUpButton.textContent = "Sign Out";
+        signUpButton.onclick = window.signOutCashFlo;
+      }
+    } else {
+      localStorage.removeItem("cashFloUser");
+
+      if (planIndicator) {
+        planIndicator.textContent = "Free Plan";
+      }
+
+      if (signUpButton) {
+        signUpButton.textContent = "Sign Up →";
+        signUpButton.onclick = window.openAuthModal;
+      }
+    }
+  });
+
+  window.signOutCashFlo = async function() {
+    await signOut(auth);
+  };
+</script>
+
 </body>
 </html>
