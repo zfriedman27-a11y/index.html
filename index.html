@@ -1784,6 +1784,156 @@ nav {
   .site-map-grid{grid-template-columns:1fr}
 }
 
+
+/* FAVORITES + WATCHLIST + PERSONAL FIT */
+.favorite-btn {
+  width: 31px;
+  height: 31px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.035);
+  color: var(--muted2);
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 9px;
+  vertical-align: middle;
+}
+
+.favorite-btn:hover {
+  color: var(--amber);
+  border-color: rgba(247,195,95,0.34);
+  background: rgba(247,195,95,0.07);
+}
+
+.favorite-btn.active {
+  color: var(--amber);
+  background: rgba(247,195,95,0.12);
+  border-color: rgba(247,195,95,0.36);
+}
+
+.watchlist-active-banner {
+  display: none;
+  max-width: 1180px;
+  margin: 0 auto 14px;
+  padding: 13px 15px;
+  border-radius: 14px;
+  border: 1px solid rgba(143,183,255,0.16);
+  background: rgba(143,183,255,0.055);
+  color: var(--muted2);
+  font-size: 13px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.watchlist-active-banner.show {
+  display: flex;
+}
+
+.fit-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 10.5px;
+  font-weight: 900;
+  white-space: nowrap;
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.fit-good { background: rgba(34,197,94,0.12); color: var(--green); }
+.fit-mid { background: rgba(247,195,95,0.12); color: var(--amber); }
+.fit-risk { background: rgba(255,77,106,0.12); color: var(--red); }
+
+.fit-locked {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.quiz-gateway {
+  padding: 76px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background: linear-gradient(180deg, var(--surface), var(--bg));
+}
+
+.quiz-gateway-inner {
+  max-width: 1050px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 18px;
+  align-items: center;
+}
+
+.quiz-gateway-card {
+  background: rgba(16,20,29,0.84);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 22px 70px rgba(0,0,0,0.24);
+}
+
+.quiz-gateway-card h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(30px,4vw,52px);
+  line-height: 1.04;
+  letter-spacing: -1.4px;
+  margin-bottom: 12px;
+}
+
+.quiz-gateway-card p {
+  color: var(--muted2);
+  margin-bottom: 20px;
+}
+
+.quiz-page {
+  display: none;
+}
+
+.quiz-page.show {
+  display: block;
+}
+
+.quiz-gateway.hide {
+  display: none;
+}
+
+.quiz-close-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.profile-small-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.profile-small-card h3 {
+  font-family: 'Syne', sans-serif;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.profile-small-card p {
+  color: var(--muted2);
+  font-size: 13px;
+}
+
+@media(max-width:850px){
+  .quiz-gateway { padding-left:18px; padding-right:18px; }
+  .quiz-gateway-inner { grid-template-columns:1fr; }
+  .watchlist-active-banner { flex-direction:column; align-items:flex-start; }
+}
+
 </style>
 </head>
 <body>
@@ -1939,7 +2089,7 @@ nav {
         <span>⌄</span>
       </button>
       <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('investorProfileQuiz')">Take Investor Profile Quiz</button>
+        <button class="menu-link" onclick="openInvestorQuiz()">Take 10-Question Investor Quiz</button>
         <button class="menu-link" onclick="jumpToSection('startHere')">Start Here</button>
       </div>
     </div>
@@ -2105,9 +2255,9 @@ nav {
     <div class="section-tag">Start here</div>
     <div class="guide-title">Choose what you want Cash Flo to help with.</div>
     <div class="site-map-grid">
-      <div class="site-map-card" onclick="jumpToSection('investorProfileQuiz')">
-        <h3>1. Find your investor type</h3>
-        <p>Take a quick quiz so Cash Flo understands your goals, risk level, and style.</p>
+      <div class="site-map-card" onclick="openInvestorQuiz()">
+        <h3>1. Investor Profile Quiz</h3>
+        <p>Open the full 10-question quiz so Cash Flo can personalize Pro stock fit scores.</p>
       </div>
       <div class="site-map-card" onclick="jumpToSection('advisor')">
         <h3>2. Ask the guide</h3>
@@ -2125,9 +2275,28 @@ nav {
   </div>
 </section>
 
+
+<!-- INVESTOR PROFILE QUIZ GATEWAY -->
+<section class="quiz-gateway" id="investorQuizGateway">
+  <div class="quiz-gateway-inner">
+    <div class="quiz-gateway-card">
+      <div class="section-tag">Investor Profile</div>
+      <h2>Get your personal investor type.</h2>
+      <p>Take the full 10-question quiz to see whether you are more long-term, cautious, growth-focused, or high-risk. Pro users also get a personal fit score on each stock.</p>
+      <button class="btn-primary" onclick="openInvestorQuiz()">Take the 10-question quiz →</button>
+      <button class="btn-ghost" onclick="jumpToSection('stocks')" style="margin-left:8px">Skip to watchlist</button>
+    </div>
+    <div class="profile-small-card" id="profileMiniCard">
+      <h3>No profile yet</h3>
+      <p>After the quiz, your profile is saved in this browser and Pro stock rows will show labels like “72% fit” and “High Risk for You.”</p>
+    </div>
+  </div>
+</section>
+
 <!-- INVESTOR PROFILE QUIZ -->
-<section class="quiz-section" id="investorProfileQuiz">
+<section class="quiz-section quiz-page" id="investorProfileQuiz">
   <div class="quiz-inner">
+    <div class="quiz-close-row"><button class="btn-ghost" onclick="closeInvestorQuiz()">← Back to main page</button><button class="btn-primary" onclick="calculateInvestorProfile()">Get My Profile →</button></div>
     <div class="quiz-top">
       <div>
         <div class="section-tag">Investor Profile Quiz</div>
@@ -2183,10 +2352,61 @@ nav {
         <div class="quiz-question" data-question="behavior">
           <h3>5. What usually catches your attention?</h3>
           <div class="quiz-options">
-            <button class="quiz-option" onclick="selectQuizOption('behavior','safe')">Simple ETFs</button>
-            <button class="quiz-option" onclick="selectQuizOption('behavior','brands')">Companies I use</button>
-            <button class="quiz-option" onclick="selectQuizOption('behavior','hype')">Trending stocks</button>
-            <button class="quiz-option" onclick="selectQuizOption('behavior','charts')">Big moves and charts</button>
+            <button class="quiz-option" onclick="selectQuizOption('behavior','safe',this)">Simple ETFs</button>
+            <button class="quiz-option" onclick="selectQuizOption('behavior','brands',this)">Companies I use</button>
+            <button class="quiz-option" onclick="selectQuizOption('behavior','hype',this)">Trending stocks</button>
+            <button class="quiz-option" onclick="selectQuizOption('behavior','charts',this)">Big moves and charts</button>
+          </div>
+        </div>
+
+
+        <div class="quiz-question" data-question="experience">
+          <h3>6. How much investing experience do you have?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="selectQuizOption('experience','none',this)">Brand new</button>
+            <button class="quiz-option" onclick="selectQuizOption('experience','beginner',this)">Beginner</button>
+            <button class="quiz-option" onclick="selectQuizOption('experience','some',this)">Some experience</button>
+            <button class="quiz-option" onclick="selectQuizOption('experience','confident',this)">Confident</button>
+          </div>
+        </div>
+
+        <div class="quiz-question" data-question="check">
+          <h3>7. How often do you want to check your stocks?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="selectQuizOption('check','rare',this)">Rarely</button>
+            <button class="quiz-option" onclick="selectQuizOption('check','weekly',this)">Weekly</button>
+            <button class="quiz-option" onclick="selectQuizOption('check','daily',this)">Daily</button>
+            <button class="quiz-option" onclick="selectQuizOption('check','hourly',this)">All the time</button>
+          </div>
+        </div>
+
+        <div class="quiz-question" data-question="singleStock">
+          <h3>8. How comfortable are you with single stocks?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="selectQuizOption('singleStock','avoid',this)">I’d rather avoid them</button>
+            <button class="quiz-option" onclick="selectQuizOption('singleStock','small',this)">Small amounts only</button>
+            <button class="quiz-option" onclick="selectQuizOption('singleStock','medium',this)">Comfortable with some</button>
+            <button class="quiz-option" onclick="selectQuizOption('singleStock','large',this)">Very comfortable</button>
+          </div>
+        </div>
+
+        <div class="quiz-question" data-question="loss">
+          <h3>9. What loss would make you uncomfortable?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="selectQuizOption('loss','five',this)">5%</button>
+            <button class="quiz-option" onclick="selectQuizOption('loss','ten',this)">10%</button>
+            <button class="quiz-option" onclick="selectQuizOption('loss','twenty',this)">20%</button>
+            <button class="quiz-option" onclick="selectQuizOption('loss','more',this)">More than 20%</button>
+          </div>
+        </div>
+
+        <div class="quiz-question" data-question="priority">
+          <h3>10. What matters most to you?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="selectQuizOption('priority','safety',this)">Safety and learning</button>
+            <button class="quiz-option" onclick="selectQuizOption('priority','balanced',this)">Balanced growth</button>
+            <button class="quiz-option" onclick="selectQuizOption('priority','growth',this)">Growth potential</button>
+            <button class="quiz-option" onclick="selectQuizOption('priority','excitement',this)">Exciting opportunities</button>
           </div>
         </div>
 
@@ -2510,6 +2730,7 @@ nav {
         <input class="stock-search" id="stockSearch" placeholder="Search any ticker, ex: AAPL" />
         <button class="stock-search-btn" onclick="addTickerFromSearch()">Search</button>
         <button class="stock-search-btn secondary" onclick="showAllStocks()">Show All</button>
+        <button class="stock-search-btn secondary" onclick="showWatchlistOnly()">★ My Watchlist</button>
       </div>
       <button class="dropdown-btn" onclick="loadLiveStocks(true)">↻ Refresh</button>
       <!-- SORT DROPDOWN -->
@@ -2563,6 +2784,7 @@ nav {
     <button class="sort-chip" onclick="quickSort('etf', this)">ETFs</button>
   </div>
 
+  <div class="watchlist-active-banner" id="watchlistBanner"><span>Showing your saved watchlist.</span><button class="unlock-btn" onclick="showAllStocks()">Show All Stocks</button></div>
   <div class="stock-note">Free users see TSLA, AMZN, and NVDA with one clean unlock message. Pro users see all stocks normally with no blur or shaded locked rows.</div>
 
   <div class="stock-table-wrap">
@@ -2575,6 +2797,7 @@ nav {
           <th class="sortable-th" onclick="sortByColumn('change')">Change <span class="sort-arrow" id="sortArrow-change"></span></th>
           <th class="sortable-th" onclick="sortByColumn('updated')">Updated <span class="sort-arrow" id="sortArrow-updated"></span></th>
           <th class="sortable-th" onclick="sortByColumn('rating')">Rating <span class="sort-arrow" id="sortArrow-rating"></span></th>
+          <th class="sortable-th" onclick="sortByColumn('fit')">Personal Fit <span class="sort-arrow" id="sortArrow-fit"></span></th>
         </tr>
       </thead>
       <tbody id="stockBody"></tbody>
@@ -2641,6 +2864,8 @@ const FREE_Q_LIMIT = 1;
 let currentSort = 'top';
 let currentSector = 'all';
 let currentSearchSymbol = '';
+let watchlistOnly = false;
+let savedWatchlist = JSON.parse(localStorage.getItem('cashFloWatchlist') || '[]');
 let activeColumnSort = null;
 let activeColumnDirection = 'desc';
 
@@ -3098,6 +3323,9 @@ function compareForColumn(a, b, column) {
   } else if (column === 'updated') {
     av = lastUpdated ? lastUpdated.getTime() : 0;
     bv = lastUpdated ? lastUpdated.getTime() : 0;
+  } else if (column === 'fit') {
+    av = getPersonalFit(a).score ?? -1;
+    bv = getPersonalFit(b).score ?? -1;
   } else if (column === 'rating') {
     const order = { BUY: 3, WATCH: 2, HOLD: 1 };
     av = order[getRating(a)] || 0;
@@ -3117,6 +3345,10 @@ function getFiltered() {
   if (currentSearchSymbol) {
     data = data.filter(s => s.ticker === currentSearchSymbol);
     return data;
+  }
+
+  if (watchlistOnly) {
+    data = data.filter(s => savedWatchlist.includes(s.ticker));
   }
 
   if (currentSector !== 'all') {
@@ -3187,6 +3419,9 @@ function renderStocks() {
     displayList = freeTop.map(t => liveStocks.find(s => s.ticker === t) || fallbackQuote(t));
   }
 
+  const banner = document.getElementById('watchlistBanner');
+  if (banner) banner.classList.toggle('show', watchlistOnly);
+
   if (activeColumnSort) {
     displayList.sort((a, b) => compareForColumn(a, b, activeColumnSort));
   }
@@ -3201,20 +3436,23 @@ function renderStocks() {
     const rating = getRating(s);
     const badgeClass = rating === 'BUY' ? 'badge-buy' : rating === 'HOLD' ? 'badge-hold' : 'badge-watch';
     const proClass = isPro ? '' : ' free-chart';
+    const fit = getPersonalFit(s);
+    const fitHTML = isPro ? `<span class="fit-badge ${fit.cls}">${fit.label}</span>` : `<span class="fit-locked">Pro</span>`;
 
     html += `<tr class="stock-row${proClass}" onclick="openStockChart('${s.ticker}')">
-      <td><div class="stock-info"><div class="s-icon" style="background:${s.color}22;color:${s.color}">${s.icon}</div><div><div class="s-ticker">${s.ticker}</div><div class="s-name">${s.name}</div></div></div></td>
+      <td><button class="favorite-btn ${isFavorited(s.ticker) ? \'active\' : \'\'}" onclick="toggleFavorite(\'${s.ticker}\', event)" title="Add to watchlist">${isFavorited(s.ticker) ? \'★\' : \'☆\'}</button><div class="stock-info" style="display:inline-flex"><div class="s-icon" style="background:${s.color}22;color:${s.color}">${s.icon}</div><div><div class="s-ticker">${s.ticker}</div><div class="s-name">${s.name}</div></div></div></td>
       <td class="s-price">$${s.price.toFixed(2)}</td>
       <td class="${dayClass}" style="font-weight:600">${dayStr}</td>
       <td class="${dayClass}">${changeStr}</td>
       <td>${lastUpdated ? lastUpdated.toLocaleTimeString() : '—'}</td>
       <td><span class="s-badge ${badgeClass}">${rating}</span></td>
+      <td>${fitHTML}</td>
     </tr>`;
   });
 
   if (!currentSearchSymbol && !isPro) {
     const totalLocked = Math.max(0, filtered.length - 3);
-    html += `<tr><td colspan="6" class="lock-overlay-cell">
+    html += `<tr><td colspan="7" class="lock-overlay-cell">
       <div class="lock-banner clean-lock-banner">
         <p>🔒 <strong>${totalLocked} more stocks</strong> unlock with Pro. Free users see TSLA, AMZN, and NVDA.</p>
         <button class="unlock-btn" onclick="openModal()">Unlock Pro →</button>
@@ -3223,7 +3461,7 @@ function renderStocks() {
   }
 
   if (displayList.length === 0) {
-    html = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted)">No stocks match this filter. Try All Sectors or Show All.</td></tr>`;
+    html = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted)">${watchlistOnly ? 'Your watchlist is empty. Click the star next to stocks to save them.' : 'No stocks match this filter. Try All Sectors or Show All.'}</td></tr>`;
   }
 
   body.innerHTML = html;
@@ -3469,8 +3707,110 @@ function selectQuizOption(question, value, btn) {
   if (btn) btn.classList.add('active');
 }
 
+
+function openInvestorQuiz() {
+  const gateway = document.getElementById('investorQuizGateway');
+  const quiz = document.getElementById('investorProfileQuiz');
+  if (gateway) gateway.classList.add('hide');
+  if (quiz) quiz.classList.add('show');
+  setTimeout(() => quiz?.scrollIntoView({behavior:'smooth', block:'start'}), 50);
+}
+
+function closeInvestorQuiz() {
+  const gateway = document.getElementById('investorQuizGateway');
+  const quiz = document.getElementById('investorProfileQuiz');
+  if (quiz) quiz.classList.remove('show');
+  if (gateway) gateway.classList.remove('hide');
+  setTimeout(() => gateway?.scrollIntoView({behavior:'smooth', block:'start'}), 50);
+}
+
+function getSavedProfile() {
+  try { return JSON.parse(localStorage.getItem('cashFloInvestorProfile') || 'null'); }
+  catch(e) { return null; }
+}
+
+function updateProfileMiniCard() {
+  const card = document.getElementById('profileMiniCard');
+  if (!card) return;
+  const p = getSavedProfile();
+  if (!p) {
+    card.innerHTML = `<h3>No profile yet</h3><p>After the quiz, your profile is saved in this browser and Pro stock rows will show labels like “72% fit” and “High Risk for You.”</p>`;
+    return;
+  }
+  card.innerHTML = `<h3>${p.type}</h3><p>Risk comfort: ${p.risk}% · Long-term mindset: ${p.longTerm}% · ETF readiness: ${p.etf}%</p><button class="btn-ghost" onclick="openInvestorQuiz()" style="margin-top:12px">Retake Quiz</button>`;
+}
+
+function toggleFavorite(symbol, event) {
+  if (event) event.stopPropagation();
+  symbol = symbol.toUpperCase();
+  if (savedWatchlist.includes(symbol)) {
+    savedWatchlist = savedWatchlist.filter(s => s !== symbol);
+  } else {
+    savedWatchlist.push(symbol);
+  }
+  localStorage.setItem('cashFloWatchlist', JSON.stringify(savedWatchlist));
+  renderStocks();
+}
+
+function isFavorited(symbol) {
+  return savedWatchlist.includes(symbol.toUpperCase());
+}
+
+function showWatchlistOnly() {
+  watchlistOnly = true;
+  currentSearchSymbol = '';
+  const input = document.getElementById('stockSearch');
+  if (input) input.value = '';
+  renderStocks();
+}
+
+function showAllStocks() {
+  watchlistOnly = false;
+  currentSearchSymbol = '';
+  const input = document.getElementById('stockSearch');
+  if (input) input.value = '';
+  loadLiveStocks(true);
+}
+
+function stockRiskNumber(symbol) {
+  const s = symbol.toUpperCase();
+  const sector = symbolSector[s] || 'other';
+  if (sector === 'etf') return 25;
+  if (['TSLA','NVDA','AMD','PLTR','ARKK','SNOW'].includes(s)) return 85;
+  if (['META','AMZN','NFLX','GOOGL','GOOG','CRM','SHOP','UBER'].includes(s)) return 65;
+  if (['AAPL','MSFT','COST','WMT','KO','PG','JNJ','MCD'].includes(s)) return 42;
+  return 58;
+}
+
+function getPersonalFit(stock) {
+  const profile = getSavedProfile();
+  if (!profile) return { score: null, label: 'Take quiz', cls: 'fit-locked' };
+  const riskNum = stockRiskNumber(stock.ticker);
+  const riskComfort = Number(profile.risk || 50);
+  const longTerm = Number(profile.longTerm || 50);
+  const etfReady = Number(profile.etf || 50);
+  const isETF = stock.sector === 'etf';
+
+  let score = 70;
+  score -= Math.abs(riskNum - riskComfort) * 0.42;
+  if (isETF) score += (etfReady - 50) * 0.18 + (longTerm - 50) * 0.16;
+  if (!isETF && riskNum > 70 && riskComfort < 55) score -= 18;
+  if (!isETF && longTerm > 70 && riskNum < 55) score += 8;
+  if (stock.day > 3 && riskComfort < 55) score -= 8; // chasing movers warning
+  score = Math.max(5, Math.min(96, Math.round(score)));
+
+  let label = `${score}% fit`;
+  let cls = 'fit-mid';
+  if (score >= 75) { label = `${score}% fit · Likely Fit`; cls = 'fit-good'; }
+  else if (score < 45 || (riskNum > 75 && riskComfort < 50)) { label = `${score}% fit · High Risk for You`; cls = 'fit-risk'; }
+  else if (score < 60) { label = `${score}% fit · Use Caution`; cls = 'fit-mid'; }
+
+  return { score, label, cls };
+}
+
+
 function calculateInvestorProfile() {
-  const needed = ['goal','drop','time','knowledge','behavior'];
+  const needed = ['goal','drop','time','knowledge','behavior','experience','check','singleStock','loss','priority'];
   const missing = needed.filter(q => !investorQuizAnswers[q]);
 
   if (missing.length) {
@@ -3512,6 +3852,31 @@ function calculateInvestorProfile() {
   if (investorQuizAnswers.behavior === 'brands') { longTerm += 5; }
   if (investorQuizAnswers.behavior === 'hype') { hype += 35; risk += 18; }
   if (investorQuizAnswers.behavior === 'charts') { hype += 15; risk += 15; }
+
+  if (investorQuizAnswers.experience === 'none') { risk -= 12; etf += 5; }
+  if (investorQuizAnswers.experience === 'beginner') { etf += 8; }
+  if (investorQuizAnswers.experience === 'some') { risk += 8; etf += 12; }
+  if (investorQuizAnswers.experience === 'confident') { risk += 18; }
+
+  if (investorQuizAnswers.check === 'rare') { longTerm += 18; risk -= 5; }
+  if (investorQuizAnswers.check === 'weekly') { longTerm += 10; }
+  if (investorQuizAnswers.check === 'daily') { risk += 10; hype += 8; }
+  if (investorQuizAnswers.check === 'hourly') { risk += 18; hype += 18; longTerm -= 12; }
+
+  if (investorQuizAnswers.singleStock === 'avoid') { risk -= 18; etf += 18; }
+  if (investorQuizAnswers.singleStock === 'small') { risk -= 5; etf += 10; }
+  if (investorQuizAnswers.singleStock === 'medium') { risk += 10; }
+  if (investorQuizAnswers.singleStock === 'large') { risk += 24; hype += 8; }
+
+  if (investorQuizAnswers.loss === 'five') { risk -= 22; }
+  if (investorQuizAnswers.loss === 'ten') { risk -= 10; }
+  if (investorQuizAnswers.loss === 'twenty') { risk += 10; }
+  if (investorQuizAnswers.loss === 'more') { risk += 22; }
+
+  if (investorQuizAnswers.priority === 'safety') { risk -= 12; etf += 15; longTerm += 10; }
+  if (investorQuizAnswers.priority === 'balanced') { etf += 10; longTerm += 10; }
+  if (investorQuizAnswers.priority === 'growth') { risk += 12; }
+  if (investorQuizAnswers.priority === 'excitement') { risk += 20; hype += 25; }
 
   risk = Math.max(5, Math.min(100, risk));
   longTerm = Math.max(5, Math.min(100, longTerm));
@@ -3565,6 +3930,8 @@ function calculateInvestorProfile() {
   }
 
   localStorage.setItem('cashFloInvestorProfile', JSON.stringify({ type, risk, longTerm, etf, hype, answers: investorQuizAnswers }));
+  updateProfileMiniCard();
+  renderStocks();
 
   const result = document.getElementById('quizResult');
   result.innerHTML = `
@@ -3605,6 +3972,8 @@ function resetInvestorQuiz() {
   Object.keys(investorQuizAnswers).forEach(k => delete investorQuizAnswers[k]);
   document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('active'));
   localStorage.removeItem('cashFloInvestorProfile');
+  updateProfileMiniCard();
+  renderStocks();
 
   const result = document.getElementById('quizResult');
   result.innerHTML = `
@@ -3898,6 +4267,7 @@ document.getElementById('planChoiceModal')?.addEventListener('click', e => {
 
 // INIT
 showPlanChoiceOnLoad();
+updateProfileMiniCard();
 updateProToolAccess();
 initializeFallbackStocksNow();
 loadLiveStocks();
