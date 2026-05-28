@@ -3150,6 +3150,426 @@ body {
   display: none !important;
 }
 
+
+/* HARD PAGE ROUTER FIX */
+.page-section {
+  display: none !important;
+}
+
+.page-section.active-page {
+  display: block !important;
+}
+
+.stat-strip.page-section.active-page {
+  display: grid !important;
+}
+
+/* Home can have multiple active sections */
+.hero.page-section.active-page,
+.site-map-section.page-section.active-page,
+.value-strip.page-section.active-page {
+  display: block !important;
+}
+
+.stat-strip.page-section.active-page {
+  display: grid !important;
+}
+
+.learn-fallback-section {
+  padding: 76px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background:
+    radial-gradient(circle at 12% 12%, rgba(82,214,255,0.055), transparent 34%),
+    linear-gradient(180deg, var(--surface), var(--bg));
+}
+
+
+/* CASH FLO AI TAB CLEANUP */
+.cash-ai-section {
+  padding: 54px 40px !important;
+  text-align: left !important;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(82,214,255,0.055), transparent 34%),
+    linear-gradient(180deg, var(--surface), var(--bg)) !important;
+}
+
+.cash-ai-hero {
+  max-width: 860px;
+  margin: 0 auto 26px;
+  text-align: left;
+}
+
+.cash-ai-hero .section-tag {
+  font-size: 12px !important;
+  letter-spacing: 2px;
+  margin-bottom: 12px !important;
+}
+
+.cash-ai-hero h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(30px, 3.5vw, 48px) !important;
+  line-height: 1.06 !important;
+  letter-spacing: -1.2px !important;
+  margin-bottom: 12px !important;
+}
+
+.cash-ai-hero p {
+  max-width: 620px !important;
+  margin: 0 !important;
+  color: var(--muted2) !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+}
+
+.cash-ai-section .embedded-advisor {
+  margin-top: 20px !important;
+  margin-bottom: 34px !important;
+}
+
+.cash-ai-section > .section-tag {
+  font-size: 12px !important;
+  letter-spacing: 2px !important;
+}
+
+.cash-ai-section .why-grid {
+  margin-top: 22px !important;
+}
+
+.cash-ai-section .why-card {
+  padding: 22px !important;
+}
+
+.cash-ai-section .why-card h3 {
+  font-size: 18px !important;
+}
+
+@media(max-width:800px){
+  .cash-ai-section {
+    padding: 42px 18px !important;
+  }
+}
+
+
+/* SIMPLIFIED HAMBURGER GUIDE MENU */
+.simplified-menu {
+  width: min(430px, calc(100vw - 32px)) !important;
+  padding: 16px !important;
+}
+
+.menu-path-card {
+  border: 1px solid rgba(82,214,255,0.16);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(82,214,255,0.12), transparent 42%),
+    rgba(255,255,255,0.035);
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.menu-path-card p {
+  color: var(--muted2);
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.menu-primary-btn {
+  width: 100%;
+  border: none;
+  border-radius: 13px;
+  padding: 11px 13px;
+  background: linear-gradient(135deg, var(--future2, #52d6ff), var(--future, #38f2b5));
+  color: #041018;
+  font-weight: 1000;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+
+.simple-menu-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.simple-menu-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 12px;
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: rgba(255,255,255,0.028);
+  color: var(--text);
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.simple-menu-link:hover {
+  border-color: rgba(82,214,255,0.24);
+  background: rgba(255,255,255,0.055);
+  transform: translateY(-1px);
+}
+
+.simple-menu-link span {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(82,214,255,0.08);
+  flex-shrink: 0;
+}
+
+.simple-menu-link strong {
+  display: block;
+  font-size: 14px;
+  line-height: 1.15;
+}
+
+.simple-menu-link small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.menu-safety-note {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* Hide old accordion menu styling content if any remnants survive */
+.simplified-menu .menu-section {
+  display: none !important;
+}
+
+
+/* ABOUT US PAGE */
+.about-section {
+  padding: 76px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background:
+    radial-gradient(circle at 12% 12%, rgba(82,214,255,0.06), transparent 34%),
+    radial-gradient(circle at 88% 16%, rgba(56,242,181,0.045), transparent 32%),
+    var(--bg);
+}
+
+.about-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.about-hero {
+  max-width: 760px;
+  margin-bottom: 28px;
+}
+
+.about-hero h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(36px, 4.5vw, 64px);
+  line-height: 1.03;
+  letter-spacing: -1.7px;
+  margin-bottom: 14px;
+}
+
+.about-hero p {
+  color: var(--muted2);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.about-card,
+.about-mission {
+  background: rgba(16,20,29,0.82);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.22);
+}
+
+.about-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: rgba(82,214,255,0.09);
+  margin-bottom: 14px;
+  font-size: 20px;
+}
+
+.about-card h3,
+.about-mission h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 21px;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.about-card p,
+.about-mission p {
+  color: var(--muted2);
+  font-size: 14px;
+  line-height: 1.62;
+}
+
+.about-mission {
+  margin-top: 18px;
+}
+
+.about-mission .btn-primary {
+  margin-top: 18px;
+}
+
+.about-disclaimer {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* CLEANER PRO TOOLS PITCH */
+.pro-value-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.pro-value-card {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.pro-value-card span {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.pro-value-card strong {
+  display: block;
+  color: var(--text);
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.pro-value-card small {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.profile-guidance-card.clean-pro-path {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.clean-pro-main h3 {
+  font-size: clamp(26px, 3vw, 40px) !important;
+  line-height: 1.05;
+  margin-bottom: 10px;
+}
+
+.clean-pro-main p {
+  font-size: 15px !important;
+  max-width: 620px;
+}
+
+.clean-profile-summary {
+  background: rgba(255,255,255,0.032);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.clean-profile-summary h4 {
+  font-family: 'Syne', sans-serif;
+  color: var(--accent);
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.clean-next-list {
+  list-style: none;
+  display: grid;
+  gap: 9px;
+}
+
+.clean-next-list li {
+  color: var(--muted2);
+  font-size: 13px;
+}
+
+.clean-next-list li::before {
+  content: "✓";
+  color: var(--future, #38f2b5);
+  font-weight: 900;
+  margin-right: 8px;
+}
+
+.pro-tools-teaser.clean-teaser {
+  padding: 28px !important;
+}
+
+.pro-tools-teaser.clean-teaser h3 {
+  font-size: clamp(25px, 3vw, 38px) !important;
+  line-height: 1.08;
+}
+
+.pro-tools-teaser.clean-teaser p {
+  max-width: 760px;
+}
+
+.pro-tools-list.clean-list {
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 10px !important;
+}
+
+.pro-tools-list.clean-list li {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.pro-tools-list.clean-list li::before {
+  content: "✨";
+}
+
+@media(max-width:900px){
+  .about-grid,
+  .pro-value-strip,
+  .profile-guidance-card.clean-pro-path,
+  .pro-tools-list.clean-list {
+    grid-template-columns: 1fr !important;
+  }
+
+  .about-section {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3294,162 +3714,73 @@ body {
   </div>
 </nav>
 
+
 <!-- APP MENU -->
 <div class="app-menu-overlay" id="appMenuOverlay" onclick="closeAppMenu(event)">
-  <div class="app-menu" onclick="event.stopPropagation()">
+  <div class="app-menu simplified-menu" onclick="event.stopPropagation()">
     <div class="menu-head">
       <div>
-        <h3>Cash Flo Menu</h3>
-        <p>Simple investing tools, organized.</p>
+        <h3>Cash Flo Guide</h3>
+        <p>Pick where you want to go next.</p>
       </div>
       <button class="modal-close" onclick="toggleAppMenu()">✕</button>
     </div>
 
-
-    
-    <div class="menu-section open">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>🏠 Dashboard <small>Your clean Cash Flo home</small></span>
-        <span>⌄</span>
-      </button>
-      <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('dashboard')">Open Dashboard</button>
-        <button class="menu-link" onclick="openInvestorQuiz()">Take Investor Quiz</button>
-        <button class="menu-link" onclick="quickSort('personal', document.querySelectorAll('.sort-chip')[1]); jumpToSection('stocks')">Top Stocks For Me</button>
-      </div>
+    <div class="menu-path-card">
+      <div class="section-tag">Suggested path</div>
+      <p><strong>New here?</strong> Start with your profile, then use Cash Flo AI, then check stocks.</p>
+      <button class="menu-primary-btn" onclick="showAppPage('profile'); closeMenuQuick()">Start with Profile Quiz →</button>
     </div>
 
-<div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>🧭 Investor Profile <small>Goals, risk type, and quiz</small></span>
-        <span>⌄</span>
+    <div class="simple-menu-grid">
+      <button class="simple-menu-link" onclick="showAppPage('home'); closeMenuQuick()">
+        <span>🏠</span>
+        <div><strong>Home</strong><small>Main intro and start cards</small></div>
       </button>
-      <div class="menu-section-content">
-        <button class="menu-link" onclick="openInvestorQuiz()">Learn Your Investing Style</button>
-        <button class="menu-link" onclick="scrollToStartHere()">Start Here</button>
-      </div>
+
+      <button class="simple-menu-link" onclick="showAppPage('dashboard'); closeMenuQuick()">
+        <span>📍</span>
+        <div><strong>Dashboard</strong><small>Your guided path</small></div>
+      </button>
+
+      <button class="simple-menu-link" onclick="showAppPage('profile'); closeMenuQuick()">
+        <span>🧭</span>
+        <div><strong>Profile Quiz</strong><small>Learn your investing style</small></div>
+      </button>
+
+      <button class="simple-menu-link" onclick="showAppPage('learn'); closeMenuQuick()">
+        <span>🤖</span>
+        <div><strong>Cash Flo AI</strong><small>Ask investing questions</small></div>
+      </button>
+
+      <button class="simple-menu-link" onclick="showAppPage('tools'); closeMenuQuick()">
+        <span>🧰</span>
+        <div><strong>Pro Tools</strong><small>Risk checks and research</small></div>
+      </button>
+
+      <button class="simple-menu-link" onclick="showAppPage('calculator'); closeMenuQuick()">
+        <span>🧮</span>
+        <div><strong>Growth Calculator</strong><small>Future money projections</small></div>
+      </button>
+
+      <button class="simple-menu-link" onclick="showAppPage('stocks'); closeMenuQuick()">
+        <span>📊</span>
+        <div><strong>Stocks</strong><small>Tracker and watchlist</small></div>
+      </button>
+
+      <button class="simple-menu-link" onclick="showAppPage('pricing'); closeMenuQuick()">
+        <span>💳</span>
+        <div><strong>Pricing</strong><small>Free vs Pro</small></div>
+      </button>
+
+      <button class="simple-menu-link" onclick="showAppPage('about'); closeMenuQuick()">
+        <span>👋</span>
+        <div><strong>About Us</strong><small>Why Cash Flo exists</small></div>
+      </button>
     </div>
 
-
-    <div class="menu-section open">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>🧭 Quick Navigation <small>Move through the app</small></span>
-        <span>⌄</span>
-      </button>
-      <div class="menu-section-content">
-        <button class="menu-link primary-route" onclick="showAppPage('home'); closeAppMenu()">Home</button>
-        <button class="menu-link" onclick="showAppPage('dashboard'); closeAppMenu()">Money Dashboard</button>
-        <button class="menu-link" onclick="showAppPage('dashboard'); closeAppMenu()">Money Dashboard</button>
-        <button class="menu-link" onclick="showAppPage('profile'); closeAppMenu()">Profile Quiz</button>
-        <button class="menu-link" onclick="showAppPage('tools'); closeAppMenu()">Pro Tools</button>
-        <button class="menu-link" onclick="showAppPage('calculator'); closeAppMenu()">Growth Calculator</button>
-        <button class="menu-link" onclick="showAppPage('stocks'); closeAppMenu()">Stock Tracker</button>
-        <button class="menu-link" onclick="showAppPage('learn'); closeAppMenu()">Learn Center</button>
-        <button class="menu-link" onclick="showAppPage('pricing'); closeAppMenu()">Pricing</button>
-      </div>
-    </div>
-
-
-    <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>🤖 AI Guide <small>Ask simple investing questions</small></span>
-        <span>⌄</span>
-      </button>
-      <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('advisor')">Open AI Advisor</button>
-        <button class="menu-link" onclick="quickAskFromMenu('What is the safest way for a beginner to start investing?')">Beginner starting advice</button>
-        <button class="menu-link" onclick="quickAskFromMenu('Explain ETFs in simple words')">Explain ETFs</button>
-      </div>
-    </div>
-
-    <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>📈 Investor Guide <small>Learn before using real money</small></span>
-        <span>⌄</span>
-      </button>
-      <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('investorGuide')">Open Investor Guide</button>
-        <button class="menu-link" onclick="jumpToSection('decisionChecklist')">Decision Checklist</button>
-        <div class="menu-pill-row">
-          <span class="menu-mini-pill">No trade placing</span>
-          <span class="menu-mini-pill">Educational only</span>
-          <span class="menu-mini-pill">You stay in control</span>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>🧰 Pro Tools <small>Risk check, ETF compare, mistake detector</small></span>
-        <span>⌄</span>
-      </button>
-      <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('cashFloTools'); setTimeout(openRecommendedProTool, 150)">Open Recommended Pro Tool</button>
-        <button class="menu-link" onclick="showToolTab('risk', document.querySelectorAll('.tool-tab')[0]); jumpToSection('cashFloTools')">Risk Check</button>
-        <button class="menu-link" onclick="showToolTab('compare', document.querySelectorAll('.tool-tab')[1]); jumpToSection('cashFloTools')">Compare to ETF</button>
-        <button class="menu-link" onclick="showToolTab('mistake', document.querySelectorAll('.tool-tab')[4]); jumpToSection('cashFloTools')">Mistake Detector</button>
-      </div>
-    </div>
-
-    <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>📊 Stocks & Filters <small>Sort the watchlist</small></span>
-        <span>⌄</span>
-      </button>
-      <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('stocks')">Open Stock Tracker</button>
-        <button class="menu-link" onclick="quickSort('personal', document.querySelectorAll('.sort-chip')[1]); jumpToSection('stocks')">Top Stocks For Me</button>
-        <button class="menu-link" onclick="quickSort('gainers', document.querySelectorAll('.sort-chip')[2]); jumpToSection('stocks')">Biggest Gainers</button>
-        <button class="menu-link" onclick="quickSort('losers', document.querySelectorAll('.sort-chip')[3]); jumpToSection('stocks')">Biggest Losers</button>
-        <button class="menu-link" onclick="quickSort('alphabetical', document.querySelectorAll('.sort-chip')[7]); jumpToSection('stocks')">A–Z Stocks</button>
-      </div>
-    </div>
-
-    <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>📉 Charts <small>Pro stock history popups</small></span>
-        <span>⌄</span>
-      </button>
-      <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('stocks')">Click a stock to open chart</button>
-        <button class="menu-link" onclick="openModal()">Unlock Pro Charts</button>
-        <div class="menu-pill-row">
-          <span class="menu-mini-pill">1D</span>
-          <span class="menu-mini-pill">1W</span>
-          <span class="menu-mini-pill">1M</span>
-          <span class="menu-mini-pill">YTD</span>
-          <span class="menu-mini-pill">5Y</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>👤 Account <small>Google sign-up and Pro later</small></span>
-        <span>⌄</span>
-      </button>
-      <div class="menu-section-content">
-        <button class="menu-link" onclick="openAuthModal()">Sign up / sign in with Google</button>
-        <button class="menu-link" onclick="openPlanChoice()">Choose plan popup</button>
-        <button class="menu-link" onclick="openModal()">View Pro plan</button>
-      </div>
-    </div>
-
-    <div class="menu-section">
-      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
-        <span>⚠️ Legal / Safety <small>No financial advice</small></span>
-        <span>⌄</span>
-      </button>
-      <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('safetyDisclosure')">View disclosure</button>
-        <div class="menu-pill-row">
-          <span class="menu-mini-pill">No trading</span>
-          <span class="menu-mini-pill">No money control</span>
-          <span class="menu-mini-pill">No brokerage link</span>
-          <span class="menu-mini-pill">Education only</span>
-        </div>
-      </div>
+    <div class="menu-safety-note">
+      Educational only. Cash Flo helps you learn and compare, but you make the final decision.
     </div>
   </div>
 </div>
@@ -3474,8 +3805,9 @@ body {
   <button class="page-tab" onclick="showAppPage('tools', this)">Pro Tools</button>
   <button class="page-tab" onclick="showAppPage('calculator', this)">Growth Calculator</button>
   <button class="page-tab" onclick="showAppPage('stocks', this)">Stocks</button>
-  <button class="page-tab" onclick="showAppPage('learn', this)">Learn</button>
+  <button class="page-tab" onclick="showAppPage('learn', this)">Cash Flo AI</button>
   <button class="page-tab" onclick="showAppPage('pricing', this)">Pricing</button>
+  <button class="page-tab" onclick="showAppPage('about', this)">About Us</button>
 </div>
 
 <!-- HERO -->
@@ -3808,10 +4140,12 @@ body {
   </div>
 </section>
 <!-- WHY CASH FLO -->
-<section class="why-section page-section" data-page="learn">
-  <div class="section-tag">Why Cash Flo?</div>
-  <h2>Less random advice. More clear next steps.</h2>
-  <p>Cash Flo helps beginners understand investing without confusion, hype, or hours of searching.</p>
+<section class="why-section cash-ai-section page-section" data-page="learn">
+  <div class="cash-ai-hero">
+    <div class="section-tag">Cash Flo AI</div>
+    <h2>Ask smarter money questions.</h2>
+    <p>Get simple investing explanations, risk reminders, and next-step guidance without feeling like you’re reading a finance textbook.</p>
+  </div>
 
   <div class="embedded-advisor" id="advisor">
     <div class="advisor-inner">
@@ -3958,30 +4292,47 @@ body {
 
 
 
-    <div class="profile-guidance-card" id="profileGuidanceCard">
-      <div>
-        <h3>Personalized Pro path</h3>
-        <p>Take the Investor Profile Quiz so Cash Flo can guide which tool to use first and how to read each stock based on your goals and risk comfort.</p>
-        <div class="profile-guidance-pill-row">
-          <span class="profile-guidance-pill">Risk comfort: —</span>
-          <span class="profile-guidance-pill">Time horizon: —</span>
-          <span class="profile-guidance-pill">ETF readiness: —</span>
+    
+    <div class="profile-guidance-card clean-pro-path" id="profileGuidanceCard">
+      <div class="clean-pro-main">
+        <div class="section-tag">Personalized Pro Path</div>
+        <h3>Pro turns your quiz into a smarter research plan.</h3>
+        <p>
+          Instead of just asking a chatbot random questions, Pro uses your quiz profile to point you toward the right tool:
+          risk checks, ETF comparisons, before-you-buy questions, watchlist building, and mistake detection.
+        </p>
+
+        <div class="pro-value-strip">
+          <div class="pro-value-card"><span>🛡️</span><strong>Risk Check</strong><small>See what could go wrong before getting excited.</small></div>
+          <div class="pro-value-card"><span>🧺</span><strong>ETF Compare</strong><small>Compare one stock to broader options like VOO or QQQ.</small></div>
+          <div class="pro-value-card"><span>✅</span><strong>Before You Buy</strong><small>Slow down with a simple checklist.</small></div>
+          <div class="pro-value-card"><span>⭐</span><strong>Watchlist Builder</strong><small>Organize ideas instead of chasing hype.</small></div>
+          <div class="pro-value-card"><span>⚠️</span><strong>Mistake Detector</strong><small>Catch common beginner mistakes early.</small></div>
         </div>
       </div>
-      <div class="profile-guidance-actions">
-        <h4>Your next steps</h4>
-        <ul>
-          <li>Learn Your Investing Style</li>
-          <li>Come back to Pro Tools</li>
-          <li>Use the recommended tool first</li>
+
+      <div class="clean-profile-summary">
+        <h4 id="proPathTitle">Your profile path</h4>
+        <p id="proPathText">Take the quiz to unlock a personalized path based on your risk comfort, time horizon, and habits.</p>
+        <ul class="clean-next-list" id="proPathSteps">
+          <li>Learn your investing style</li>
+          <li>Use the best tool first</li>
+          <li>Build a smarter watchlist</li>
         </ul>
+        <div class="quiz-actions" style="margin-top:16px">
+          <button class="btn-primary" onclick="openInvestorQuiz()">Take Quiz →</button>
+          <button class="btn-ghost" onclick="showAppPage('pricing')">See Pro →</button>
+        </div>
       </div>
     </div>
 
-    <div class="pro-tools-teaser" id="proToolsTeaser">
-      <h3>Cash Flo Tools are for Pro members</h3>
-      <p>Free users can still use the starter watchlist and one AI preview question. Pro unlocks the guided research tools that make Cash Flo different from a normal chatbot or basic stock app.</p>
-      <ul class="pro-tools-list">
+    <div class="pro-tools-teaser clean-teaser" id="proToolsTeaser">
+      <h3>Everything Pro unlocks in one guided toolkit.</h3>
+      <p>
+        Free gives you the starter experience. Pro is where Cash Flo becomes a full research path: your profile,
+        personalized stock fit, better tools, and clearer next steps.
+      </p>
+      <ul class="pro-tools-list clean-list">
         <li>Stock Risk Check</li>
         <li>Cash Flo Score</li>
         <li>Compare to ETF</li>
@@ -3990,10 +4341,10 @@ body {
         <li>Mistake Detector</li>
       </ul>
       <button class="btn-primary" onclick="openModal()">Preview Pro Tools →</button>
-      <p style="margin-top:12px;font-size:12px;color:var(--muted)">For testing, use the Pro URL with <strong>?pro=true</strong>.</p>
+      <p style="margin-top:12px;font-size:12px;color:var(--muted)">Pro is planned at <strong>$5/month</strong>. Payment setup is coming later.</p>
     </div>
 
-    <div class="tool-tabs">
+<div class="tool-tabs">
       <button class="tool-tab active" onclick="showToolTab('risk', this)">Risk Check</button>
       <button class="tool-tab" onclick="showToolTab('compare', this)">Compare to ETF</button>
       <button class="tool-tab" onclick="showToolTab('beforeBuy', this)">Before You Buy</button>
@@ -4207,6 +4558,33 @@ body {
 
 
 <!-- PRICING -->
+
+<section class="learn-fallback-section page-section" data-page="learn" id="learnPageFallback">
+  <div class="guide-inner">
+    <div class="section-tag">Learn</div>
+    <div class="guide-title">Learn investing without the confusing finance noise.</div>
+    <p class="guide-sub">Cash Flo teaches the basics in plain English: what stocks are, what ETFs do, why risk matters, and how to slow down before chasing hype.</p>
+
+    <div class="guide-grid" style="margin-top:26px">
+      <div class="guide-card">
+        <div class="emoji">📈</div>
+        <h3>Stocks</h3>
+        <p>Learn what a company does, why the price moves, and what risks matter before buying anything.</p>
+      </div>
+      <div class="guide-card">
+        <div class="emoji">🧺</div>
+        <h3>ETFs</h3>
+        <p>Understand how ETFs spread your money across many companies instead of betting on only one.</p>
+      </div>
+      <div class="guide-card">
+        <div class="emoji">🛡️</div>
+        <h3>Risk</h3>
+        <p>Learn the difference between smart risk, hype risk, and putting too much into one idea.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="pricing-section page-section" data-page="pricing">
   <div class="pricing-inner">
     <div class="section-tag" style="text-align:center">Pricing</div>
@@ -4245,6 +4623,53 @@ body {
         <button class="price-btn pro" onclick="openModal()">Pro Coming Soon →</button>
       </div>
     </div>
+  </div>
+</section>
+
+
+<section class="about-section page-section" data-page="about" id="aboutUs">
+  <div class="about-inner">
+    <div class="section-tag">About Us</div>
+    <div class="about-hero">
+      <h2>Cash Flo is built for beginners with big futures.</h2>
+      <p>
+        Most investing apps show numbers, charts, and noise before people understand what they are looking at.
+        Cash Flo is different: it helps you learn your style, compare risk, and slow down before making real-money decisions.
+      </p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-icon">🧭</div>
+        <h3>Guidance first</h3>
+        <p>Cash Flo is not a brokerage and does not place trades. It helps users think through goals, risk, and smarter next steps.</p>
+      </div>
+
+      <div class="about-card">
+        <div class="about-icon">📚</div>
+        <h3>Built to teach</h3>
+        <p>We turn confusing investing ideas into plain-English explanations, checklists, and tools that are easier to follow.</p>
+      </div>
+
+      <div class="about-card">
+        <div class="about-icon">🛡️</div>
+        <h3>Risk-aware</h3>
+        <p>The goal is not hype. The goal is helping beginners understand both the opportunity and the downside before they act.</p>
+      </div>
+    </div>
+
+    <div class="about-mission">
+      <h3>Our mission</h3>
+      <p>
+        Help young investors build confidence, better habits, and a clearer path toward their future — without pressure,
+        fake guarantees, or random “buy now” advice.
+      </p>
+      <button class="btn-primary" onclick="showAppPage('profile')">Start With Your Profile →</button>
+    </div>
+
+    <p class="about-disclaimer">
+      Educational only. Cash Flo does not provide financial advice, manage money, connect to brokerage accounts, place trades, or guarantee returns.
+    </p>
   </div>
 </section>
 
@@ -5448,6 +5873,12 @@ function updateProfileMiniCard() {
 
 function toggleFavorite(symbol, event) {
   if (event) event.stopPropagation();
+
+  if (!isPro) {
+    openModal();
+    return;
+  }
+
   symbol = symbol.toUpperCase();
   if (savedWatchlist.includes(symbol)) {
     savedWatchlist = savedWatchlist.filter(s => s !== symbol);
@@ -5951,6 +6382,34 @@ function requireProTools(actionName) {
   return true;
 }
 
+
+function updateCleanProPath() {
+  const profile = getSavedProfile ? getSavedProfile() : null;
+  const title = document.getElementById('proPathTitle');
+  const text = document.getElementById('proPathText');
+  const steps = document.getElementById('proPathSteps');
+
+  if (!title || !text || !steps) return;
+
+  if (!profile) {
+    title.textContent = 'Your profile path';
+    text.textContent = 'Take the quiz to unlock a personalized path based on your risk comfort, time horizon, and habits.';
+    steps.innerHTML = '<li>Learn your investing style</li><li>Use the best tool first</li><li>Build a smarter watchlist</li>';
+    return;
+  }
+
+  title.textContent = profile.type || 'Your profile path';
+  text.textContent = `Risk comfort: ${profile.risk}% · Long-term mindset: ${profile.longTerm}% · ETF readiness: ${profile.etf}%`;
+
+  if ((profile.hype || 0) >= 45) {
+    steps.innerHTML = '<li>Use Mistake Detector before big movers</li><li>Run Risk Check on exciting stocks</li><li>Compare ideas to VOO, VTI, or QQQ</li>';
+  } else if ((profile.longTerm || 0) >= 70) {
+    steps.innerHTML = '<li>Compare stocks to broad ETFs</li><li>Build a long-term watchlist</li><li>Use Before You Buy before decisions</li>';
+  } else {
+    steps.innerHTML = '<li>Start with Risk Check</li><li>Compare each idea to an ETF</li><li>Use the checklist before acting</li>';
+  }
+}
+
 // CASH FLO DIFFERENTIATOR TOOLS
 let builderMode = 'balanced';
 const cashFloProfiles = {
@@ -6184,6 +6643,7 @@ if (new URLSearchParams(window.location.search).get('pro') === 'true') {
     const planIndicator = document.getElementById('planIndicator');
     if (planIndicator) planIndicator.innerHTML = '<span class="premium-badge">PRO TEST</span>';
     updateProToolAccess();
+updateCleanProPath();
 setTimeout(buildDashboardQuizPrompt, 350);
     renderStocks();
   }, 500);
@@ -6191,6 +6651,12 @@ setTimeout(buildDashboardQuizPrompt, 350);
 
 
 
+
+
+function closeMenuQuick() {
+  const overlay = document.getElementById('appMenuOverlay');
+  if (overlay) overlay.classList.remove('show');
+}
 
 // HAMBURGER MENU SAFETY REPAIR
 function toggleAppMenu() {
@@ -6216,7 +6682,16 @@ function jumpToSection(id) {
   if (overlay) overlay.classList.remove('show');
 
   const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (!el) return;
+
+  const page = el.getAttribute('data-page') || el.closest('.page-section')?.getAttribute('data-page');
+  if (page && typeof showAppPage === 'function') {
+    showAppPage(page);
+  }
+
+  setTimeout(() => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 90);
 }
 
 
@@ -6279,46 +6754,49 @@ const appSearchItems = [
   { title: 'Pricing', subtitle: '$5/month Pro plan later', page: 'pricing', target: null, icon: '💸', keywords: ['pricing','price','pro','payment','cost'] },
 ];
 
-function showAppPage(page, btn) {
-  const sections = document.querySelectorAll('.page-section');
-  sections.forEach(sec => {
-    const secPage = sec.getAttribute('data-page');
-    sec.classList.toggle('active-page', secPage === page);
+function showAppPage(page, clickedTab = null) {
+  const validPages = ['home','dashboard','profile','tools','calculator','stocks','learn','pricing','about'];
+  if (!validPages.includes(page)) page = 'home';
+
+  document.querySelectorAll('.page-section').forEach(section => {
+    section.classList.remove('active-page');
+  });
+
+  document.querySelectorAll(`.page-section[data-page="${page}"]`).forEach(section => {
+    section.classList.add('active-page');
   });
 
   document.querySelectorAll('.page-tab').forEach(tab => tab.classList.remove('active'));
-  if (btn) {
-    btn.classList.add('active');
+
+  if (clickedTab) {
+    clickedTab.classList.add('active');
   } else {
     const labelMap = {
       home: 'home',
       dashboard: 'dashboard',
-      profile: 'profile',
+      profile: 'profile quiz',
       tools: 'pro tools',
       calculator: 'growth calculator',
       stocks: 'stocks',
-      learn: 'learn',
-      pricing: 'pricing'
+      learn: 'cash flo ai',
+      pricing: 'pricing',
+      about: 'about us'
     };
-    const matching = Array.from(document.querySelectorAll('.page-tab')).find(tab =>
-      tab.textContent.toLowerCase().includes(labelMap[page] || page)
+    const tab = Array.from(document.querySelectorAll('.page-tab')).find(t =>
+      t.textContent.trim().toLowerCase() === labelMap[page]
     );
-    if (matching) matching.classList.add('active');
+    if (tab) tab.classList.add('active');
   }
 
-  // If user opens profile page, show the gateway unless quiz is already open.
-  if (page === 'profile') {
-    const gateway = document.getElementById('investorQuizGateway');
-    const quiz = document.getElementById('investorProfileQuiz');
-    if (gateway && quiz && !quiz.classList.contains('show')) {
-      gateway.classList.remove('hide');
-    }
+  if (page === 'dashboard' && typeof buildDashboardQuizPrompt === 'function') {
+    setTimeout(buildDashboardQuizPrompt, 40);
   }
 
-  const tabs = document.getElementById('appPageTabs');
-  if (tabs) setTimeout(() => tabs.scrollIntoView({ behavior: 'smooth', block: 'start' }), 20);
-  setTimeout(ensureDashboardHasFlow, 40);
-  setTimeout(buildDashboardQuizPrompt, 60);
+  if (page === 'dashboard' && typeof ensureDashboardHasFlow === 'function') {
+    setTimeout(ensureDashboardHasFlow, 70);
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function navigateToAppItem(item) {
