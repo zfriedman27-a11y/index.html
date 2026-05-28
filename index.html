@@ -7,10 +7,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#090c12; --surface:#111722; --surface2:#171f2d;
-  --border:rgba(255,255,255,0.075); --border2:rgba(255,255,255,0.14);
-  --accent:#4da3ff; --accentSoft:#203a5a; --accent2:#8b7cff;
-  --text:#f5f7fb; --muted:#7f889b; --muted2:#b5bed0;
+  --bg:#090b10; --surface:#10141d; --surface2:#151b26;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
+  --accent:#8fb7ff; --accentSoft:#1b2638; --accent2:#a493ff;
+  --text:#f5f7fb; --muted:#828a9a; --muted2:#b5bdcc;
   --red:#ff4d6a; --green:#22c55e; --amber:#f7c35f;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -18,12 +18,12 @@ html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.4}
 
-/* MODERN BACKGROUND GLOW - more subtle */
+/* MODERN BACKGROUND GLOW - very subtle and modern */
 body {
   background:
-    radial-gradient(circle at 18% 8%, rgba(77,163,255,0.08), transparent 26%),
-    radial-gradient(circle at 82% 18%, rgba(139,124,255,0.07), transparent 30%),
-    radial-gradient(circle at 50% 95%, rgba(255,255,255,0.035), transparent 34%),
+    radial-gradient(circle at 18% 8%, rgba(143,183,255,0.045), transparent 28%),
+    radial-gradient(circle at 82% 18%, rgba(164,147,255,0.04), transparent 32%),
+    radial-gradient(circle at 50% 95%, rgba(255,255,255,0.025), transparent 35%),
     var(--bg);
 }
 
@@ -34,7 +34,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .logo-icon {
   width: 38px;
   height: 38px;
-  background: linear-gradient(135deg, #4da3ff, #8b7cff, #d6e9ff);
+  background: linear-gradient(135deg, #e7eefc, #9fbfff, #a493ff);
   color: #050508;
   border-radius: 14px;
   display: flex;
@@ -43,7 +43,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
   font-size: 21px;
   font-weight: 900;
   flex-shrink: 0;
-  box-shadow: 0 0 18px rgba(77,163,255,0.22);
+  box-shadow: 0 0 14px rgba(143,183,255,0.14);
   position: relative;
   overflow: hidden;
 }
@@ -72,9 +72,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
 /* HERO */
 .hero{padding:70px 40px 60px;position:relative;overflow:hidden;border-bottom:0.5px solid var(--border)}
-.hero-glow{position:absolute;top:-150px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(47,155,255,0.07) 0%,transparent 70%);pointer-events:none}
+.hero-glow{position:absolute;top:-150px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(143,183,255,0.035) 0%,transparent 70%);pointer-events:none}
 .hero-inner{max-width:780px}
-.hero-label{display:inline-flex;align-items:center;gap:7px;background:rgba(47,155,255,0.1);border:0.5px solid rgba(47,155,255,0.3);color:var(--accent);font-size:12px;font-weight:600;padding:5px 12px;border-radius:100px;margin-bottom:22px}
+.hero-label{display:inline-flex;align-items:center;gap:7px;background:rgba(143,183,255,0.055);border:0.5px solid rgba(143,183,255,0.16);color:var(--accent);font-size:12px;font-weight:600;padding:5px 12px;border-radius:100px;margin-bottom:22px}
 .hero-label::before{content:'●';font-size:7px;animation:blink 1.5s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .hero h1{font-family:'Syne',sans-serif;font-size:clamp(38px,6vw,72px);font-weight:800;line-height:1.0;letter-spacing:-2px;margin-bottom:18px}
@@ -161,7 +161,48 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .stock-search{background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 12px;border-radius:9px;outline:none;width:190px}
 .stock-search:focus{border-color:rgba(77,163,255,.45)}
 .stock-search-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:9px;padding:9px 14px;font-size:13px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif}
+.stock-search-btn.secondary{background:rgba(255,255,255,0.045);color:var(--muted2);border:1px solid rgba(255,255,255,0.10)}
 .live-status{font-size:12px;color:var(--muted);margin-top:12px}
+
+
+/* QUICK SORT CHIPS */
+.sort-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: -10px 0 22px;
+}
+
+.sort-chip {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: var(--muted2);
+  font-size: 12px;
+  font-weight: 800;
+  font-family: 'DM Sans', sans-serif;
+  padding: 8px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.sort-chip:hover {
+  color: var(--text);
+  border-color: rgba(143,183,255,0.24);
+  background: rgba(255,255,255,0.055);
+  box-shadow: 0 0 14px rgba(143,183,255,0.12);
+}
+
+.sort-chip.active {
+  color: #050508;
+  background: linear-gradient(135deg, #d8e7ff, #a493ff);
+  border-color: transparent;
+}
+
+.stock-note {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 10px;
+}
 
 /* DROPDOWN */
 .dropdown-wrap{position:relative}
@@ -173,7 +214,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .dropdown-menu.show{display:block}
 .dropdown-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:7px;cursor:pointer;font-size:13px;color:var(--muted2);transition:all .2s;white-space:nowrap}
 .dropdown-item:hover{background:var(--surface2);color:var(--text)}
-.dropdown-item.active{background:rgba(47,155,255,.1);color:var(--accent)}
+.dropdown-item.active{background:rgba(143,183,255,.06);color:var(--accent)}
 .dropdown-item .lock-icon{margin-left:auto;font-size:11px;color:var(--amber)}
 
 /* STOCK TABLE */
@@ -192,7 +233,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .s-name{font-size:12px;color:var(--muted)}
 .s-price{font-family:'Syne',sans-serif;font-weight:700}
 .s-badge{font-size:10px;font-weight:700;padding:3px 7px;border-radius:4px;letter-spacing:.4px}
-.badge-buy{background:rgba(47,155,255,.15);color:var(--green)}
+.badge-buy{background:rgba(143,183,255,.08);color:var(--green)}
 .badge-hold{background:rgba(247,195,95,.12);color:var(--amber)}
 .badge-watch{background:rgba(124,109,250,.12);color:var(--accent2)}
 
@@ -222,7 +263,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
   backdrop-filter: blur(18px);
 }
 .advisor-head{padding:20px 28px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:12px}
-.advisor-head-icon{width:38px;height:38px;background:rgba(47,155,255,.12);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.advisor-head-icon{width:38px;height:38px;background:rgba(143,183,255,.07);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
 .advisor-head h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:2px}
 .advisor-head p{font-size:12px;color:var(--muted)}
 .live-dot{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:12px;color:var(--accent);font-weight:600}
@@ -233,7 +274,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .msg{display:flex;gap:10px;align-items:flex-start;animation:fadeUp .3s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .msg-av{width:28px;height:28px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
-.msg-av.ai{background:rgba(47,155,255,.15);color:var(--accent)}
+.msg-av.ai{background:rgba(143,183,255,.08);color:var(--accent)}
 .msg-av.user{background:rgba(124,109,250,.15);color:var(--accent2)}
 .msg-bub {
   background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
@@ -247,7 +288,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 }
 .msg.user-msg{flex-direction:row-reverse}
 .user-msg .msg-bub {
-  background: linear-gradient(135deg, rgba(124,109,250,0.35), rgba(47,155,255,0.18));
+  background: linear-gradient(135deg, rgba(124,109,250,0.35), rgba(143,183,255,0.10));
   border: 1px solid rgba(124,109,250,0.35);
   border-radius: 18px 8px 18px 18px;
 }
@@ -257,9 +298,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .input-row{display:flex;gap:9px;padding:16px 28px;border-top:0.5px solid var(--border)}
 .adv-input{flex:1;background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 16px;border-radius:9px;outline:none;transition:border-color .2s}
 .adv-input::placeholder{color:var(--muted)}
-.adv-input:focus{border-color:rgba(47,155,255,.4)}
+.adv-input:focus{border-color:rgba(143,183,255,.22)}
 .send-btn {
-  background: linear-gradient(135deg, #4da3ff, #78bfff);
+  background: linear-gradient(135deg, #d8e7ff, #9fbfff);
   color: #000;
   border: none;
   padding: 10px 22px;
@@ -269,7 +310,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
   cursor: pointer;
   font-family: 'DM Sans', sans-serif;
   transition: all .2s;
-  box-shadow: 0 0 16px rgba(77,163,255,0.18);
+  box-shadow: 0 0 12px rgba(143,183,255,0.11);
 }
 .send-btn:hover {
   opacity: .9;
@@ -289,7 +330,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .pricing-sub{font-size:16px;color:var(--muted2);margin-bottom:48px;font-weight:300}
 .pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:680px;margin:0 auto}
 .price-card{background:var(--surface);border:0.5px solid var(--border);border-radius:18px;padding:32px 28px;text-align:left;position:relative}
-.price-card.featured{border:1.5px solid var(--accent);background:rgba(47,155,255,.04)}
+.price-card.featured{border:1.5px solid var(--accent);background:rgba(143,183,255,.035)}
 .price-tag{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
 .price-tag.green{color:var(--accent)}
 .price-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;letter-spacing:-2px;margin-bottom:4px}
@@ -321,7 +362,7 @@ button,
 .unlock-btn,
 .stock-search-btn,
 .auth-btn {
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, filter .18s ease, opacity .18s ease;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, filter .18s ease, background .18s ease;
 }
 
 button:hover,
@@ -336,16 +377,16 @@ button:hover,
 .stock-search-btn:hover,
 .auth-btn:hover {
   transform: translateY(-1px);
-  filter: brightness(1.08);
-  box-shadow: 0 0 18px rgba(77,163,255,0.14);
+  filter: brightness(1.06);
+  box-shadow: 0 0 14px rgba(143,183,255,0.12);
 }
 
 .btn-ghost:hover,
 .nav-plan:hover,
 .dropdown-btn:hover,
 .pill:hover {
-  border-color: rgba(77,163,255,0.32);
-  background: rgba(77,163,255,0.055);
+  border-color: rgba(143,183,255,0.24);
+  background: rgba(255,255,255,0.035);
 }
 
 /* AUTH BUTTONS */
@@ -514,7 +555,8 @@ footer p{font-size:12px;color:var(--muted)}
     <div class="stocks-controls">
       <div class="stock-search-wrap">
         <input class="stock-search" id="stockSearch" placeholder="Search any ticker, ex: AAPL" />
-        <button class="stock-search-btn" onclick="addTickerFromSearch()">Add</button>
+        <button class="stock-search-btn" onclick="addTickerFromSearch()">Search</button>
+        <button class="stock-search-btn secondary" onclick="showAllStocks()">Show All</button>
       </div>
       <button class="dropdown-btn" onclick="loadLiveStocks(true)">↻ Refresh</button>
       <!-- SORT DROPDOWN -->
@@ -524,14 +566,16 @@ footer p{font-size:12px;color:var(--muted)}
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
         <div class="dropdown-menu" id="sortMenu">
-          <div class="dropdown-item active" onclick="setSort('top','⭐ Top Picks')">⭐ Top Picks</div>
-          <div class="dropdown-item" onclick="setSort('week','📈 Best This Week')">📈 Best This Week</div>
-          <div class="dropdown-item" onclick="setSort('month','🗓 Best This Month')">🗓 Best This Month</div>
-          <div class="dropdown-item" onclick="setSort('longterm','🏆 Best Long-Term')">🏆 Best Long-Term</div>
+          <div class="dropdown-item active" onclick="setSort('top','⭐ Top Today')">⭐ Top Today</div>
+          <div class="dropdown-item" onclick="setSort('gainers','📈 Biggest Gainers')">📈 Biggest Gainers</div>
+          <div class="dropdown-item" onclick="setSort('losers','📉 Biggest Losers')">📉 Biggest Losers</div>
+          <div class="dropdown-item" onclick="setSort('movers','🚀 Biggest Movers')">🚀 Biggest Movers</div>
+          <div class="dropdown-item" onclick="setSort('priceHigh','💵 Highest Price')">💵 Highest Price</div>
+          <div class="dropdown-item" onclick="setSort('priceLow','🪙 Lowest Price')">🪙 Lowest Price</div>
+          <div class="dropdown-item" onclick="setSort('alphabetical','🔤 A–Z')">🔤 A–Z</div>
+          <div class="dropdown-item" onclick="setSort('longterm','🏆 Long-Term Ideas')">🏆 Long-Term Ideas</div>
           <div class="dropdown-item" onclick="setSort('etf','🛡 ETFs Only')">🛡 ETFs Only</div>
-          <div class="dropdown-item" onclick="setSort('movers','🚀 Biggest Movers')" id="sort-movers">🚀 Biggest Movers <span class="lock-icon">🔒 Pro</span></div>
-          <div class="dropdown-item" onclick="setSort('undervalued','💎 Undervalued')" id="sort-undervalued">💎 Undervalued <span class="lock-icon">🔒 Pro</span></div>
-          <div class="dropdown-item" onclick="setSort('dividend','💰 Dividend Stocks')" id="sort-dividend">💰 Dividend Stocks <span class="lock-icon">🔒 Pro</span></div>
+          <div class="dropdown-item" onclick="setSort('dividend','💰 Dividend Watchlist')">💰 Dividend Watchlist</div>
         </div>
       </div>
       <!-- SECTOR DROPDOWN -->
@@ -543,13 +587,30 @@ footer p{font-size:12px;color:var(--muted)}
         <div class="dropdown-menu" id="sectorMenu">
           <div class="dropdown-item active" onclick="setSector('all','All Sectors')">All Sectors</div>
           <div class="dropdown-item" onclick="setSector('tech','💻 Tech')">💻 Tech</div>
-          <div class="dropdown-item" onclick="setSector('etf','🛡 ETFs')">🛡 ETFs</div>
+          <div class="dropdown-item" onclick="setSector('finance','🏦 Finance')">🏦 Finance</div>
           <div class="dropdown-item" onclick="setSector('consumer','🛍 Consumer')">🛍 Consumer</div>
+          <div class="dropdown-item" onclick="setSector('healthcare','🧬 Healthcare')">🧬 Healthcare</div>
           <div class="dropdown-item" onclick="setSector('energy','⚡ Energy')">⚡ Energy</div>
+          <div class="dropdown-item" onclick="setSector('industrial','🏗 Industrial')">🏗 Industrial</div>
+          <div class="dropdown-item" onclick="setSector('etf','🛡 ETFs')">🛡 ETFs</div>
         </div>
       </div>
     </div>
+</div>
   </div>
+
+  <div class="sort-chip-row" id="quickSortRow">
+    <button class="sort-chip active" onclick="quickSort('top', this)">Top Today</button>
+    <button class="sort-chip" onclick="quickSort('gainers', this)">Biggest Gainers</button>
+    <button class="sort-chip" onclick="quickSort('losers', this)">Biggest Losers</button>
+    <button class="sort-chip" onclick="quickSort('movers', this)">Biggest Movers</button>
+    <button class="sort-chip" onclick="quickSort('priceHigh', this)">Highest Price</button>
+    <button class="sort-chip" onclick="quickSort('priceLow', this)">Lowest Price</button>
+    <button class="sort-chip" onclick="quickSort('alphabetical', this)">A–Z</button>
+    <button class="sort-chip" onclick="quickSort('etf', this)">ETFs</button>
+  </div>
+
+  <div class="stock-note">This shows a large live watchlist and lets users add any ticker symbol. A static website cannot literally preload every stock on Earth without an API database/backend.</div>
 
   <div class="stock-table-wrap">
     <table class="stock-table">
@@ -621,7 +682,7 @@ footer p{font-size:12px;color:var(--muted)}
         <div class="price-num">$0<span>/mo</span></div>
         <div class="price-sub">Always free, no card needed</div>
         <ul class="price-features">
-          <li>Top 10 stocks (basic view)</li>
+          <li>Top 3 stocks (basic view)</li>
           <li>1 AI Advisor preview question</li>
           <li>Live ticker tape</li>
           <li class="no">Advanced filters & sorts</li>
@@ -664,6 +725,7 @@ let questionsUsed = 0;
 const FREE_Q_LIMIT = 1;
 let currentSort = 'top';
 let currentSector = 'all';
+let currentSearchSymbol = '';
 
 // LIVE STOCK DATA
 // Step 1: Create a free Finnhub account.
@@ -672,20 +734,210 @@ let currentSector = 'all';
 const FINNHUB_API_KEY = "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
 
 // This is your starting watchlist. Users can add any ticker with the search box.
-let stockSymbols = ['AAPL','MSFT','NVDA','AMZN','GOOGL','META','TSLA','AMD','VOO','SPY','QQQ','VTI'];
+let stockSymbols = ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "GOOG", "META", "TSLA", "AMD", "AVGO", "NFLX", "ORCL", "ADBE", "CRM", "INTC", "QCOM", "CSCO", "TXN", "IBM", "NOW", "SHOP", "UBER", "PYPL", "SQ", "SNOW", "PLTR", "MU", "AMAT", "LRCX", "PANW", "JPM", "BAC", "WFC", "GS", "MS", "V", "MA", "AXP", "C", "BLK", "SCHW", "COF", "USB", "WMT", "COST", "HD", "LOW", "TGT", "NKE", "SBUX", "MCD", "DIS", "CMG", "PEP", "KO", "PG", "EL", "LULU", "ABNB", "JNJ", "LLY", "UNH", "MRK", "PFE", "ABBV", "TMO", "ABT", "ISRG", "AMGN", "GILD", "CVS", "XOM", "CVX", "COP", "SLB", "EOG", "OXY", "BA", "CAT", "GE", "HON", "LMT", "RTX", "DE", "UPS", "VOO", "SPY", "QQQ", "VTI", "DIA", "IWM", "SCHD", "VYM", "XLK", "XLF", "XLE", "XLV", "ARKK"];
 let liveStocks = [];
 let lastUpdated = null;
 
 const stockNames = {
-  AAPL:'Apple Inc', MSFT:'Microsoft', NVDA:'Nvidia', AMZN:'Amazon',
-  GOOGL:'Alphabet', META:'Meta Platforms', TSLA:'Tesla', AMD:'Advanced Micro Devices',
-  VOO:'Vanguard S&P 500 ETF', SPY:'SPDR S&P 500 ETF', QQQ:'Invesco QQQ ETF',
-  VTI:'Vanguard Total Market ETF'
+  "AAPL": "Apple",
+  "MSFT": "Microsoft",
+  "NVDA": "Nvidia",
+  "AMZN": "Amazon",
+  "GOOGL": "Alphabet Class A",
+  "GOOG": "Alphabet Class C",
+  "META": "Meta Platforms",
+  "TSLA": "Tesla",
+  "AMD": "Advanced Micro Devices",
+  "AVGO": "Broadcom",
+  "NFLX": "Netflix",
+  "ORCL": "Oracle",
+  "ADBE": "Adobe",
+  "CRM": "Salesforce",
+  "INTC": "Intel",
+  "QCOM": "Qualcomm",
+  "CSCO": "Cisco",
+  "TXN": "Texas Instruments",
+  "IBM": "IBM",
+  "NOW": "ServiceNow",
+  "SHOP": "Shopify",
+  "UBER": "Uber",
+  "PYPL": "PayPal",
+  "SQ": "Block",
+  "SNOW": "Snowflake",
+  "PLTR": "Palantir",
+  "MU": "Micron",
+  "AMAT": "Applied Materials",
+  "LRCX": "Lam Research",
+  "PANW": "Palo Alto Networks",
+  "JPM": "JPMorgan Chase",
+  "BAC": "Bank of America",
+  "WFC": "Wells Fargo",
+  "GS": "Goldman Sachs",
+  "MS": "Morgan Stanley",
+  "V": "Visa",
+  "MA": "Mastercard",
+  "AXP": "American Express",
+  "C": "Citigroup",
+  "BLK": "BlackRock",
+  "SCHW": "Charles Schwab",
+  "COF": "Capital One",
+  "USB": "U.S. Bancorp",
+  "WMT": "Walmart",
+  "COST": "Costco",
+  "HD": "Home Depot",
+  "LOW": "Lowe’s",
+  "TGT": "Target",
+  "NKE": "Nike",
+  "SBUX": "Starbucks",
+  "MCD": "McDonald’s",
+  "DIS": "Disney",
+  "CMG": "Chipotle",
+  "PEP": "PepsiCo",
+  "KO": "Coca-Cola",
+  "PG": "Procter & Gamble",
+  "EL": "Estée Lauder",
+  "LULU": "Lululemon",
+  "ABNB": "Airbnb",
+  "JNJ": "Johnson & Johnson",
+  "LLY": "Eli Lilly",
+  "UNH": "UnitedHealth",
+  "MRK": "Merck",
+  "PFE": "Pfizer",
+  "ABBV": "AbbVie",
+  "TMO": "Thermo Fisher",
+  "ABT": "Abbott Labs",
+  "ISRG": "Intuitive Surgical",
+  "AMGN": "Amgen",
+  "GILD": "Gilead Sciences",
+  "CVS": "CVS Health",
+  "XOM": "Exxon Mobil",
+  "CVX": "Chevron",
+  "COP": "ConocoPhillips",
+  "SLB": "Schlumberger",
+  "EOG": "EOG Resources",
+  "OXY": "Occidental Petroleum",
+  "BA": "Boeing",
+  "CAT": "Caterpillar",
+  "GE": "GE Aerospace",
+  "HON": "Honeywell",
+  "LMT": "Lockheed Martin",
+  "RTX": "RTX",
+  "DE": "Deere",
+  "UPS": "UPS",
+  "VOO": "Vanguard S&P 500 ETF",
+  "SPY": "SPDR S&P 500 ETF",
+  "QQQ": "Invesco QQQ ETF",
+  "VTI": "Vanguard Total Market ETF",
+  "DIA": "SPDR Dow Jones ETF",
+  "IWM": "iShares Russell 2000 ETF",
+  "SCHD": "Schwab Dividend ETF",
+  "VYM": "Vanguard High Dividend ETF",
+  "XLK": "Technology Select Sector ETF",
+  "XLF": "Financial Select Sector ETF",
+  "XLE": "Energy Select Sector ETF",
+  "XLV": "Health Care Select Sector ETF",
+  "ARKK": "ARK Innovation ETF"
 };
 
 const symbolSector = {
-  AAPL:'tech', MSFT:'tech', NVDA:'tech', AMD:'tech', GOOGL:'tech', META:'tech',
-  TSLA:'consumer', AMZN:'consumer', VOO:'etf', SPY:'etf', QQQ:'etf', VTI:'etf'
+  "AAPL": "tech",
+  "MSFT": "tech",
+  "NVDA": "tech",
+  "GOOGL": "tech",
+  "GOOG": "tech",
+  "META": "tech",
+  "AMD": "tech",
+  "AVGO": "tech",
+  "NFLX": "tech",
+  "ORCL": "tech",
+  "ADBE": "tech",
+  "CRM": "tech",
+  "INTC": "tech",
+  "QCOM": "tech",
+  "CSCO": "tech",
+  "TXN": "tech",
+  "IBM": "tech",
+  "NOW": "tech",
+  "SHOP": "tech",
+  "UBER": "tech",
+  "PYPL": "tech",
+  "SQ": "tech",
+  "SNOW": "tech",
+  "PLTR": "tech",
+  "MU": "tech",
+  "AMAT": "tech",
+  "LRCX": "tech",
+  "PANW": "tech",
+  "JPM": "finance",
+  "BAC": "finance",
+  "WFC": "finance",
+  "GS": "finance",
+  "MS": "finance",
+  "V": "finance",
+  "MA": "finance",
+  "AXP": "finance",
+  "C": "finance",
+  "BLK": "finance",
+  "SCHW": "finance",
+  "COF": "finance",
+  "USB": "finance",
+  "AMZN": "consumer",
+  "TSLA": "consumer",
+  "WMT": "consumer",
+  "COST": "consumer",
+  "HD": "consumer",
+  "LOW": "consumer",
+  "TGT": "consumer",
+  "NKE": "consumer",
+  "SBUX": "consumer",
+  "MCD": "consumer",
+  "DIS": "consumer",
+  "CMG": "consumer",
+  "PEP": "consumer",
+  "KO": "consumer",
+  "PG": "consumer",
+  "EL": "consumer",
+  "LULU": "consumer",
+  "ABNB": "consumer",
+  "JNJ": "healthcare",
+  "LLY": "healthcare",
+  "UNH": "healthcare",
+  "MRK": "healthcare",
+  "PFE": "healthcare",
+  "ABBV": "healthcare",
+  "TMO": "healthcare",
+  "ABT": "healthcare",
+  "ISRG": "healthcare",
+  "AMGN": "healthcare",
+  "GILD": "healthcare",
+  "CVS": "healthcare",
+  "XOM": "energy",
+  "CVX": "energy",
+  "COP": "energy",
+  "SLB": "energy",
+  "EOG": "energy",
+  "OXY": "energy",
+  "BA": "industrial",
+  "CAT": "industrial",
+  "GE": "industrial",
+  "HON": "industrial",
+  "LMT": "industrial",
+  "RTX": "industrial",
+  "DE": "industrial",
+  "UPS": "industrial",
+  "VOO": "etf",
+  "SPY": "etf",
+  "QQQ": "etf",
+  "VTI": "etf",
+  "DIA": "etf",
+  "IWM": "etf",
+  "SCHD": "etf",
+  "VYM": "etf",
+  "XLK": "etf",
+  "XLF": "etf",
+  "XLE": "etf",
+  "XLV": "etf",
+  "ARKK": "etf"
 };
 
 const fallbackPrices = {
@@ -710,7 +962,7 @@ function getStockMeta(symbol) {
     name: stockNames[s] || s,
     sector: symbolSector[s] || 'other',
     icon: s.slice(0,1),
-    color: s.includes('V') || s.includes('SPY') || s.includes('QQQ') ? '#7c6dfa' : '#2f9bff'
+    color: s.includes('V') || s.includes('SPY') || s.includes('QQQ') ? '#7c6dfa' : '#8fb7ff'
   };
 }
 
@@ -765,48 +1017,107 @@ async function loadLiveStocks(manual=false) {
   const demoMode = !FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE";
 
   if (status) {
-    if (demoMode) {
+    if (currentSearchSymbol) {
+      status.textContent = `Showing only ${currentSearchSymbol}. Price updated ${lastUpdated.toLocaleTimeString()}. Click Show All to return to the full watchlist.`;
+    } else if (demoMode) {
       status.textContent = 'Demo fallback prices showing. Add your Finnhub API key to make the prices truly live and update every 60 seconds.';
     } else if (results.length === 0) {
       status.textContent = 'Could not load live prices. Check your Finnhub API key, internet connection, or API limit.';
     } else if (errors.length > 0) {
-      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Some tickers failed: ${errors.join(', ')}. Auto-refresh: every 60 seconds.`;
+      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Some tickers failed: ${errors.join(', ')}. Auto-refresh: every 60 seconds. Large watchlists may depend on Finnhub rate limits.`;
     } else {
-      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Auto-refresh: every 60 seconds.`;
+      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Auto-refresh: every 60 seconds. Large watchlists may depend on Finnhub rate limits.`;
     }
   }
 }
 
-function addTickerFromSearch() {
+async function addTickerFromSearch() {
   const input = document.getElementById('stockSearch');
   const symbol = input.value.trim().toUpperCase().replace(/[^A-Z.\-]/g,'');
   if (!symbol) return;
-  if (!stockSymbols.includes(symbol)) stockSymbols.unshift(symbol);
-  input.value = '';
+
+  currentSearchSymbol = symbol;
+
+  if (!stockSymbols.includes(symbol)) {
+    stockSymbols.unshift(symbol);
+  }
+
+  const status = document.getElementById('liveStatus');
+  if (status) status.textContent = `Searching ${symbol}...`;
+
+  try {
+    const quote = await fetchQuote(symbol);
+    const existingIndex = liveStocks.findIndex(s => s.ticker === symbol);
+
+    if (existingIndex >= 0) {
+      liveStocks[existingIndex] = quote;
+    } else {
+      liveStocks.unshift(quote);
+    }
+
+    lastUpdated = new Date();
+    renderStocks();
+    renderTicker();
+
+    if (status) {
+      status.textContent = `Showing only ${symbol}. Price updated ${lastUpdated.toLocaleTimeString()}. Click Show All to return to the full watchlist.`;
+    }
+  } catch (err) {
+    console.warn(err);
+    renderStocks();
+    if (status) status.textContent = `Could not find live data for ${symbol}. Check the ticker symbol or your Finnhub limit/API key.`;
+  }
+}
+
+function showAllStocks() {
+  currentSearchSymbol = '';
+  const input = document.getElementById('stockSearch');
+  if (input) input.value = '';
   loadLiveStocks(true);
 }
 
 function getFiltered() {
   let data = [...liveStocks];
 
+  if (currentSearchSymbol) {
+    data = data.filter(s => s.ticker === currentSearchSymbol);
+    return data;
+  }
+
   if (currentSector !== 'all') {
     data = data.filter(s => s.sector === currentSector);
   }
 
-  if (currentSort === 'week' || currentSort === 'month' || currentSort === 'top') {
+  if (currentSort === 'top' || currentSort === 'gainers') {
     data.sort((a,b) => b.day - a.day);
-  } else if (currentSort === 'longterm') {
-    const longTerm = ['VOO','SPY','VTI','QQQ','AAPL','MSFT','GOOGL'];
-    data.sort((a,b) => longTerm.indexOf(a.ticker) - longTerm.indexOf(b.ticker));
-  } else if (currentSort === 'etf') {
-    data = data.filter(s => s.sector === 'etf' || ['VOO','SPY','QQQ','VTI'].includes(s.ticker));
+  } else if (currentSort === 'losers') {
+    data.sort((a,b) => a.day - b.day);
   } else if (currentSort === 'movers') {
     data.sort((a,b) => Math.abs(b.day) - Math.abs(a.day));
-  } else if (currentSort === 'undervalued') {
-    data.sort((a,b) => a.day - b.day);
+  } else if (currentSort === 'priceHigh') {
+    data.sort((a,b) => b.price - a.price);
+  } else if (currentSort === 'priceLow') {
+    data.sort((a,b) => a.price - b.price);
+  } else if (currentSort === 'alphabetical') {
+    data.sort((a,b) => a.ticker.localeCompare(b.ticker));
+  } else if (currentSort === 'longterm') {
+    const longTerm = ['VOO','SPY','VTI','QQQ','SCHD','VYM','AAPL','MSFT','GOOGL','AMZN','JPM','COST'];
+    data.sort((a,b) => {
+      const ai = longTerm.includes(a.ticker) ? longTerm.indexOf(a.ticker) : 999;
+      const bi = longTerm.includes(b.ticker) ? longTerm.indexOf(b.ticker) : 999;
+      return ai - bi || b.day - a.day;
+    });
+  } else if (currentSort === 'etf') {
+    data = data.filter(s => s.sector === 'etf');
+    data.sort((a,b) => b.day - a.day);
   } else if (currentSort === 'dividend') {
-    const dividend = ['O','JNJ','KO','PEP','VZ','T','XOM','CVX'];
-    data.sort((a,b) => dividend.indexOf(a.ticker) - dividend.indexOf(b.ticker));
+    const dividend = ['SCHD','VYM','KO','PEP','PG','JNJ','XOM','CVX','JPM','MCD','VZ','T'];
+    data = data.filter(s => dividend.includes(s.ticker));
+    data.sort((a,b) => {
+      const ai = dividend.indexOf(a.ticker);
+      const bi = dividend.indexOf(b.ticker);
+      return ai - bi;
+    });
   }
 
   return data;
@@ -831,7 +1142,7 @@ function renderStocks() {
     const rating = getRating(s);
     const badgeClass = rating === 'BUY' ? 'badge-buy' : rating === 'HOLD' ? 'badge-hold' : 'badge-watch';
 
-    const locked = !isPro && index >= 10;
+    const locked = !currentSearchSymbol && !isPro && index >= 3;
     if (locked) {
       html += `<tr class="stock-row locked-row">
         <td><div class="stock-info"><div class="s-icon" style="background:#333;color:#777">?</div><div><div class="s-ticker">PRO</div><div class="s-name">Unlock more live stocks</div></div></div></td>
@@ -853,14 +1164,14 @@ function renderStocks() {
   if (!isPro && filtered.length > 10) {
     html += `<tr><td colspan="6" class="lock-overlay-cell">
       <div class="lock-banner">
-        <p>🔒 <strong>${filtered.length - 10} more live stocks</strong> are locked. Upgrade to Pro for unlimited watchlist results.</p>
+        <p>🔒 <strong>${filtered.length - 3} more live stocks</strong> are locked. Free users see the top 3. Upgrade to Pro for the full watchlist.</p>
         <button class="unlock-btn" onclick="openModal()">Unlock Pro →</button>
       </div>
     </td></tr>`;
   }
 
   if (filtered.length === 0) {
-    html = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted)">No stocks found. Try adding a ticker like AAPL, NVDA, or VOO.</td></tr>`;
+    html = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted)">No matching stock found. Try a ticker like AAPL, NVDA, TSLA, VOO, or SPY.</td></tr>`;
   }
 
   body.innerHTML = html;
@@ -891,18 +1202,47 @@ function toggleDropdown(which) {
   if (!isOpen) { menu.classList.add('show'); btn.classList.add('open'); }
 }
 
+
+function quickSort(val, btn) {
+  currentSearchSymbol = '';
+  const input = document.getElementById('stockSearch');
+  if (input) input.value = '';
+  currentSort = val;
+  document.querySelectorAll('.sort-chip').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const labels = {
+    top:'⭐ Top Today',
+    gainers:'📈 Biggest Gainers',
+    losers:'📉 Biggest Losers',
+    movers:'🚀 Biggest Movers',
+    priceHigh:'💵 Highest Price',
+    priceLow:'🪙 Lowest Price',
+    alphabetical:'🔤 A–Z',
+    etf:'🛡 ETFs Only'
+  };
+  document.getElementById('sortLabel').textContent = labels[val] || '⭐ Top Today';
+  renderStocks();
+}
+
 function setSort(val, label) {
-  const proSorts = ['movers','undervalued','dividend'];
-  if (proSorts.includes(val) && !isPro) { openModal(); closeDropdowns(); return; }
+  currentSearchSymbol = '';
+  const input = document.getElementById('stockSearch');
+  if (input) input.value = '';
   currentSort = val;
   document.getElementById('sortLabel').textContent = label;
   document.querySelectorAll('#sortMenu .dropdown-item').forEach(i => i.classList.remove('active'));
-  event.target.classList.add('active');
+  if (event && event.target) event.target.classList.add('active');
+
+  document.querySelectorAll('.sort-chip').forEach(b => b.classList.remove('active'));
   closeDropdowns();
   renderStocks();
 }
 
 function setSector(val, label) {
+  currentSearchSymbol = '';
+  const input = document.getElementById('stockSearch');
+  if (input) input.value = '';
   currentSector = val;
   document.getElementById('sectorLabel').textContent = label;
   document.querySelectorAll('#sectorMenu .dropdown-item').forEach(i => i.classList.remove('active'));
