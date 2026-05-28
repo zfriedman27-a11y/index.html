@@ -3046,6 +3046,110 @@ body {
   display: block;
 }
 
+
+/* DASHBOARD HOME CLEANUP */
+#dashboard.page-section:not(.active-page) {
+  display: none !important;
+}
+
+/* Hide the quiz/profile summary card on Dashboard, keep Recommended Flow */
+#dashboard [data-dashboard-profile="true"],
+#dashboard .dashboard-profile-card,
+#dashboard .profile-summary-card,
+#dashboard .hype-profile-card {
+  display: none !important;
+}
+
+#dashboard [data-dashboard-flow="true"],
+#dashboard .recommended-flow,
+#dashboard .flow-card {
+  display: block !important;
+  width: 100% !important;
+  max-width: 1180px !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+#dashboard .dashboard-grid,
+#dashboard .dashboard-cards,
+#dashboard .dashboard-layout,
+#dashboard .profile-dashboard-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  max-width: 1180px !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+
+/* DASHBOARD TAKE QUIZ PROMPT */
+.dashboard-quiz-prompt {
+  width: min(760px, calc(100vw - 64px));
+  margin: 72px 40px;
+  padding: 34px;
+  border-radius: 26px;
+  border: 1px solid rgba(255,255,255,0.11);
+  background:
+    radial-gradient(circle at 16% 12%, rgba(82,214,255,0.10), transparent 36%),
+    rgba(16,20,29,0.82);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+}
+
+.dashboard-quiz-prompt .section-tag {
+  margin-bottom: 10px;
+}
+
+.dashboard-quiz-prompt h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(34px, 4vw, 58px);
+  line-height: 1.02;
+  letter-spacing: -1.3px;
+  margin-bottom: 12px;
+}
+
+.dashboard-quiz-prompt p {
+  color: var(--muted2);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 560px;
+  margin-bottom: 22px;
+}
+
+.dashboard-take-quiz-btn {
+  border: none;
+  border-radius: 16px;
+  padding: 15px 26px;
+  background: linear-gradient(135deg, var(--future2, #52d6ff), var(--future, #38f2b5));
+  color: #041018;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 1000;
+  cursor: pointer;
+  box-shadow: 0 16px 38px rgba(56,242,181,0.13);
+}
+
+.dashboard-take-quiz-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+@media(max-width:700px){
+  .dashboard-quiz-prompt {
+    width: calc(100vw - 36px);
+    margin: 44px 18px;
+    padding: 24px;
+  }
+}
+
+
+/* HIDE OLD DASHBOARD PROFILE SUMMARY */
+#dashboard [data-dashboard-profile="true"],
+#dashboard .profile-summary-card,
+#dashboard .dashboard-profile-card,
+#dashboard .hype-profile-card {
+  display: none !important;
+}
+
 </style>
 </head>
 <body>
@@ -6080,6 +6184,7 @@ if (new URLSearchParams(window.location.search).get('pro') === 'true') {
     const planIndicator = document.getElementById('planIndicator');
     if (planIndicator) planIndicator.innerHTML = '<span class="premium-badge">PRO TEST</span>';
     updateProToolAccess();
+setTimeout(buildDashboardQuizPrompt, 350);
     renderStocks();
   }, 500);
 }
@@ -6213,6 +6318,7 @@ function showAppPage(page, btn) {
   const tabs = document.getElementById('appPageTabs');
   if (tabs) setTimeout(() => tabs.scrollIntoView({ behavior: 'smooth', block: 'start' }), 20);
   setTimeout(ensureDashboardHasFlow, 40);
+  setTimeout(buildDashboardQuizPrompt, 60);
 }
 
 function navigateToAppItem(item) {
@@ -6386,63 +6492,17 @@ function scrollToStartHere() {
 
 
 function cleanDashboardLayout() {
-  const dashboard = document.getElementById('dashboard');
-  if (!dashboard) return;
-
-  // Find the actual Recommended Flow card first.
-  const candidates = Array.from(dashboard.querySelectorAll('div'));
-  const flowCard = candidates.find(el => {
-    const text = (el.textContent || '').toLowerCase();
-    return text.includes('recommended flow') &&
-           text.includes('find your profile') &&
-           text.includes('review top stocks for me');
-  });
-
-  if (flowCard) {
-    flowCard.dataset.dashboardFlow = 'true';
-    flowCard.style.display = 'block';
-    flowCard.style.width = '100%';
-    flowCard.style.maxWidth = '1180px';
-    flowCard.style.minHeight = '360px';
-    flowCard.style.marginLeft = '0';
-    flowCard.style.marginRight = 'auto';
-
-    const parent = flowCard.parentElement;
-    if (parent) {
-      parent.style.display = 'grid';
-      parent.style.gridTemplateColumns = '1fr';
-      parent.style.gap = '22px';
-      parent.style.maxWidth = '1180px';
-      parent.style.marginLeft = '0';
-      parent.style.marginRight = 'auto';
-    }
-  }
-
-  // Hide only the sibling profile summary card that contains Hype Chaser/Growth Explorer and Retake Quiz.
-  if (flowCard && flowCard.parentElement) {
-    Array.from(flowCard.parentElement.children).forEach(child => {
-      if (child === flowCard) return;
-      const text = (child.textContent || '').toLowerCase();
-      const looksLikeProfileSummary =
-        text.includes('risk comfort') &&
-        text.includes('best first tool') &&
-        text.includes('profile matches') &&
-        text.includes('retake quiz');
-
-      if (looksLikeProfileSummary) {
-        child.dataset.dashboardProfile = 'true';
-        child.style.display = 'none';
-      } else {
-        child.style.display = '';
-      }
-    });
-  }
+  buildDashboardQuizPrompt();
 }
 
 
 function ensureDashboardHasFlow() {
+  buildDashboardQuizPrompt();
   const dashboard = document.getElementById('dashboard');
   if (!dashboard) return;
+
+  // Do not generate or reveal dashboard content unless the Dashboard tab is active.
+  if (!dashboard.classList.contains('active-page')) return;
 
   cleanDashboardLayout();
 
@@ -6469,9 +6529,63 @@ function ensureDashboardHasFlow() {
   dashboard.appendChild(wrap);
 }
 
+
+function buildDashboardQuizPrompt() {
+  const dashboard = document.getElementById('dashboard');
+  if (!dashboard) return;
+
+  // Remove profile summary / Hype Chaser boxes.
+  Array.from(dashboard.querySelectorAll('div')).forEach(el => {
+    const text = (el.textContent || '').toLowerCase();
+    const isOldProfileBox =
+      text.includes('the hype chaser') ||
+      (
+        text.includes('risk comfort') &&
+        text.includes('long-term mindset') &&
+        text.includes('etf readiness') &&
+        text.includes('retake quiz')
+      ) ||
+      (
+        text.includes('risk comfort') &&
+        text.includes('best first tool') &&
+        text.includes('profile matches')
+      );
+
+    if (isOldProfileBox && !text.includes('recommended flow')) {
+      el.remove();
+    }
+  });
+
+  if (dashboard.querySelector('.dashboard-quiz-prompt')) return;
+
+  const prompt = document.createElement('div');
+  prompt.className = 'dashboard-quiz-prompt';
+  prompt.innerHTML = `
+    <div class="section-tag">Investor Profile</div>
+    <h2>TAKE QUIZ</h2>
+    <p>Answer the profile questions to unlock your risk style, investing habits, and better stock match rankings.</p>
+    <button class="dashboard-take-quiz-btn" onclick="goToQuizFromDashboard()">TAKE QUIZ →</button>
+  `;
+
+  // Put this prompt at the top of the Dashboard tab.
+  dashboard.prepend(prompt);
+}
+
+function goToQuizFromDashboard() {
+  if (typeof showAppPage === 'function') showAppPage('profile');
+
+  setTimeout(() => {
+    if (typeof openInvestorQuiz === 'function') {
+      openInvestorQuiz();
+    } else {
+      document.getElementById('investorProfileQuiz')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 120);
+}
+
 // INIT
 showPlanChoiceOnLoad();
-setTimeout(ensureDashboardHasFlow, 300);
+
 updateProfileMiniCard();
 updateProfileGuidance();
 updateDashboardProfileCard();
