@@ -8,10 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#090b10; --surface:#10141d; --surface2:#151b26;
+  --bg:#080d14; --surface:#111a26; --surface2:#172333;
   --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
-  --accent:#7fb3ff; --accentSoft:#172238; --accent2:#8c7dff;
-  --text:#f5f7fb; --muted:#828a9a; --muted2:#b5bdcc;
+  --accent:#52d6ff; --accentSoft:#10283a; --accent2:#8b5cf6;
+  --text:#f5f7fb; --muted:#8b97aa; --muted2:#c5d0e3;
   --red:#ff4d6a; --green:#22c55e; --amber:#f7c35f;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -2206,6 +2206,194 @@ nav {
   .dashboard-metric-grid{grid-template-columns:1fr}
 }
 
+
+/* YOUTHFUL READABILITY REFRESH */
+:root {
+  --future:#38f2b5;
+  --future2:#52d6ff;
+  --purpleGlow:#8b5cf6;
+}
+
+body {
+  background:
+    radial-gradient(circle at 14% 6%, rgba(82,214,255,0.12), transparent 28%),
+    radial-gradient(circle at 82% 12%, rgba(139,92,246,0.11), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(56,242,181,0.08), transparent 34%),
+    var(--bg) !important;
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 88% 20%, rgba(82,214,255,0.12), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0));
+}
+
+.hero h1 {
+  max-width: 820px;
+}
+
+.hero h1 em {
+  background: linear-gradient(135deg, var(--future2), var(--future), #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.hero p,
+.dashboard-sub,
+.guide-sub,
+.different-sub,
+.quiz-sub {
+  color: #d4deef !important;
+}
+
+.btn-primary,
+.nav-cta,
+.stock-search-btn,
+.tool-button,
+.send-btn,
+.plan-choice-btn.pro,
+.price-btn.pro {
+  background: linear-gradient(135deg, var(--future2), var(--future)) !important;
+  color: #041018 !important;
+  font-weight: 900 !important;
+}
+
+.btn-ghost,
+.stock-search-btn.secondary,
+.dropdown-btn,
+.sort-chip,
+.tool-tab,
+.quiz-option,
+.menu-link {
+  background: rgba(255,255,255,0.055) !important;
+  border-color: rgba(255,255,255,0.13) !important;
+}
+
+.dashboard-card,
+.site-map-card,
+.why-card,
+.guide-card,
+.quiz-card,
+.quiz-result-card,
+.tool-card,
+.tool-input-card,
+.tool-output,
+.price-card {
+  border-color: rgba(255,255,255,0.12) !important;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.22);
+}
+
+.section-tag {
+  color: var(--future2) !important;
+}
+
+.stat-num,
+.why-card h3,
+.guide-card h3,
+.dashboard-card h3,
+.profile-guidance-card h3,
+.pro-tools-teaser h3 {
+  color: var(--future2) !important;
+}
+
+.future-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(56,242,181,0.10);
+  border: 1px solid rgba(56,242,181,0.20);
+  color: var(--future);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.future-tagline::before {
+  content: "✦";
+}
+
+.readable-copy {
+  max-width: 680px;
+  color: #d4deef;
+  font-size: 16px;
+  line-height: 1.72;
+}
+
+.dashboard-section,
+.site-map-section,
+.quiz-gateway,
+.different-section,
+.stocks-section,
+.pricing-section {
+  scroll-margin-top: 80px;
+}
+
+.stock-table th,
+.stock-row td {
+  font-size: 13px;
+}
+
+.stock-note,
+.live-status,
+.disclaimer,
+.modal-trial-note {
+  color: #98a7bb !important;
+}
+
+@media(max-width:850px){
+  .hero {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+  .stat-strip {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media(max-width:540px){
+  .stat-strip {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* STUDENT-FRIENDLY VALUE STRIP */
+.value-strip {
+  padding: 18px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background: rgba(255,255,255,0.018);
+}
+
+.value-strip-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.value-pill {
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  padding: 14px 16px;
+  color: #d4deef;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.value-pill strong {
+  color: var(--future);
+}
+
+@media(max-width:850px){
+  .value-strip{padding-left:18px;padding-right:18px}
+  .value-strip-inner{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -2498,13 +2686,24 @@ nav {
 <section class="hero">
   <div class="hero-glow"></div>
   <div class="hero-inner">
+    <div class="future-tagline">Built for beginners with big futures</div>
     <h1>Investing,<br><em>finally simple.</em></h1>
-    <p>A simple investing guide that explains stocks, ETFs, risks, and market ideas without controlling your money.</p>
+    <p>A cleaner way to learn stocks, ETFs, risk, and smart money habits — without noise, pressure, or confusing dashboards.</p>
     <div class="hero-btns">
       <button class="btn-primary" onclick="openInvestorQuiz()">Take Investor Quiz →</button>
       <button class="btn-ghost" onclick="document.getElementById('stocks').scrollIntoView({behavior:'smooth'})">See Live Stocks</button>
     </div>
-    <p class="free-note"><strong>You stay in control.</strong> Cash Flo explains ideas, but never places trades.</p>
+    <p class="free-note"><strong>You stay in control.</strong> Cash Flo helps you learn, compare, and slow down before real decisions.</p>
+  </div>
+</section>
+
+
+<!-- STUDENT-FRIENDLY VALUE STRIP -->
+<section class="value-strip">
+  <div class="value-strip-inner">
+    <div class="value-pill"><strong>For beginners:</strong> plain English, not finance jargon.</div>
+    <div class="value-pill"><strong>For future goals:</strong> learn habits before chasing hype.</div>
+    <div class="value-pill"><strong>For control:</strong> Cash Flo guides research, but you make the decision.</div>
   </div>
 </section>
 
@@ -2542,9 +2741,9 @@ nav {
     <div class="dashboard-top">
       <div>
         <div class="section-tag">Your Cash Flo Dashboard</div>
-        <div class="dashboard-title">One clean path, not a crowded app.</div>
+        <div class="dashboard-title">Your future money dashboard.</div>
       </div>
-      <p class="dashboard-sub">Take the quiz, get your investor profile, then use Cash Flo’s tools in the right order for your risk style and goals.</p>
+      <p class="dashboard-sub">Start with your goals, learn your risk style, then research stocks in a way that actually makes sense.</p>
     </div>
 
     <div class="dashboard-grid">
@@ -2588,7 +2787,7 @@ nav {
 <section class="site-map-section" id="startHere">
   <div class="site-map-inner">
     <div class="section-tag">Start here</div>
-    <div class="guide-title">Choose your next step.</div>
+    <div class="guide-title">Pick where you want to start.</div>
     <div class="site-map-grid">
       <div class="site-map-card" onclick="openInvestorQuiz()">
         <h3>1. Investor Profile Quiz</h3>
@@ -2788,8 +2987,8 @@ nav {
 <!-- WHY CASH FLO -->
 <section class="why-section">
   <div class="section-tag">Why Cash Flo?</div>
-  <h2>Better than guessing from random videos.</h2>
-  <p>Cash Flo helps beginners understand investing without confusion or hours of searching.</p>
+  <h2>Less random advice. More clear next steps.</h2>
+  <p>Cash Flo helps beginners understand investing without confusion, hype, or hours of searching.</p>
 
   <div class="embedded-advisor" id="advisor">
     <div class="advisor-inner">
@@ -2911,9 +3110,9 @@ nav {
     <div class="different-top">
       <div>
         <div class="section-tag">Pro Tools</div>
-        <div class="different-title">Pro members get the guided research path.</div>
+        <div class="different-title">Pro turns your quiz into a research path.</div>
       </div>
-      <p class="different-sub">Free users get the simple guide and starter watchlist. Pro members unlock structured tools like risk checks, ETF comparisons, mistake detection, and watchlist building.</p>
+      <p class="different-sub">Free gives you the basics. Pro uses your quiz to guide Risk Check, ETF Compare, Before You Buy, Watchlist Builder, and Mistake Detector.</p>
     </div>
 
 
@@ -3080,7 +3279,7 @@ nav {
 <!-- STOCKS -->
 <section id="stocks" class="stocks-section">
   <div class="stocks-top">
-    <div class="stocks-title">Live Stock Tracker</div>
+    <div class="stocks-title">Stock Tracker</div>
     <div class="stocks-controls">
       <div class="stock-search-wrap">
         <input class="stock-search" id="stockSearch" placeholder="Search any ticker, ex: AAPL" />
@@ -3170,7 +3369,7 @@ nav {
 <section class="pricing-section">
   <div class="pricing-inner">
     <div class="section-tag" style="text-align:center">Pricing</div>
-    <div class="pricing-title">Start free. Stay for $5.</div>
+    <div class="pricing-title">Start free. Upgrade when you’re ready.</div>
     <p class="pricing-sub">Google sign-up works now. Payment setup is coming later.</p>
     <div class="pricing-grid">
       <div class="price-card">
@@ -4343,10 +4542,10 @@ function getPersonalFit(stock) {
   let cls = 'fit-mid';
 
   if (score >= 90) {
-    label = `${score}% match · Strong Fit`;
+    label = `${score}% match · Strong Match`;
     cls = 'fit-good';
   } else if (score >= 78) {
-    label = `${score}% match · Likely Fit`;
+    label = `${score}% match · Likely Match`;
     cls = 'fit-good';
   } else if (score < 45 || (riskNum > 75 && riskComfort < 50)) {
     label = `${score}% match · High Risk for You`;
@@ -4838,7 +5037,31 @@ function changeChartRange(range, btn) {
 }
 
 function getTradingViewSymbol(symbol) {
-  return tradingViewSymbolMap[symbol] || symbol;
+  const s = String(symbol || '').trim().toUpperCase();
+
+  if (tradingViewSymbolMap[s]) return tradingViewSymbolMap[s];
+
+  // Smart fallback for searched tickers not in the starter list.
+  // TradingView needs an exchange prefix for many symbols.
+  const sector = symbolSector[s] || 'other';
+
+  const nasdaqLikely = [
+    'AAPL','MSFT','NVDA','AMZN','GOOGL','GOOG','META','AMD','AVGO','NFLX','ADBE','INTC','QCOM','CSCO','TXN',
+    'COST','SBUX','PEP','LULU','ABNB','ISRG','AMGN','GILD','HON','QQQ'
+  ];
+
+  const amexLikelyEtfs = [
+    'VOO','SPY','VTI','DIA','IWM','SCHD','VYM','XLK','XLF','XLE','XLV','ARKK'
+  ];
+
+  if (amexLikelyEtfs.includes(s) || sector === 'etf') return `AMEX:${s}`;
+  if (nasdaqLikely.includes(s)) return `NASDAQ:${s}`;
+
+  // Most large U.S. non-NASDAQ stocks are NYSE.
+  if (['finance','industrial','energy','healthcare','consumer'].includes(sector)) return `NYSE:${s}`;
+
+  // Last fallback: TradingView will try to resolve it.
+  return s;
 }
 
 function getTradingViewInterval(range) {
@@ -4870,7 +5093,7 @@ function loadTradingViewIframe(symbol, range) {
   if (!iframe) return;
 
   if (loading) loading.style.display = 'flex';
-  if (note) note.textContent = `Loading ${symbol} ${range} from TradingView...`;
+  if (note) note.textContent = `Loading ${symbol} ${range} from TradingView... If a searched ticker does not load, try the official ticker symbol or exchange version.`;
 
   const tvSymbol = encodeURIComponent(getTradingViewSymbol(symbol));
   const interval = encodeURIComponent(getTradingViewInterval(range));
@@ -4894,7 +5117,7 @@ function loadTradingViewIframe(symbol, range) {
 
   iframe.onload = () => {
     if (loading) loading.style.display = 'none';
-    if (note) note.textContent = `${symbol} ${range} is displayed through TradingView. Cash Flo is not using Finnhub candles for charts.`;
+    if (note) note.textContent = `${symbol} ${range} is displayed through TradingView. If a chart does not appear for a searched ticker, the symbol may need a different exchange prefix.`;
   };
 
   setTimeout(() => {
