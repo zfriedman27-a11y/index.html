@@ -2215,7 +2215,7 @@ nav {
     <h1>Investing,<br><em>finally simple.</em></h1>
     <p>A simple investing guide that explains stocks, ETFs, risks, and market ideas without controlling your money.</p>
     <div class="hero-btns">
-      <button class="btn-primary" onclick="document.getElementById('investorProfileQuiz').scrollIntoView({behavior:'smooth'})">Take Investor Quiz →</button>
+      <button class="btn-primary" onclick="openInvestorQuiz()">Take Investor Quiz →</button>
       <button class="btn-ghost" onclick="document.getElementById('stocks').scrollIntoView({behavior:'smooth'})">See Live Stocks</button>
     </div>
     <p class="free-note"><strong>You stay in control.</strong> Cash Flo explains ideas, but never places trades.</p>
@@ -2419,7 +2419,7 @@ nav {
       <div class="quiz-result-card" id="quizResult">
         <div class="quiz-type-pill">🧭 Waiting for answers</div>
         <div class="quiz-result-title">Your investor type will show here.</div>
-        <p style="color:var(--muted2);font-size:14px">Answer the 5 questions and Cash Flo will give you a beginner profile, risk level, goals, and a simple next-step plan.</p>
+        <p style="color:var(--muted2);font-size:14px">Answer the 10 questions and Cash Flo will give you a beginner profile, risk level, goals, and a simple next-step plan.</p>
 
         <div class="quiz-score-bars">
           <div class="quiz-bar-row">
@@ -2740,16 +2740,16 @@ nav {
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
         <div class="dropdown-menu" id="sortMenu">
-          <div class="dropdown-item active" onclick="setSort('top','⭐ Top Today')">⭐ Top Today</div>
-          <div class="dropdown-item" onclick="setSort('gainers','📈 Biggest Gainers')">📈 Biggest Gainers</div>
-          <div class="dropdown-item" onclick="setSort('losers','📉 Biggest Losers')">📉 Biggest Losers</div>
-          <div class="dropdown-item" onclick="setSort('movers','🚀 Biggest Movers')">🚀 Biggest Movers</div>
-          <div class="dropdown-item" onclick="setSort('priceHigh','💵 Highest Price')">💵 Highest Price</div>
-          <div class="dropdown-item" onclick="setSort('priceLow','🪙 Lowest Price')">🪙 Lowest Price</div>
-          <div class="dropdown-item" onclick="setSort('alphabetical','🔤 A–Z')">🔤 A–Z</div>
-          <div class="dropdown-item" onclick="setSort('longterm','🏆 Long-Term Ideas')">🏆 Long-Term Ideas</div>
-          <div class="dropdown-item" onclick="setSort('etf','🛡 ETFs Only')">🛡 ETFs Only</div>
-          <div class="dropdown-item" onclick="setSort('dividend','💰 Dividend Watchlist')">💰 Dividend Watchlist</div>
+          <div class="dropdown-item active" onclick="setSort('top','⭐ Top Today', event)">⭐ Top Today</div>
+          <div class="dropdown-item" onclick="setSort('gainers','📈 Biggest Gainers', event)">📈 Biggest Gainers</div>
+          <div class="dropdown-item" onclick="setSort('losers','📉 Biggest Losers', event)">📉 Biggest Losers</div>
+          <div class="dropdown-item" onclick="setSort('movers','🚀 Biggest Movers', event)">🚀 Biggest Movers</div>
+          <div class="dropdown-item" onclick="setSort('priceHigh','💵 Highest Price', event)">💵 Highest Price</div>
+          <div class="dropdown-item" onclick="setSort('priceLow','🪙 Lowest Price', event)">🪙 Lowest Price</div>
+          <div class="dropdown-item" onclick="setSort('alphabetical','🔤 A–Z', event)">🔤 A–Z</div>
+          <div class="dropdown-item" onclick="setSort('longterm','🏆 Long-Term Ideas', event)">🏆 Long-Term Ideas</div>
+          <div class="dropdown-item" onclick="setSort('etf','🛡 ETFs Only', event)">🛡 ETFs Only</div>
+          <div class="dropdown-item" onclick="setSort('dividend','💰 Dividend Watchlist', event)">💰 Dividend Watchlist</div>
         </div>
       </div>
       <!-- SECTOR DROPDOWN -->
@@ -2759,18 +2759,17 @@ nav {
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
         <div class="dropdown-menu" id="sectorMenu">
-          <div class="dropdown-item active" onclick="setSector('all','All Sectors')">All Sectors</div>
-          <div class="dropdown-item" onclick="setSector('tech','💻 Tech')">💻 Tech</div>
-          <div class="dropdown-item" onclick="setSector('finance','🏦 Finance')">🏦 Finance</div>
-          <div class="dropdown-item" onclick="setSector('consumer','🛍 Consumer')">🛍 Consumer</div>
-          <div class="dropdown-item" onclick="setSector('healthcare','🧬 Healthcare')">🧬 Healthcare</div>
-          <div class="dropdown-item" onclick="setSector('energy','⚡ Energy')">⚡ Energy</div>
-          <div class="dropdown-item" onclick="setSector('industrial','🏗 Industrial')">🏗 Industrial</div>
-          <div class="dropdown-item" onclick="setSector('etf','🛡 ETFs')">🛡 ETFs</div>
+          <div class="dropdown-item active" onclick="setSector('all','All Sectors', event)">All Sectors</div>
+          <div class="dropdown-item" onclick="setSector('tech','💻 Tech', event)">💻 Tech</div>
+          <div class="dropdown-item" onclick="setSector('finance','🏦 Finance', event)">🏦 Finance</div>
+          <div class="dropdown-item" onclick="setSector('consumer','🛍 Consumer', event)">🛍 Consumer</div>
+          <div class="dropdown-item" onclick="setSector('healthcare','🧬 Healthcare', event)">🧬 Healthcare</div>
+          <div class="dropdown-item" onclick="setSector('energy','⚡ Energy', event)">⚡ Energy</div>
+          <div class="dropdown-item" onclick="setSector('industrial','🏗 Industrial', event)">🏗 Industrial</div>
+          <div class="dropdown-item" onclick="setSector('etf','🛡 ETFs', event)">🛡 ETFs</div>
         </div>
       </div>
     </div>
-</div>
   </div>
 
   <div class="sort-chip-row" id="quickSortRow">
@@ -2872,7 +2871,7 @@ let activeColumnDirection = 'desc';
 // LIVE STOCK DATA
 // Step 1: Create a free Finnhub account.
 // Step 2: Replace the placeholder below with your token.
-// Example: const FINNHUB_API_KEY = "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
+// Example: const FINNHUB_API_KEY = "PASTE_YOUR_FINNHUB_API_KEY_HERE";
 const FINNHUB_API_KEY = "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
 
 // This is your starting watchlist. Users can add any ticker with the search box.
@@ -3272,12 +3271,7 @@ async function addTickerFromSearch() {
   }
 }
 
-function showAllStocks() {
-  currentSearchSymbol = '';
-  const input = document.getElementById('stockSearch');
-  if (input) input.value = '';
-  loadLiveStocks(true);
-}
+
 
 
 function sortByColumn(column) {
@@ -3398,7 +3392,6 @@ function getRating(s) {
 }
 
 function renderStocks() {
-  // Emergency guard: if live data has not loaded yet, create backup demo prices immediately.
   if (!liveStocks || liveStocks.length === 0) {
     liveStocks = stockSymbols.map(sym => fallbackQuote(sym));
     lastUpdated = new Date();
@@ -3406,16 +3399,19 @@ function renderStocks() {
 
   const filtered = getFiltered();
   const body = document.getElementById('stockBody');
-  const freeTop = ['TSLA','AMZN','NVDA'];
+  if (!body) return;
+
+  const freeTop = ['TSLA', 'AMZN', 'NVDA'];
   let displayList = [];
 
   if (currentSearchSymbol) {
     displayList = filtered;
   } else if (isPro) {
-    // PRO USERS: show the real filter/sort result with no blur or fake shaded rows.
+    displayList = filtered;
+  } else if (watchlistOnly) {
+    // Free users can still see their saved watchlist, but chart/fit stays locked.
     displayList = filtered;
   } else {
-    // FREE USERS: show only TSLA, AMZN, and NVDA, then one clean unlock message.
     displayList = freeTop.map(t => liveStocks.find(s => s.ticker === t) || fallbackQuote(t));
   }
 
@@ -3427,7 +3423,7 @@ function renderStocks() {
   }
   updateHeaderSortArrows();
 
-  let html = '';
+  let htmlRows = '';
 
   displayList.forEach((s) => {
     const dayClass = s.day >= 0 ? 'up' : 'down';
@@ -3436,11 +3432,24 @@ function renderStocks() {
     const rating = getRating(s);
     const badgeClass = rating === 'BUY' ? 'badge-buy' : rating === 'HOLD' ? 'badge-hold' : 'badge-watch';
     const proClass = isPro ? '' : ' free-chart';
+    const favoriteClass = isFavorited(s.ticker) ? 'active' : '';
+    const favoriteIcon = isFavorited(s.ticker) ? '★' : '☆';
     const fit = getPersonalFit(s);
-    const fitHTML = isPro ? `<span class="fit-badge ${fit.cls}">${fit.label}</span>` : `<span class="fit-locked">Pro</span>`;
+    const fitHTML = isPro
+      ? `<span class="fit-badge ${fit.cls}">${fit.label}</span>`
+      : `<span class="fit-locked">Pro</span>`;
 
-    html += `<tr class="stock-row${proClass}" onclick="openStockChart('${s.ticker}')">
-      <td><button class="favorite-btn ${isFavorited(s.ticker) ? \'active\' : \'\'}" onclick="toggleFavorite(\'${s.ticker}\', event)" title="Add to watchlist">${isFavorited(s.ticker) ? \'★\' : \'☆\'}</button><div class="stock-info" style="display:inline-flex"><div class="s-icon" style="background:${s.color}22;color:${s.color}">${s.icon}</div><div><div class="s-ticker">${s.ticker}</div><div class="s-name">${s.name}</div></div></div></td>
+    htmlRows += `<tr class="stock-row${proClass}" onclick="openStockChart('${s.ticker}')">
+      <td>
+        <button class="favorite-btn ${favoriteClass}" onclick="toggleFavorite('${s.ticker}', event)" title="Add to watchlist">${favoriteIcon}</button>
+        <div class="stock-info" style="display:inline-flex">
+          <div class="s-icon" style="background:${s.color}22;color:${s.color}">${s.icon}</div>
+          <div>
+            <div class="s-ticker">${s.ticker}</div>
+            <div class="s-name">${s.name}</div>
+          </div>
+        </div>
+      </td>
       <td class="s-price">$${s.price.toFixed(2)}</td>
       <td class="${dayClass}" style="font-weight:600">${dayStr}</td>
       <td class="${dayClass}">${changeStr}</td>
@@ -3450,9 +3459,9 @@ function renderStocks() {
     </tr>`;
   });
 
-  if (!currentSearchSymbol && !isPro) {
+  if (!currentSearchSymbol && !isPro && !watchlistOnly) {
     const totalLocked = Math.max(0, filtered.length - 3);
-    html += `<tr><td colspan="7" class="lock-overlay-cell">
+    htmlRows += `<tr><td colspan="7" class="lock-overlay-cell">
       <div class="lock-banner clean-lock-banner">
         <p>🔒 <strong>${totalLocked} more stocks</strong> unlock with Pro. Free users see TSLA, AMZN, and NVDA.</p>
         <button class="unlock-btn" onclick="openModal()">Unlock Pro →</button>
@@ -3461,10 +3470,10 @@ function renderStocks() {
   }
 
   if (displayList.length === 0) {
-    html = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted)">${watchlistOnly ? 'Your watchlist is empty. Click the star next to stocks to save them.' : 'No stocks match this filter. Try All Sectors or Show All.'}</td></tr>`;
+    htmlRows = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted)">${watchlistOnly ? 'Your watchlist is empty. Click the star next to stocks to save them.' : 'No stocks match this filter. Try All Sectors or Show All.'}</td></tr>`;
   }
 
-  body.innerHTML = html;
+  body.innerHTML = htmlRows;
 }
 
 function renderTicker() {
@@ -3518,8 +3527,9 @@ function quickSort(val, btn) {
   renderStocks();
 }
 
-function setSort(val, label) {
+function setSort(val, label, evt) {
   currentSearchSymbol = '';
+  watchlistOnly = false;
   const input = document.getElementById('stockSearch');
   if (input) input.value = '';
   currentSort = val;
@@ -3528,21 +3538,21 @@ function setSort(val, label) {
   updateHeaderSortArrows();
   document.getElementById('sortLabel').textContent = label;
   document.querySelectorAll('#sortMenu .dropdown-item').forEach(i => i.classList.remove('active'));
-  if (event && event.target) event.target.classList.add('active');
+  if (evt && evt.target) evt.target.classList.add('active');
 
   document.querySelectorAll('.sort-chip').forEach(b => b.classList.remove('active'));
   closeDropdowns();
   renderStocks();
 }
 
-function setSector(val, label) {
+function setSector(val, label, evt) {
   currentSearchSymbol = '';
   const input = document.getElementById('stockSearch');
   if (input) input.value = '';
   currentSector = val;
   document.getElementById('sectorLabel').textContent = label;
   document.querySelectorAll('#sectorMenu .dropdown-item').forEach(i => i.classList.remove('active'));
-  event.target.classList.add('active');
+  if (evt && evt.target) evt.target.classList.add('active');
   closeDropdowns();
   renderStocks();
 }
@@ -3709,19 +3719,28 @@ function selectQuizOption(question, value, btn) {
 
 
 function openInvestorQuiz() {
+  const overlay = document.getElementById('appMenuOverlay');
+  if (overlay) overlay.classList.remove('show');
+
   const gateway = document.getElementById('investorQuizGateway');
   const quiz = document.getElementById('investorProfileQuiz');
+
   if (gateway) gateway.classList.add('hide');
-  if (quiz) quiz.classList.add('show');
-  setTimeout(() => quiz?.scrollIntoView({behavior:'smooth', block:'start'}), 50);
+  if (quiz) {
+    quiz.classList.add('show');
+    setTimeout(() => quiz.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
 }
 
 function closeInvestorQuiz() {
   const gateway = document.getElementById('investorQuizGateway');
   const quiz = document.getElementById('investorProfileQuiz');
+
   if (quiz) quiz.classList.remove('show');
-  if (gateway) gateway.classList.remove('hide');
-  setTimeout(() => gateway?.scrollIntoView({behavior:'smooth', block:'start'}), 50);
+  if (gateway) {
+    gateway.classList.remove('hide');
+    setTimeout(() => gateway.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
 }
 
 function getSavedProfile() {
@@ -3817,7 +3836,7 @@ function calculateInvestorProfile() {
     const result = document.getElementById('quizResult');
     result.innerHTML = `
       <div class="quiz-type-pill">⚠️ Finish the quiz</div>
-      <div class="quiz-result-title">Answer all 5 questions first.</div>
+      <div class="quiz-result-title">Answer all 10 questions first.</div>
       <p style="color:var(--muted2);font-size:14px">You still need to answer ${missing.length} question${missing.length === 1 ? '' : 's'} before Cash Flo can build your profile.</p>
     `;
     return;
@@ -3960,8 +3979,8 @@ function calculateInvestorProfile() {
     </div>
 
     <div class="quiz-actions">
-      <button class="btn-primary" onclick="jumpToSection('cashFloTools')">Go to Pro Tools →</button>
-      <button class="btn-ghost" onclick="jumpToSection('stocks')">View Watchlist</button>
+      <button class="btn-primary" onclick="closeInvestorQuiz(); setTimeout(() => jumpToSection('cashFloTools'), 100)">Go to Pro Tools →</button>
+      <button class="btn-ghost" onclick="closeInvestorQuiz(); setTimeout(() => jumpToSection('stocks'), 100)">View Watchlist</button>
     </div>
 
     <p class="quiz-saved-note">Saved in this browser. Educational only — this is not financial advice.</p>
@@ -3979,7 +3998,7 @@ function resetInvestorQuiz() {
   result.innerHTML = `
     <div class="quiz-type-pill">🧭 Waiting for answers</div>
     <div class="quiz-result-title">Your investor type will show here.</div>
-    <p style="color:var(--muted2);font-size:14px">Answer the 5 questions and Cash Flo will give you a beginner profile, risk level, goals, and a simple next-step plan.</p>
+    <p style="color:var(--muted2);font-size:14px">Answer the 10 questions and Cash Flo will give you a beginner profile, risk level, goals, and a simple next-step plan.</p>
     <div class="quiz-score-bars">
       <div class="quiz-bar-row"><div class="quiz-bar-label"><span>Risk comfort</span><span>—</span></div><div class="quiz-bar"><span style="width:0%"></span></div></div>
       <div class="quiz-bar-row"><div class="quiz-bar-label"><span>Long-term mindset</span><span>—</span></div><div class="quiz-bar"><span style="width:0%"></span></div></div>
@@ -4195,7 +4214,8 @@ if (new URLSearchParams(window.location.search).get('pro') === 'true') {
 
 
 
-// HAMBURGER MENU
+
+// HAMBURGER MENU SAFETY REPAIR
 function toggleAppMenu() {
   const overlay = document.getElementById('appMenuOverlay');
   if (overlay) overlay.classList.toggle('show');
@@ -4209,7 +4229,7 @@ function closeAppMenu(event) {
 }
 
 function toggleMenuSection(btn) {
-  const section = btn.closest('.menu-section');
+  const section = btn ? btn.closest('.menu-section') : null;
   if (!section) return;
   section.classList.toggle('open');
 }
@@ -4221,6 +4241,7 @@ function jumpToSection(id) {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
 
 function quickAskFromMenu(question) {
   const overlay = document.getElementById('appMenuOverlay');
@@ -4235,6 +4256,7 @@ function quickAskFromMenu(question) {
 }
 
 
+
 // OPENING PLAN CHOOSER
 function openPlanChoice() {
   const modal = document.getElementById('planChoiceModal');
@@ -4244,7 +4266,7 @@ function openPlanChoice() {
 function closePlanChoice() {
   const modal = document.getElementById('planChoiceModal');
   if (modal) modal.classList.remove('show');
-  
+  sessionStorage.setItem('cashFloPlanChoiceSeen', 'true');
 }
 
 function chooseFreePlan() {
@@ -4258,7 +4280,8 @@ function chooseProPlan() {
 }
 
 function showPlanChoiceOnLoad() {
-  setTimeout(openPlanChoice, 650);
+  const alreadySeen = sessionStorage.getItem('cashFloPlanChoiceSeen') === 'true';
+  if (!alreadySeen) setTimeout(openPlanChoice, 650);
 }
 
 document.getElementById('planChoiceModal')?.addEventListener('click', e => {
