@@ -2497,6 +2497,51 @@ body {
   }
 }
 
+
+.money-projection-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.money-projection-table th,
+.money-projection-table td {
+  padding: 9px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  font-size: 12px;
+  text-align: right;
+}
+
+.money-projection-table th:first-child,
+.money-projection-table td:first-child {
+  text-align: left;
+}
+
+.money-projection-table th {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  font-size: 10px;
+}
+
+.money-projection-table tr:last-child td {
+  border-bottom: none;
+}
+
+.money-goal-mode-pill {
+  display: inline-flex;
+  margin-top: 8px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(82,214,255,0.10);
+  border: 1px solid rgba(82,214,255,0.22);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 900;
+}
+
 </style>
 </head>
 <body>
@@ -3082,23 +3127,23 @@ body {
 
 
       <div class="money-goal-card" id="moneyGoalCalculator">
-        <h3>Future Money Goal Calculator</h3>
-        <p>Enter your goal and Cash Flo will estimate the average yearly return needed. It will then suggest what to research based on your quiz profile.</p>
+        <h3>Future Money Growth Calculator</h3>
+        <p>Enter your age, an average yearly return, and either a monthly amount OR a one-time amount. Cash Flo will project what it could become every 5 years.</p>
 
         <div class="money-goal-grid">
           <input class="money-goal-input" id="goalAgeNow" type="number" min="1" max="100" placeholder="Age now" />
+          <input class="money-goal-input" id="goalReturn" type="number" min="0" max="50" step="0.1" placeholder="Avg yearly return (%)" />
           <input class="money-goal-input" id="goalMonthly" type="number" min="0" placeholder="Monthly investing ($)" />
-          <input class="money-goal-input" id="goalAmount" type="number" min="1" placeholder="Goal amount ($)" />
-          <input class="money-goal-input" id="goalAgeTarget" type="number" min="1" max="120" placeholder="Goal age" />
+          <input class="money-goal-input" id="goalLumpSum" type="number" min="0" placeholder="Money putting in ($)" />
         </div>
 
         <div class="money-goal-actions">
-          <button class="btn-primary" onclick="calculateMoneyGoal()">Calculate Goal →</button>
-          <button class="btn-ghost" onclick="fillMillionExample()">Example: $1M</button>
+          <button class="btn-primary" onclick="calculateMoneyGoal()">Calculate Growth →</button>
+          <button class="btn-ghost" onclick="fillMillionExample()">Example: $10/mo</button>
         </div>
 
         <div class="money-goal-result" id="moneyGoalResult">
-          Fill in the boxes to see how realistic your goal is.
+          Fill in age, return %, and only one money box: monthly investing OR money putting in.
         </div>
 
         <p class="money-mini-note">Educational only. This does not tell you what to buy and does not guarantee returns.</p>
@@ -5242,6 +5287,7 @@ function buildWatchlist(){ if(!requireProTools('builder')) return;let list;if(bu
 function runMistakeDetector(){ if(!requireProTools('mistake')) return;const ticker=(document.getElementById('mistakeTicker').value||'this stock').trim().toUpperCase(); const percentRaw=document.getElementById('mistakePercent').value.trim(); const percent=Number(percentRaw.replace('%','')); const reason=(document.getElementById('mistakeReason').value||'').toLowerCase(); const warnings=[]; if(!percentRaw||Number.isNaN(percent)) warnings.push('You did not give a clear percentage. Beginners should know how much of their money one idea represents.'); else if(percent>=40) warnings.push(`Putting ${percent}% into ${ticker} may create major single-stock risk.`); else if(percent>=20) warnings.push(`Putting ${percent}% into ${ticker} may still be concentrated. Compare it to an ETF first.`); else warnings.push(`Your ${percent}% amount may be more controlled, but risk still depends on what else you own.`); if(reason.includes('tiktok')||reason.includes('hype')||reason.includes('everyone')||reason.includes('friend')) warnings.push('Your reason sounds hype-based. Slow down and check fundamentals, risk, and ETF alternatives.'); else if(!reason) warnings.push('You did not explain why you want it. If there is no reason, there is no plan.'); else warnings.push('You gave a reason. Now check if that reason is based on facts, not just excitement.'); warnings.push(`Compare ${ticker} to VOO, SPY, QQQ, or VTI before making any real-money decision.`); warnings.push('Cash Flo does not place trades. You stay responsible for every decision.'); document.getElementById('mistakeOutput').innerHTML=`<h3>${ticker} Mistake Check</h3><ul class="tool-list warning-list">${warnings.map(w=>`<li>${w}</li>`).join('')}</ul>`;}
 
 
+
 function formatMoneyGoal(num) {
   const n = Number(num || 0);
   return n.toLocaleString(undefined, { maximumFractionDigits: 0 });
@@ -5255,125 +5301,128 @@ function futureValueMonthly(monthly, years, annualReturn) {
   return monthly * ((Math.pow(1 + r, months) - 1) / r);
 }
 
-function requiredAnnualReturn(monthly, years, target) {
-  const months = years * 12;
-  if (monthly <= 0 || months <= 0 || target <= 0) return null;
-
-  if (monthly * months >= target) return 0;
-
-  let low = 0;
-  let high = 0.40; // 40% yearly cap for estimate
-  for (let i = 0; i < 80; i++) {
-    const mid = (low + high) / 2;
-    const fv = futureValueMonthly(monthly, years, mid);
-    if (fv >= target) high = mid;
-    else low = mid;
-  }
-
-  const needed = high * 100;
-  if (needed >= 39.9) return Infinity;
-  return needed;
+function futureValueLumpSum(amount, years, annualReturn) {
+  if (years <= 0) return amount;
+  return amount * Math.pow(1 + annualReturn, years);
 }
 
-function getGoalGuidanceByProfile(requiredPct) {
+function getGrowthGuidanceByProfile(returnPct, mode) {
   const profile = getSavedProfile();
 
   if (!profile) {
-    return "Take the Investor Profile Quiz first so Cash Flo can match this goal to your risk comfort. Until then, start by researching broad ETFs and basic risk.";
+    return "Take the Investor Profile Quiz first so Cash Flo can match this growth plan to your risk comfort. Until then, research broad ETFs and basic risk before individual stocks.";
   }
 
   const type = profile.type || "your profile";
   const risk = Number(profile.risk || 50);
   const longTerm = Number(profile.longTerm || 50);
 
-  if (requiredPct <= 7) {
-    if (risk < 45) {
-      return `Based on your profile (${type}), this goal may fit a cautious path. Research broad ETFs like VOO, VTI, or SPY and focus on consistency.`;
-    }
-    return `Based on your profile (${type}), this goal looks more realistic. Research broad ETFs first, then compare any individual stocks to ETFs before deciding.`;
+  if (returnPct <= 7) {
+    return `Based on your profile (${type}), this return target is more conservative. Research broad ETFs like VOO, VTI, or SPY and focus on consistency.`;
   }
 
-  if (requiredPct <= 10) {
+  if (returnPct <= 10) {
     if (longTerm >= 70) {
-      return `Based on your profile (${type}), this is possible but more ambitious. Research broad ETFs like VOO/VTI plus growth-heavy ETFs like QQQ before single stocks.`;
+      return `Based on your profile (${type}), this fits a long-term growth path. Research VOO/VTI first, then compare growth ETFs like QQQ before single stocks.`;
     }
-    return `Based on your profile (${type}), this may require more risk than a basic plan. Use Risk Check and Compare to ETF before focusing on individual growth stocks.`;
+    return `Based on your profile (${type}), this may be realistic over time but still has market risk. Use ETF comparisons before picking individual stocks.`;
   }
 
-  if (requiredPct <= 15) {
+  if (returnPct <= 15) {
     if (risk >= 65) {
-      return `Based on your profile (${type}), you may be comfortable with more risk, but this target is aggressive. Research growth ETFs like QQQ/XLK and only treat stocks like NVDA or TSLA as higher-risk watchlist ideas.`;
+      return `Based on your profile (${type}), you may be comfortable with higher risk, but this target is aggressive. Research QQQ/XLK and risk-check stocks like NVDA or TSLA before treating them as watchlist ideas.`;
     }
-    return `Based on your profile (${type}), this goal likely needs more risk than you may be comfortable with. Consider increasing monthly contributions or giving the money more time instead of chasing risky returns.`;
+    return `Based on your profile (${type}), this may be more risk than you are comfortable with. Consider lowering the return assumption or increasing the amount you invest.`;
   }
 
-  return `Based on your profile (${type}), this goal is very aggressive. It may require unrealistic returns. A safer move is to increase monthly investing, lower the goal, or extend the timeline.`;
+  return `Based on your profile (${type}), this return assumption is very aggressive and not safe to rely on. Consider using a lower return estimate, more time, or more money invested instead of chasing hype.`;
 }
 
 function calculateMoneyGoal() {
   const ageNow = Number(document.getElementById('goalAgeNow')?.value || 0);
+  const returnPct = Number(document.getElementById('goalReturn')?.value || 0);
   const monthly = Number(document.getElementById('goalMonthly')?.value || 0);
-  const target = Number(document.getElementById('goalAmount')?.value || 0);
-  const targetAge = Number(document.getElementById('goalAgeTarget')?.value || 0);
+  const lumpSum = Number(document.getElementById('goalLumpSum')?.value || 0);
   const result = document.getElementById('moneyGoalResult');
 
   if (!result) return;
 
-  if (!ageNow || !monthly || !target || !targetAge || targetAge <= ageNow) {
-    result.innerHTML = `<span class="warn">Fill in all boxes.</span> Make sure goal age is higher than age now.`;
+  if (!ageNow || ageNow <= 0 || returnPct < 0) {
+    result.innerHTML = `<span class="warn">Fill in your age and return %.</span>`;
     return;
   }
 
-  const years = targetAge - ageNow;
-  const needed = requiredAnnualReturn(monthly, years, target);
-  const fv75 = futureValueMonthly(monthly, years, 0.075);
-  const fv10 = futureValueMonthly(monthly, years, 0.10);
-
-  let realismClass = "good";
-  let realism = "Realistic";
-  let explanation = "This is within a more normal long-term market return range, though nothing is guaranteed.";
-
-  if (needed === Infinity) {
-    realismClass = "bad";
-    realism = "Not realistic with this monthly amount";
-    explanation = "Even a very high return estimate may not reach this goal. You likely need more time, more monthly investing, or a lower target.";
-  } else if (needed > 15) {
-    realismClass = "bad";
-    realism = "Very aggressive";
-    explanation = "This would likely require returns that are not realistic to rely on.";
-  } else if (needed > 10) {
-    realismClass = "warn";
-    realism = "Aggressive";
-    explanation = "This may require above-average returns and higher risk.";
-  } else if (needed > 7.5) {
-    realismClass = "warn";
-    realism = "Ambitious but possible";
-    explanation = "This may be possible over time, but it probably needs discipline and some growth exposure.";
+  if ((monthly > 0 && lumpSum > 0) || (monthly <= 0 && lumpSum <= 0)) {
+    result.innerHTML = `<span class="warn">Choose only one money box.</span> Fill either monthly investing OR money putting in, not both.`;
+    return;
   }
 
-  const requiredText = needed === Infinity ? "Over 40%" : `${needed.toFixed(1)}%`;
+  const annualReturn = returnPct / 100;
+  const isMonthly = monthly > 0;
+  const amount = isMonthly ? monthly : lumpSum;
+  const modeText = isMonthly ? `$${formatMoneyGoal(monthly)}/month` : `$${formatMoneyGoal(lumpSum)} one-time`;
+
+  const yearsList = [1, 5, 10, 15, 20, 25, 30, 35, 40];
+  const rows = yearsList.map(years => {
+    const totalPutIn = isMonthly ? monthly * 12 * years : lumpSum;
+    const totalValue = isMonthly
+      ? futureValueMonthly(monthly, years, annualReturn)
+      : futureValueLumpSum(lumpSum, years, annualReturn);
+    const profit = totalValue - totalPutIn;
+    return { years, age: ageNow + years, totalPutIn, totalValue, profit };
+  });
+
+  let realismClass = "good";
+  let realism = "reasonable";
+  if (returnPct > 15) { realismClass = "bad"; realism = "very aggressive"; }
+  else if (returnPct > 10) { realismClass = "warn"; realism = "aggressive"; }
+  else if (returnPct > 7.5) { realismClass = "warn"; realism = "ambitious"; }
+
+  const oneYear = rows[0];
 
   result.innerHTML = `
-    <strong>Goal:</strong> $${formatMoneyGoal(target)} by age ${targetAge}<br>
-    <strong>Time:</strong> ${years} years · <strong>Monthly:</strong> $${formatMoneyGoal(monthly)}<br>
-    <strong>Needed average yearly return:</strong> ${requiredText}<br>
-    <strong>Realism:</strong> <span class="${realismClass}">${realism}</span> — ${explanation}<br><br>
-    At about <strong>7.5%</strong>/year, this could grow to about <strong>$${formatMoneyGoal(fv75)}</strong>.<br>
-    At about <strong>10%</strong>/year, this could grow to about <strong>$${formatMoneyGoal(fv10)}</strong>.<br><br>
-    <strong>What to research next:</strong> ${getGoalGuidanceByProfile(needed === Infinity ? 99 : needed)}
+    <strong>Plan:</strong> ${modeText} at an average <strong>${returnPct.toFixed(1)}%</strong> yearly return<br>
+    <strong>Quick 1-year view:</strong> You put in about <strong>$${formatMoneyGoal(oneYear.totalPutIn)}</strong> and the estimated growth/profit is about <strong>$${formatMoneyGoal(oneYear.profit)}</strong>.<br>
+    <strong>Realism:</strong> <span class="${realismClass}">${realism}</span><br>
+    <span class="money-goal-mode-pill">${isMonthly ? "Monthly investing mode" : "One-time money mode"}</span>
+
+    <table class="money-projection-table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Age</th>
+          <th>Put In</th>
+          <th>Estimated Value</th>
+          <th>Profit</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.filter(r => r.years % 5 === 0 || r.years === 1).map(r => `
+          <tr>
+            <td>${r.years} yr${r.years === 1 ? "" : "s"}</td>
+            <td>${r.age}</td>
+            <td>$${formatMoneyGoal(r.totalPutIn)}</td>
+            <td>$${formatMoneyGoal(r.totalValue)}</td>
+            <td>$${formatMoneyGoal(r.profit)}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+
+    <br><strong>What to research next:</strong> ${getGrowthGuidanceByProfile(returnPct, isMonthly ? "monthly" : "lump")}
   `;
 }
 
 function fillMillionExample() {
   const ageInput = document.getElementById('goalAgeNow');
+  const returnInput = document.getElementById('goalReturn');
   const monthlyInput = document.getElementById('goalMonthly');
-  const amountInput = document.getElementById('goalAmount');
-  const targetAgeInput = document.getElementById('goalAgeTarget');
+  const lumpInput = document.getElementById('goalLumpSum');
 
   if (ageInput) ageInput.value = ageInput.value || 20;
-  if (monthlyInput) monthlyInput.value = monthlyInput.value || 300;
-  if (amountInput) amountInput.value = 1000000;
-  if (targetAgeInput) targetAgeInput.value = targetAgeInput.value || 65;
+  if (returnInput) returnInput.value = 10;
+  if (monthlyInput) monthlyInput.value = 10;
+  if (lumpInput) lumpInput.value = "";
 
   calculateMoneyGoal();
 }
