@@ -733,7 +733,7 @@ function getStockMeta(symbol) {
 async function fetchQuote(symbol) {
   const s = symbol.toUpperCase();
 
-  if (!FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE") {
+  if (!FINNHUB_API_KEY || FINNHUB_API_KEY === "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg") {
     const f = fallbackPrices[s] || {c:0, dp:0, d:0, pc:0};
     return {...getStockMeta(s), price:f.c, day:f.dp, change:f.d, previousClose:f.pc, demo:true};
   }
