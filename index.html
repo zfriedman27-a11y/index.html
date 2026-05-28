@@ -2807,6 +2807,74 @@ body {
   flex: 0 0 auto;
 }
 
+
+/* HORIZONTAL STAT CARDS FIX */
+.stat-strip {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 1px !important;
+  align-items: stretch !important;
+}
+
+.stat-item {
+  min-height: 0 !important;
+  padding: 28px 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.stat-num {
+  font-size: clamp(34px, 4.2vw, 58px) !important;
+  line-height: 1 !important;
+  margin-bottom: 10px !important;
+}
+
+.stat-label {
+  font-size: 13.5px !important;
+  line-height: 1.35 !important;
+  max-width: 260px !important;
+  margin: 0 auto !important;
+}
+
+.stat-source {
+  font-size: 10.5px !important;
+  line-height: 1.3 !important;
+  max-width: 270px !important;
+  margin: 9px auto 0 !important;
+}
+
+/* Only stack stats on smaller screens */
+@media(max-width: 950px) {
+  .stat-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media(max-width: 560px) {
+  .stat-strip {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* HOME START-HERE POSITION TWEAK */
+.site-map-section {
+  padding-top: 54px !important;
+  padding-bottom: 54px !important;
+}
+
+.value-strip {
+  border-top: 0.5px solid rgba(255,255,255,0.07);
+}
+
+
+/* START HERE GRID WITH DASHBOARD CARD */
+.site-map-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+}
+
 </style>
 </head>
 <body>
@@ -2994,7 +3062,9 @@ body {
         <span>⌄</span>
       </button>
       <div class="menu-section-content">
-        <button class="menu-link primary-route" onclick="showAppPage('home'); closeAppMenu()">Home Dashboard</button>
+        <button class="menu-link primary-route" onclick="showAppPage('home'); closeAppMenu()">Home</button>
+        <button class="menu-link" onclick="showAppPage('dashboard'); closeAppMenu()">Money Dashboard</button>
+        <button class="menu-link" onclick="showAppPage('dashboard'); closeAppMenu()">Money Dashboard</button>
         <button class="menu-link" onclick="showAppPage('profile'); closeAppMenu()">Profile Quiz</button>
         <button class="menu-link" onclick="showAppPage('tools'); closeAppMenu()">Pro Tools</button>
         <button class="menu-link" onclick="showAppPage('calculator'); closeAppMenu()">Growth Calculator</button>
@@ -3124,6 +3194,7 @@ body {
 <!-- APP PAGE TABS -->
 <div class="app-page-tabs" id="appPageTabs">
   <button class="page-tab active" onclick="showAppPage('home', this)">Home</button>
+  <button class="page-tab" onclick="showAppPage('dashboard', this)">Dashboard</button>
   <button class="page-tab" onclick="showAppPage('profile', this)">Profile Quiz</button>
   <button class="page-tab" onclick="showAppPage('tools', this)">Pro Tools</button>
   <button class="page-tab" onclick="showAppPage('calculator', this)">Growth Calculator</button>
@@ -3149,6 +3220,31 @@ body {
 
 
 <!-- STUDENT-FRIENDLY VALUE STRIP -->
+<section class="site-map-section page-section active-page" data-page="home" id="startHere">
+  <div class="site-map-inner">
+    <div class="section-tag">Start here</div>
+    <div class="guide-title">Pick where you want to start.</div>
+    <div class="site-map-grid">
+      <div class="site-map-card" onclick="openInvestorQuiz()">
+        <h3>1. Investor Profile Quiz</h3>
+        <p>Set your risk style and unlock profile match rankings.</p>
+      </div>
+      <div class="site-map-card" onclick="jumpToSection('advisor')">
+        <h3>2. Ask the guide</h3>
+        <p>Ask simple questions when investing terms feel confusing.</p>
+      </div>
+      <div class="site-map-card" onclick="jumpToSection('cashFloTools')">
+        <h3>3. Pro research tools</h3>
+        <p>Use the guided research path for your quiz profile.</p>
+      </div>
+      <div class="site-map-card" onclick="jumpToSection('stocks')">
+        <h3>5. Watch the market</h3>
+        <p>Favorite stocks and view your Top Stocks For Me list.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="value-strip page-section active-page" data-page="home">
   <div class="value-strip-inner">
     <div class="value-pill"><strong>Turning beginners into masters:</strong> simple lessons that build real confidence.</div>
@@ -3186,7 +3282,7 @@ body {
 
 
 <!-- DASHBOARD / ORGANIZED APP HOME -->
-<section class="dashboard-section page-section active-page" data-page="home" id="dashboard">
+<section class="dashboard-section page-section" data-page="dashboard" id="dashboard">
   <div class="dashboard-inner">
     <div class="dashboard-top">
       <div>
@@ -3234,30 +3330,8 @@ body {
 
 
 <!-- SITE MAP / CLEAN ORGANIZATION -->
-<section class="site-map-section page-section active-page" data-page="home" id="startHere">
-  <div class="site-map-inner">
-    <div class="section-tag">Start here</div>
-    <div class="guide-title">Pick where you want to start.</div>
-    <div class="site-map-grid">
-      <div class="site-map-card" onclick="openInvestorQuiz()">
-        <h3>1. Investor Profile Quiz</h3>
-        <p>Set your risk style and unlock profile match rankings.</p>
-      </div>
-      <div class="site-map-card" onclick="jumpToSection('advisor')">
-        <h3>2. Ask the guide</h3>
-        <p>Ask simple questions when investing terms feel confusing.</p>
-      </div>
-      <div class="site-map-card" onclick="jumpToSection('cashFloTools')">
-        <h3>3. Pro research tools</h3>
-        <p>Use the guided research path for your quiz profile.</p>
-      </div>
-      <div class="site-map-card" onclick="jumpToSection('stocks')">
-        <h3>4. Watch the market</h3>
-        <p>Favorite stocks and view your Top Stocks For Me list.</p>
-      </div>
-    </div>
-  </div>
-</section>
+
+
 
 
 <!-- INVESTOR PROFILE QUIZ GATEWAY -->
@@ -3740,13 +3814,13 @@ body {
             <h3>Mistake Detector</h3>
             <p>Answer honestly. Cash Flo flags common beginner mistakes without controlling your money.</p>
             <div class="tool-row"><input class="tool-input" id="mistakeTicker" placeholder="What ticker are you thinking about?" /></div>
-            <div class="tool-row"><input class="tool-input" id="mistakePercent" placeholder="% of your money, ex: 50" /></div>
+            <div class="tool-row"><input class="tool-input" id="mistakePercent" placeholder="How much are you putting in this stock? ex: $50" /></div>
             <div class="tool-row"><input class="tool-input" id="mistakeReason" placeholder="Why do you want it?" /></div>
             <button class="tool-button" onclick="runMistakeDetector()">Check Mistakes</button>
           </div>
           <div class="tool-output" id="mistakeOutput">
             <h3>Common mistakes Cash Flo checks</h3>
-            <ul class="tool-list warning-list"><li>Putting too much money into one stock</li><li>Buying because of hype only</li><li>Not comparing to an ETF</li><li>Not understanding what the company does</li><li>Ignoring downside risk</li></ul>
+            <ul class="tool-list warning-list"><li>Putting too much into one stock</li><li>Buying because of hype only</li><li>Not comparing to an ETF</li><li>Not understanding what the company does</li><li>Ignoring downside risk</li></ul>
           </div>
         </div>
       </div>
@@ -5611,147 +5685,40 @@ function runBeforeBuy(){ if(!requireProTools('beforeBuy')) return;const s=(docum
 function fillBeforeBuy(symbol){document.getElementById('checkTicker').value=symbol;runBeforeBuy();}
 function setBuilderMode(mode,btn){builderMode=mode;document.querySelectorAll('.builder-option').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active');}
 function buildWatchlist(){ if(!requireProTools('builder')) return;let list;if(builderMode==='tech'){list=['Broad foundation: VOO or VTI','Tech ETF: QQQ or XLK','Large tech company to understand: AAPL or MSFT','AI/growth watch-only idea: NVDA','Risk reminder: do not confuse exciting with safe'];}else if(builderMode==='safe'){list=['Broad foundation: VTI or VOO','Dividend/steady ETF example: SCHD or VYM','Company you already understand: AAPL, COST, or KO','Growth stock only as a small watchlist idea','Risk reminder: simple and diversified first'];}else{list=['Broad market ETF: VOO or VTI','Growth/tech ETF: QQQ or XLK','Company you understand: AAPL, AMZN, or MSFT','Riskier growth stock to watch only: TSLA or NVDA','Compare every stock to an ETF before deciding'];} document.getElementById('builderOutput').innerHTML=`<h3>${builderMode==='tech'?'Tech-curious':builderMode==='safe'?'Safer-start':'Balanced'} watchlist structure</h3><ul class="tool-list">${list.map(i=>`<li>${i}</li>`).join('')}</ul><p class="unique-note"><strong>Important:</strong> This is an educational watchlist structure, not a recommendation to buy.</p>`;}
-function runMistakeDetector(){ if(!requireProTools('mistake')) return;const ticker=(document.getElementById('mistakeTicker').value||'this stock').trim().toUpperCase(); const percentRaw=document.getElementById('mistakePercent').value.trim(); const percent=Number(percentRaw.replace('%','')); const reason=(document.getElementById('mistakeReason').value||'').toLowerCase(); const warnings=[]; if(!percentRaw||Number.isNaN(percent)) warnings.push('You did not give a clear percentage. Beginners should know how much of their money one idea represents.'); else if(percent>=40) warnings.push(`Putting ${percent}% into ${ticker} may create major single-stock risk.`); else if(percent>=20) warnings.push(`Putting ${percent}% into ${ticker} may still be concentrated. Compare it to an ETF first.`); else warnings.push(`Your ${percent}% amount may be more controlled, but risk still depends on what else you own.`); if(reason.includes('tiktok')||reason.includes('hype')||reason.includes('everyone')||reason.includes('friend')) warnings.push('Your reason sounds hype-based. Slow down and check fundamentals, risk, and ETF alternatives.'); else if(!reason) warnings.push('You did not explain why you want it. If there is no reason, there is no plan.'); else warnings.push('You gave a reason. Now check if that reason is based on facts, not just excitement.'); warnings.push(`Compare ${ticker} to VOO, SPY, QQQ, or VTI before making any real-money decision.`); warnings.push('Cash Flo does not place trades. You stay responsible for every decision.'); document.getElementById('mistakeOutput').innerHTML=`<h3>${ticker} Mistake Check</h3><ul class="tool-list warning-list">${warnings.map(w=>`<li>${w}</li>`).join('')}</ul>`;}
 
+function runMistakeDetector(){ 
+  if(!requireProTools('mistake')) return;
 
+  const ticker=(document.getElementById('mistakeTicker').value||'this stock').trim().toUpperCase(); 
+  const amountRaw=(document.getElementById('mistakePercent').value||'').trim(); 
+  const reason=(document.getElementById('mistakeReason').value||'').toLowerCase(); 
+  const warnings=[]; 
 
-function formatMoneyGoal(num) {
-  const n = Number(num || 0);
-  return n.toLocaleString(undefined, { maximumFractionDigits: 0 });
-}
+  const cleanedAmount = amountRaw.replace(/[$,]/g,'').trim();
+  const amount = Number(cleanedAmount);
 
-function futureValueMonthly(monthly, years, annualReturn) {
-  const months = years * 12;
-  const r = annualReturn / 12;
-  if (months <= 0) return 0;
-  if (r === 0) return monthly * months;
-  return monthly * ((Math.pow(1 + r, months) - 1) / r);
-}
-
-function futureValueLumpSum(amount, years, annualReturn) {
-  if (years <= 0) return amount;
-  return amount * Math.pow(1 + annualReturn, years);
-}
-
-function getGrowthGuidanceByProfile(returnPct, mode) {
-  const profile = getSavedProfile();
-
-  if (!profile) {
-    return "Take the Investor Profile Quiz first so Cash Flo can match this growth plan to your risk comfort. Until then, research broad ETFs and basic risk before individual stocks.";
+  if(!amountRaw || Number.isNaN(amount) || amount <= 0) {
+    warnings.push('You did not give a clear amount. Type something like $50, $100, or $500 so Cash Flo can help you think through the risk.');
+  } else if(amount >= 1000) {
+    warnings.push(`Putting $${amount.toLocaleString()} into ${ticker} could be a big decision. Before doing that, compare it to an ETF and make sure you understand the downside risk.`);
+  } else if(amount >= 250) {
+    warnings.push(`Putting $${amount.toLocaleString()} into ${ticker} may be meaningful for a beginner. Make sure it fits your plan and is not just an impulse buy.`);
+  } else {
+    warnings.push(`Putting $${amount.toLocaleString()} into ${ticker} may be a smaller starting amount, but it still matters. The main question is whether you understand the risk.`);
   }
 
-  const type = profile.type || "your profile";
-  const risk = Number(profile.risk || 50);
-  const longTerm = Number(profile.longTerm || 50);
-
-  if (returnPct <= 7) {
-    return `Based on your profile (${type}), this return target is more conservative. Research broad ETFs like VOO, VTI, or SPY and focus on consistency.`;
+  if(reason.includes('tiktok')||reason.includes('hype')||reason.includes('everyone')||reason.includes('friend')) {
+    warnings.push('Your reason sounds hype-based. Slow down and check fundamentals, risk, and ETF alternatives.');
+  } else if(!reason) {
+    warnings.push('You did not explain why you want it. If there is no reason, there is no plan.');
+  } else {
+    warnings.push('You gave a reason. Now check if that reason is based on facts, not just excitement.');
   }
 
-  if (returnPct <= 10) {
-    if (longTerm >= 70) {
-      return `Based on your profile (${type}), this fits a long-term growth path. Research VOO/VTI first, then compare growth ETFs like QQQ before single stocks.`;
-    }
-    return `Based on your profile (${type}), this may be realistic over time but still has market risk. Use ETF comparisons before picking individual stocks.`;
-  }
+  warnings.push(`Compare ${ticker} to VOO, SPY, QQQ, or VTI before making any real-money decision.`);
+  warnings.push('Cash Flo does not place trades. You stay responsible for every decision.');
 
-  if (returnPct <= 15) {
-    if (risk >= 65) {
-      return `Based on your profile (${type}), you may be comfortable with higher risk, but this target is aggressive. Research QQQ/XLK and risk-check stocks like NVDA or TSLA before treating them as watchlist ideas.`;
-    }
-    return `Based on your profile (${type}), this may be more risk than you are comfortable with. Consider lowering the return assumption or increasing the amount you invest.`;
-  }
-
-  return `Based on your profile (${type}), this return assumption is very aggressive and not safe to rely on. Consider using a lower return estimate, more time, or more money invested instead of chasing hype.`;
-}
-
-function calculateMoneyGoal() {
-  const ageNow = Number(document.getElementById('goalAgeNow')?.value || 0);
-  const returnPct = Number(document.getElementById('goalReturn')?.value || 0);
-  const monthly = Number(document.getElementById('goalMonthly')?.value || 0);
-  const lumpSum = Number(document.getElementById('goalLumpSum')?.value || 0);
-  const result = document.getElementById('moneyGoalResult');
-
-  if (!result) return;
-
-  if (!ageNow || ageNow <= 0 || returnPct < 0) {
-    result.innerHTML = `<span class="warn">Fill in your age and return %.</span>`;
-    return;
-  }
-
-  if ((monthly > 0 && lumpSum > 0) || (monthly <= 0 && lumpSum <= 0)) {
-    result.innerHTML = `<span class="warn">Choose only one money box.</span> Fill either monthly investing OR money putting in, not both.`;
-    return;
-  }
-
-  const annualReturn = returnPct / 100;
-  const isMonthly = monthly > 0;
-  const amount = isMonthly ? monthly : lumpSum;
-  const modeText = isMonthly ? `$${formatMoneyGoal(monthly)}/month` : `$${formatMoneyGoal(lumpSum)} one-time`;
-
-  const yearsList = [1, 5, 10, 15, 20, 25, 30, 35, 40];
-  const rows = yearsList.map(years => {
-    const totalPutIn = isMonthly ? monthly * 12 * years : lumpSum;
-    const totalValue = isMonthly
-      ? futureValueMonthly(monthly, years, annualReturn)
-      : futureValueLumpSum(lumpSum, years, annualReturn);
-    const profit = totalValue - totalPutIn;
-    return { years, age: ageNow + years, totalPutIn, totalValue, profit };
-  });
-
-  let realismClass = "good";
-  let realism = "reasonable";
-  if (returnPct > 15) { realismClass = "bad"; realism = "very aggressive"; }
-  else if (returnPct > 10) { realismClass = "warn"; realism = "aggressive"; }
-  else if (returnPct > 7.5) { realismClass = "warn"; realism = "ambitious"; }
-
-  const oneYear = rows[0];
-
-  result.innerHTML = `
-    <strong>Plan:</strong> ${modeText} at an average <strong>${returnPct.toFixed(1)}%</strong> yearly return<br>
-    <strong>Quick 1-year view:</strong> You put in about <strong>$${formatMoneyGoal(oneYear.totalPutIn)}</strong> and the estimated growth/profit is about <strong>$${formatMoneyGoal(oneYear.profit)}</strong>.<br>
-    <strong>Realism:</strong> <span class="${realismClass}">${realism}</span><br>
-    <span class="money-goal-mode-pill">${isMonthly ? "Monthly investing mode" : "One-time money mode"}</span>
-
-    <table class="money-projection-table">
-      <thead>
-        <tr>
-          <th>Time</th>
-          <th>Age</th>
-          <th>Put In</th>
-          <th>Estimated Value</th>
-          <th>Profit</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.filter(r => r.years % 5 === 0 || r.years === 1).map(r => `
-          <tr>
-            <td>${r.years} yr${r.years === 1 ? "" : "s"}</td>
-            <td>${r.age}</td>
-            <td>$${formatMoneyGoal(r.totalPutIn)}</td>
-            <td>$${formatMoneyGoal(r.totalValue)}</td>
-            <td>$${formatMoneyGoal(r.profit)}</td>
-          </tr>
-        `).join("")}
-      </tbody>
-    </table>
-
-    <br><strong>What to research next:</strong> ${getGrowthGuidanceByProfile(returnPct, isMonthly ? "monthly" : "lump")}
-  `;
-}
-
-function fillMillionExample() {
-  const ageInput = document.getElementById('goalAgeNow');
-  const returnInput = document.getElementById('goalReturn');
-  const monthlyInput = document.getElementById('goalMonthly');
-  const lumpInput = document.getElementById('goalLumpSum');
-
-  if (ageInput) ageInput.value = ageInput.value || 20;
-  if (returnInput) returnInput.value = 10;
-  if (monthlyInput) monthlyInput.value = 10;
-  if (lumpInput) lumpInput.value = "";
-
-  calculateMoneyGoal();
+  document.getElementById('mistakeOutput').innerHTML=`<h3>${ticker} Mistake Check</h3><ul class="tool-list warning-list">${warnings.map(w=>`<li>${w}</li>`).join('')}</ul>`;
 }
 
 
@@ -6011,7 +5978,7 @@ document.getElementById('planChoiceModal')?.addEventListener('click', e => {
 
 // APP-LIKE PAGE ROUTING + SMART SEARCH
 const appSearchItems = [
-  { title: 'Home Dashboard', subtitle: 'Your main Cash Flo starting point', page: 'home', target: 'dashboard', icon: '🏠', keywords: ['home','dashboard','start','main'] },
+  { title: 'Money Dashboard', subtitle: 'Profile flow, recommended tools, and next steps', page: 'dashboard', target: 'dashboard', icon: '📍', keywords: ['dashboard','future money','recommended flow','profile flow','next steps'] },
   { title: 'Investor Profile Quiz', subtitle: 'Find your risk style and goals', page: 'profile', target: 'investorQuizGateway', icon: '🧭', keywords: ['quiz','profile','risk','survey','questions','investor type'] },
   { title: 'Growth Calculator', subtitle: 'Project money every 5 years', page: 'calculator', target: 'moneyGoalCalculator', icon: '🧮', keywords: ['calculator','money','goal','growth','future','monthly','return','profit'] },
   { title: 'Pro Tools', subtitle: 'Risk Check, ETF Compare, Mistake Detector', page: 'tools', target: 'cashFloTools', icon: '🧰', keywords: ['tools','pro','risk check','compare','mistake','watchlist builder'] },
@@ -6033,8 +6000,18 @@ function showAppPage(page, btn) {
   if (btn) {
     btn.classList.add('active');
   } else {
+    const labelMap = {
+      home: 'home',
+      dashboard: 'dashboard',
+      profile: 'profile',
+      tools: 'pro tools',
+      calculator: 'growth calculator',
+      stocks: 'stocks',
+      learn: 'learn',
+      pricing: 'pricing'
+    };
     const matching = Array.from(document.querySelectorAll('.page-tab')).find(tab =>
-      tab.textContent.toLowerCase().includes(page === 'profile' ? 'profile' : page)
+      tab.textContent.toLowerCase().includes(labelMap[page] || page)
     );
     if (matching) matching.classList.add('active');
   }
