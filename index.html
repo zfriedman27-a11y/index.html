@@ -451,26 +451,10 @@ footer p{font-size:12px;color:var(--muted)}
 <!-- TICKER -->
 <div class="ticker-wrap">
   <div class="ticker-inner">
-    <span class="ticker-item"><span class="ticker-sym">AAPL</span><span class="up">$213.42 +1.8%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">NVDA</span><span class="up">$891.20 +3.2%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">MSFT</span><span class="up">$412.60 +0.9%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">TSLA</span><span class="down">$248.10 -1.1%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">AMZN</span><span class="up">$188.55 +2.1%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">GOOGL</span><span class="up">$172.30 +0.7%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">META</span><span class="up">$521.80 +1.4%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">AMD</span><span class="up">$162.40 +4.8%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">VOO</span><span class="up">$498.20 +0.6%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">SPY</span><span class="up">$519.40 +0.5%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">AAPL</span><span class="up">$213.42 +1.8%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">NVDA</span><span class="up">$891.20 +3.2%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">MSFT</span><span class="up">$412.60 +0.9%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">TSLA</span><span class="down">$248.10 -1.1%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">AMZN</span><span class="up">$188.55 +2.1%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">GOOGL</span><span class="up">$172.30 +0.7%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">META</span><span class="up">$521.80 +1.4%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">AMD</span><span class="up">$162.40 +4.8%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">VOO</span><span class="up">$498.20 +0.6%</span></span>
-    <span class="ticker-item"><span class="ticker-sym">SPY</span><span class="up">$519.40 +0.5%</span></span>
+    <span class="ticker-item"><span class="ticker-sym">Loading</span><span class="up">Live stock prices...</span></span>
+    <span class="ticker-item"><span class="ticker-sym">Cash Flo</span><span class="up">Updating every 60 seconds</span></span>
+    <span class="ticker-item"><span class="ticker-sym">Loading</span><span class="up">Live stock prices...</span></span>
+    <span class="ticker-item"><span class="ticker-sym">Cash Flo</span><span class="up">Updating every 60 seconds</span></span>
   </div>
 </div>
 
@@ -574,8 +558,8 @@ footer p{font-size:12px;color:var(--muted)}
           <th>Stock</th>
           <th>Price</th>
           <th>Today</th>
-          <th>1 Week</th>
-          <th>1 Month</th>
+          <th>Change</th>
+          <th>Updated</th>
           <th>Rating</th>
         </tr>
       </thead>
@@ -638,7 +622,7 @@ footer p{font-size:12px;color:var(--muted)}
         <div class="price-sub">Always free, no card needed</div>
         <ul class="price-features">
           <li>Top 10 stocks (basic view)</li>
-          <li>3 AI Advisor questions/day</li>
+          <li>1 AI Advisor preview question</li>
           <li>Live ticker tape</li>
           <li class="no">Advanced filters & sorts</li>
           <li class="no">Full stock screener (50+)</li>
@@ -684,7 +668,7 @@ let currentSector = 'all';
 // LIVE STOCK DATA
 // Step 1: Create a free Finnhub account.
 // Step 2: Replace the placeholder below with your token.
-// Example: const FINNHUB_API_KEY = "abc123";
+// Example: const FINNHUB_API_KEY = "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
 const FINNHUB_API_KEY = "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
 
 // This is your starting watchlist. Users can add any ticker with the search box.
@@ -733,7 +717,7 @@ function getStockMeta(symbol) {
 async function fetchQuote(symbol) {
   const s = symbol.toUpperCase();
 
-  if (!FINNHUB_API_KEY || FINNHUB_API_KEY === "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg") {
+  if (!FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE") {
     const f = fallbackPrices[s] || {c:0, dp:0, d:0, pc:0};
     return {...getStockMeta(s), price:f.c, day:f.dp, change:f.d, previousClose:f.pc, demo:true};
   }
@@ -762,11 +746,14 @@ async function loadLiveStocks(manual=false) {
   if (status) status.textContent = manual ? 'Refreshing live prices...' : 'Loading live prices...';
 
   const results = [];
+  const errors = [];
+
   for (const sym of stockSymbols) {
     try {
       results.push(await fetchQuote(sym));
     } catch (err) {
       console.warn(err);
+      errors.push(sym);
     }
   }
 
@@ -775,11 +762,18 @@ async function loadLiveStocks(manual=false) {
   renderStocks();
   renderTicker();
 
-  const demoMode = !FINNHUB_API_KEY || FINNHUB_API_KEY === "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
+  const demoMode = !FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE";
+
   if (status) {
-    status.textContent = demoMode
-      ? 'Demo fallback prices showing. Add your Finnhub API key to make the prices truly live and update every 60 seconds.'
-      : `Live prices updated ${lastUpdated.toLocaleTimeString()}. Auto-refresh: every 60 seconds.`;
+    if (demoMode) {
+      status.textContent = 'Demo fallback prices showing. Add your Finnhub API key to make the prices truly live and update every 60 seconds.';
+    } else if (results.length === 0) {
+      status.textContent = 'Could not load live prices. Check your Finnhub API key, internet connection, or API limit.';
+    } else if (errors.length > 0) {
+      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Some tickers failed: ${errors.join(', ')}. Auto-refresh: every 60 seconds.`;
+    } else {
+      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Auto-refresh: every 60 seconds.`;
+    }
   }
 }
 
