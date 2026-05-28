@@ -1507,6 +1507,283 @@ nav {
   }
 }
 
+
+/* CLEAN ORGANIZATION + INVESTOR PROFILE QUIZ */
+.site-map-section {
+  padding: 56px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background: rgba(255,255,255,0.012);
+}
+
+.site-map-inner {
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.site-map-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.site-map-card {
+  background: rgba(16,20,29,0.76);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 18px;
+  padding: 18px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.site-map-card:hover {
+  border-color: rgba(143,183,255,0.24);
+  background: rgba(255,255,255,0.035);
+}
+
+.site-map-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 17px;
+  margin-bottom: 7px;
+  color: var(--accent);
+}
+
+.site-map-card p {
+  color: var(--muted2);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.quiz-section {
+  padding: 76px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(143,183,255,0.06), transparent 34%),
+    radial-gradient(circle at 88% 15%, rgba(164,147,255,0.045), transparent 34%),
+    linear-gradient(180deg, var(--surface), var(--bg));
+}
+
+.quiz-inner {
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.quiz-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 26px;
+}
+
+.quiz-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(30px,4vw,52px);
+  line-height: 1.04;
+  font-weight: 800;
+  letter-spacing: -1.4px;
+  max-width: 680px;
+}
+
+.quiz-sub {
+  color: var(--muted2);
+  max-width: 420px;
+  font-size: 15px;
+}
+
+.quiz-shell {
+  display: grid;
+  grid-template-columns: 1fr 0.95fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.quiz-card,
+.quiz-result-card {
+  background: rgba(16,20,29,0.84);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 22px 70px rgba(0,0,0,0.24);
+}
+
+.quiz-question {
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.075);
+}
+
+.quiz-question:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.quiz-question h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.quiz-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.quiz-option {
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.03);
+  color: var(--muted2);
+  border-radius: 14px;
+  padding: 11px 12px;
+  font-size: 13px;
+  font-weight: 800;
+  text-align: left;
+}
+
+.quiz-option:hover {
+  border-color: rgba(143,183,255,0.24);
+  color: var(--text);
+}
+
+.quiz-option.active {
+  background: rgba(143,183,255,0.13);
+  border-color: rgba(143,183,255,0.42);
+  color: var(--text);
+}
+
+.quiz-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+}
+
+.quiz-result-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 26px;
+  line-height: 1.08;
+  margin-bottom: 8px;
+}
+
+.quiz-type-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(143,183,255,0.12);
+  color: var(--accent);
+  border: 1px solid rgba(143,183,255,0.20);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.quiz-score-bars {
+  display: grid;
+  gap: 11px;
+  margin: 18px 0;
+}
+
+.quiz-bar-row {
+  display: grid;
+  gap: 5px;
+}
+
+.quiz-bar-label {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted2);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.quiz-bar {
+  height: 9px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.quiz-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  width: 50%;
+}
+
+.quiz-plan-box {
+  background: rgba(255,255,255,0.032);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 16px;
+  margin-top: 14px;
+}
+
+.quiz-plan-box h4 {
+  font-family: 'Syne', sans-serif;
+  margin-bottom: 8px;
+}
+
+.quiz-plan-box ul {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.quiz-plan-box li {
+  color: var(--muted2);
+  font-size: 13px;
+}
+
+.quiz-plan-box li::before {
+  content: "✓";
+  color: var(--accent);
+  margin-right: 8px;
+  font-weight: 900;
+}
+
+.quiz-saved-note {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.section-divider-label {
+  max-width: 1050px;
+  margin: 0 auto 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+}
+
+.section-divider-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+
+@media(max-width:850px){
+  .site-map-section,.quiz-section{padding-left:18px;padding-right:18px}
+  .site-map-grid{grid-template-columns:1fr 1fr}
+  .quiz-shell{grid-template-columns:1fr}
+  .quiz-options{grid-template-columns:1fr}
+}
+
+@media(max-width:520px){
+  .site-map-grid{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -1655,6 +1932,18 @@ nav {
       <button class="modal-close" onclick="toggleAppMenu()">✕</button>
     </div>
 
+
+    <div class="menu-section">
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
+        <span>🧭 Investor Profile <small>Goals, risk type, and quiz</small></span>
+        <span>⌄</span>
+      </button>
+      <div class="menu-section-content">
+        <button class="menu-link" onclick="jumpToSection('investorProfileQuiz')">Take Investor Profile Quiz</button>
+        <button class="menu-link" onclick="jumpToSection('startHere')">Start Here</button>
+      </div>
+    </div>
+
     <div class="menu-section open">
       <button class="menu-section-btn" onclick="toggleMenuSection(this)">
         <span>🤖 AI Guide <small>Ask simple investing questions</small></span>
@@ -1776,7 +2065,7 @@ nav {
     <h1>Investing,<br><em>finally simple.</em></h1>
     <p>A simple investing guide that explains stocks, ETFs, risks, and market ideas without controlling your money.</p>
     <div class="hero-btns">
-      <button class="btn-primary" onclick="openModal()">Start Free — Google Sign-Up →</button>
+      <button class="btn-primary" onclick="document.getElementById('investorProfileQuiz').scrollIntoView({behavior:'smooth'})">Take Investor Quiz →</button>
       <button class="btn-ghost" onclick="document.getElementById('stocks').scrollIntoView({behavior:'smooth'})">See Live Stocks</button>
     </div>
     <p class="free-note"><strong>You stay in control.</strong> Cash Flo explains ideas, but never places trades.</p>
@@ -1809,6 +2098,138 @@ nav {
     <span class="stat-source">Source: Cash Flo planned pricing · payment setup coming later</span>
   </div>
 </div>
+
+<!-- SITE MAP / CLEAN ORGANIZATION -->
+<section class="site-map-section" id="startHere">
+  <div class="site-map-inner">
+    <div class="section-tag">Start here</div>
+    <div class="guide-title">Choose what you want Cash Flo to help with.</div>
+    <div class="site-map-grid">
+      <div class="site-map-card" onclick="jumpToSection('investorProfileQuiz')">
+        <h3>1. Find your investor type</h3>
+        <p>Take a quick quiz so Cash Flo understands your goals, risk level, and style.</p>
+      </div>
+      <div class="site-map-card" onclick="jumpToSection('advisor')">
+        <h3>2. Ask the guide</h3>
+        <p>Use plain-English AI explanations when investing terms or stocks feel confusing.</p>
+      </div>
+      <div class="site-map-card" onclick="jumpToSection('cashFloTools')">
+        <h3>3. Pro research tools</h3>
+        <p>Risk checks, ETF comparisons, watchlist builder, and mistake detector for Pro members.</p>
+      </div>
+      <div class="site-map-card" onclick="jumpToSection('stocks')">
+        <h3>4. Watch the market</h3>
+        <p>Track TSLA, AMZN, NVDA for free or use Pro test for the full watchlist.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTOR PROFILE QUIZ -->
+<section class="quiz-section" id="investorProfileQuiz">
+  <div class="quiz-inner">
+    <div class="quiz-top">
+      <div>
+        <div class="section-tag">Investor Profile Quiz</div>
+        <div class="quiz-title">Find your investing style before looking at stocks.</div>
+      </div>
+      <p class="quiz-sub">
+        This makes Cash Flo different from a normal chatbot: the app learns whether you are more risky, long-term, cautious, or hype-driven, then gives a simple learning path.
+      </p>
+    </div>
+
+    <div class="quiz-shell">
+      <div class="quiz-card">
+        <div class="quiz-question" data-question="goal">
+          <h3>1. What is your main goal?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="selectQuizOption('goal','learn',this)">I just want to learn</button>
+            <button class="quiz-option" onclick="selectQuizOption('goal','long',this)">Long-term growth</button>
+            <button class="quiz-option" onclick="selectQuizOption('goal','income',this)">Slow and steady</button>
+            <button class="quiz-option" onclick="selectQuizOption('goal','fast',this)">Find big opportunities</button>
+          </div>
+        </div>
+
+        <div class="quiz-question" data-question="drop">
+          <h3>2. If a stock dropped 20%, what would you do?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="selectQuizOption('drop','panic',this)">Probably panic</button>
+            <button class="quiz-option" onclick="selectQuizOption('drop','check',this)">Check why it dropped</button>
+            <button class="quiz-option" onclick="selectQuizOption('drop','hold',this)">Hold if the reason still makes sense</button>
+            <button class="quiz-option" onclick="selectQuizOption('drop','buyMore',this)">Maybe buy more</button>
+          </div>
+        </div>
+
+        <div class="quiz-question" data-question="time">
+          <h3>3. How long are you thinking?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="selectQuizOption('time','short',this)">Days or weeks</button>
+            <button class="quiz-option" onclick="selectQuizOption('time','medium',this)">Months</button>
+            <button class="quiz-option" onclick="selectQuizOption('time','long',this)">Years</button>
+            <button class="quiz-option" onclick="selectQuizOption('time','veryLong',this)">Retirement / very long term</button>
+          </div>
+        </div>
+
+        <div class="quiz-question" data-question="knowledge">
+          <h3>4. How much do you understand ETFs?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="selectQuizOption('knowledge','none',this)">No idea what they are</button>
+            <button class="quiz-option" onclick="selectQuizOption('knowledge','little',this)">A little</button>
+            <button class="quiz-option" onclick="selectQuizOption('knowledge','some',this)">I understand the basics</button>
+            <button class="quiz-option" onclick="selectQuizOption('knowledge','good',this)">Pretty well</button>
+          </div>
+        </div>
+
+        <div class="quiz-question" data-question="behavior">
+          <h3>5. What usually catches your attention?</h3>
+          <div class="quiz-options">
+            <button class="quiz-option" onclick="selectQuizOption('behavior','safe')">Simple ETFs</button>
+            <button class="quiz-option" onclick="selectQuizOption('behavior','brands')">Companies I use</button>
+            <button class="quiz-option" onclick="selectQuizOption('behavior','hype')">Trending stocks</button>
+            <button class="quiz-option" onclick="selectQuizOption('behavior','charts')">Big moves and charts</button>
+          </div>
+        </div>
+
+        <div class="quiz-actions">
+          <button class="btn-primary" onclick="calculateInvestorProfile()">Get My Profile →</button>
+          <button class="btn-ghost" onclick="resetInvestorQuiz()">Reset</button>
+        </div>
+      </div>
+
+      <div class="quiz-result-card" id="quizResult">
+        <div class="quiz-type-pill">🧭 Waiting for answers</div>
+        <div class="quiz-result-title">Your investor type will show here.</div>
+        <p style="color:var(--muted2);font-size:14px">Answer the 5 questions and Cash Flo will give you a beginner profile, risk level, goals, and a simple next-step plan.</p>
+
+        <div class="quiz-score-bars">
+          <div class="quiz-bar-row">
+            <div class="quiz-bar-label"><span>Risk comfort</span><span>—</span></div>
+            <div class="quiz-bar"><span style="width:0%"></span></div>
+          </div>
+          <div class="quiz-bar-row">
+            <div class="quiz-bar-label"><span>Long-term mindset</span><span>—</span></div>
+            <div class="quiz-bar"><span style="width:0%"></span></div>
+          </div>
+          <div class="quiz-bar-row">
+            <div class="quiz-bar-label"><span>ETF readiness</span><span>—</span></div>
+            <div class="quiz-bar"><span style="width:0%"></span></div>
+          </div>
+        </div>
+
+        <div class="quiz-plan-box">
+          <h4>Why this helps</h4>
+          <ul>
+            <li>Cash Flo can guide you differently depending on your goals.</li>
+            <li>Risky users get more guardrails and warnings.</li>
+            <li>Long-term users get ETF comparisons and calm reminders.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider-label">Learn</div>
 <!-- WHY CASH FLO -->
 <section class="why-section">
   <div class="section-tag">Why Cash Flo?</div>
@@ -1928,6 +2349,7 @@ nav {
 </section>
 
 
+<div class="section-divider-label">Research</div>
 <!-- CASH FLO DIFFERENTIATOR TOOLS -->
 <section class="different-section" id="cashFloTools">
   <div class="different-inner">
@@ -3033,6 +3455,177 @@ document.getElementById('advisorInput').addEventListener('keydown', e => { if(e.
 
 
 
+
+
+// INVESTOR PROFILE QUIZ
+const investorQuizAnswers = {};
+
+function selectQuizOption(question, value, btn) {
+  investorQuizAnswers[question] = value;
+
+  const wrap = document.querySelector(`.quiz-question[data-question="${question}"]`);
+  if (wrap) wrap.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('active'));
+
+  if (btn) btn.classList.add('active');
+}
+
+function calculateInvestorProfile() {
+  const needed = ['goal','drop','time','knowledge','behavior'];
+  const missing = needed.filter(q => !investorQuizAnswers[q]);
+
+  if (missing.length) {
+    const result = document.getElementById('quizResult');
+    result.innerHTML = `
+      <div class="quiz-type-pill">⚠️ Finish the quiz</div>
+      <div class="quiz-result-title">Answer all 5 questions first.</div>
+      <p style="color:var(--muted2);font-size:14px">You still need to answer ${missing.length} question${missing.length === 1 ? '' : 's'} before Cash Flo can build your profile.</p>
+    `;
+    return;
+  }
+
+  let risk = 45;
+  let longTerm = 45;
+  let etf = 40;
+  let hype = 0;
+
+  if (investorQuizAnswers.goal === 'long') { longTerm += 30; risk += 5; }
+  if (investorQuizAnswers.goal === 'income') { longTerm += 20; risk -= 10; etf += 15; }
+  if (investorQuizAnswers.goal === 'fast') { risk += 30; hype += 25; }
+  if (investorQuizAnswers.goal === 'learn') { etf += 10; longTerm += 10; }
+
+  if (investorQuizAnswers.drop === 'panic') { risk -= 25; }
+  if (investorQuizAnswers.drop === 'check') { risk += 5; longTerm += 8; }
+  if (investorQuizAnswers.drop === 'hold') { risk += 15; longTerm += 20; }
+  if (investorQuizAnswers.drop === 'buyMore') { risk += 28; hype += 8; }
+
+  if (investorQuizAnswers.time === 'short') { risk += 18; longTerm -= 25; hype += 20; }
+  if (investorQuizAnswers.time === 'medium') { risk += 5; }
+  if (investorQuizAnswers.time === 'long') { longTerm += 25; }
+  if (investorQuizAnswers.time === 'veryLong') { longTerm += 35; etf += 12; }
+
+  if (investorQuizAnswers.knowledge === 'none') { etf -= 15; }
+  if (investorQuizAnswers.knowledge === 'little') { etf += 5; }
+  if (investorQuizAnswers.knowledge === 'some') { etf += 25; }
+  if (investorQuizAnswers.knowledge === 'good') { etf += 38; }
+
+  if (investorQuizAnswers.behavior === 'safe') { etf += 25; risk -= 5; longTerm += 15; }
+  if (investorQuizAnswers.behavior === 'brands') { longTerm += 5; }
+  if (investorQuizAnswers.behavior === 'hype') { hype += 35; risk += 18; }
+  if (investorQuizAnswers.behavior === 'charts') { hype += 15; risk += 15; }
+
+  risk = Math.max(5, Math.min(100, risk));
+  longTerm = Math.max(5, Math.min(100, longTerm));
+  etf = Math.max(5, Math.min(100, etf));
+
+  let type = 'The Curious Learner';
+  let emoji = '🧠';
+  let summary = 'You are still learning, so Cash Flo should focus on simple explanations, ETFs, and avoiding hype.';
+  let plan = [
+    'Start with ETF basics like VOO, VTI, SPY, and QQQ.',
+    'Use the Before You Buy checklist before looking at individual stocks.',
+    'Do not rush into stocks just because they are trending.'
+  ];
+
+  if (hype >= 45 || (risk >= 75 && longTerm < 55)) {
+    type = 'The Hype Chaser';
+    emoji = '🚨';
+    summary = 'You may be drawn to fast-moving or trending stocks. Cash Flo should give you extra risk warnings and ETF comparisons.';
+    plan = [
+      'Use the Mistake Detector before any real decision.',
+      'Compare every stock to VOO, VTI, or QQQ.',
+      'Avoid putting too much into one company.'
+    ];
+  } else if (longTerm >= 75 && etf >= 60 && risk <= 65) {
+    type = 'The Long-Term Builder';
+    emoji = '🏗️';
+    summary = 'You think long-term and may fit better with simple, diversified learning before individual stock picking.';
+    plan = [
+      'Learn broad ETFs first.',
+      'Build a watchlist around ETFs plus companies you understand.',
+      'Focus on consistency and risk control.'
+    ];
+  } else if (risk <= 35) {
+    type = 'The Cautious Starter';
+    emoji = '🛡️';
+    summary = 'You may get nervous when markets drop. Cash Flo should keep things calm, simple, and focused on education.';
+    plan = [
+      'Use Calm Mode thinking: fewer charts, more explanations.',
+      'Start with ETF education before individual stocks.',
+      'Avoid high-hype stocks until you understand volatility.'
+    ];
+  } else if (risk >= 65 && longTerm >= 60) {
+    type = 'The Growth Explorer';
+    emoji = '🚀';
+    summary = 'You can handle some risk, but you still need guardrails so excitement does not turn into guessing.';
+    plan = [
+      'Use Risk Check on every growth stock.',
+      'Compare growth stocks to QQQ or XLK.',
+      'Keep risky ideas as watchlist ideas before real decisions.'
+    ];
+  }
+
+  localStorage.setItem('cashFloInvestorProfile', JSON.stringify({ type, risk, longTerm, etf, hype, answers: investorQuizAnswers }));
+
+  const result = document.getElementById('quizResult');
+  result.innerHTML = `
+    <div class="quiz-type-pill">${emoji} ${type}</div>
+    <div class="quiz-result-title">Your profile: ${type}</div>
+    <p style="color:var(--muted2);font-size:14px">${summary}</p>
+
+    <div class="quiz-score-bars">
+      <div class="quiz-bar-row">
+        <div class="quiz-bar-label"><span>Risk comfort</span><span>${risk}%</span></div>
+        <div class="quiz-bar"><span style="width:${risk}%"></span></div>
+      </div>
+      <div class="quiz-bar-row">
+        <div class="quiz-bar-label"><span>Long-term mindset</span><span>${longTerm}%</span></div>
+        <div class="quiz-bar"><span style="width:${longTerm}%"></span></div>
+      </div>
+      <div class="quiz-bar-row">
+        <div class="quiz-bar-label"><span>ETF readiness</span><span>${etf}%</span></div>
+        <div class="quiz-bar"><span style="width:${etf}%"></span></div>
+      </div>
+    </div>
+
+    <div class="quiz-plan-box">
+      <h4>Your Cash Flo path</h4>
+      <ul>${plan.map(item => `<li>${item}</li>`).join('')}</ul>
+    </div>
+
+    <div class="quiz-actions">
+      <button class="btn-primary" onclick="jumpToSection('cashFloTools')">Go to Pro Tools →</button>
+      <button class="btn-ghost" onclick="jumpToSection('stocks')">View Watchlist</button>
+    </div>
+
+    <p class="quiz-saved-note">Saved in this browser. Educational only — this is not financial advice.</p>
+  `;
+}
+
+function resetInvestorQuiz() {
+  Object.keys(investorQuizAnswers).forEach(k => delete investorQuizAnswers[k]);
+  document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('active'));
+  localStorage.removeItem('cashFloInvestorProfile');
+
+  const result = document.getElementById('quizResult');
+  result.innerHTML = `
+    <div class="quiz-type-pill">🧭 Waiting for answers</div>
+    <div class="quiz-result-title">Your investor type will show here.</div>
+    <p style="color:var(--muted2);font-size:14px">Answer the 5 questions and Cash Flo will give you a beginner profile, risk level, goals, and a simple next-step plan.</p>
+    <div class="quiz-score-bars">
+      <div class="quiz-bar-row"><div class="quiz-bar-label"><span>Risk comfort</span><span>—</span></div><div class="quiz-bar"><span style="width:0%"></span></div></div>
+      <div class="quiz-bar-row"><div class="quiz-bar-label"><span>Long-term mindset</span><span>—</span></div><div class="quiz-bar"><span style="width:0%"></span></div></div>
+      <div class="quiz-bar-row"><div class="quiz-bar-label"><span>ETF readiness</span><span>—</span></div><div class="quiz-bar"><span style="width:0%"></span></div></div>
+    </div>
+    <div class="quiz-plan-box">
+      <h4>Why this helps</h4>
+      <ul>
+        <li>Cash Flo can guide you differently depending on your goals.</li>
+        <li>Risky users get more guardrails and warnings.</li>
+        <li>Long-term users get ETF comparisons and calm reminders.</li>
+      </ul>
+    </div>
+  `;
+}
 
 function updateProToolAccess() {
   const toolsSection = document.getElementById('cashFloTools');
