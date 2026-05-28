@@ -2483,6 +2483,20 @@ body {
   .money-goal-grid { grid-template-columns: 1fr; }
 }
 
+
+/* QUIZ RIGHT COLUMN */
+.quiz-side {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+@media(max-width:850px){
+  .quiz-side {
+    gap: 16px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -3039,6 +3053,7 @@ body {
         </div>
       </div>
 
+      <div class="quiz-side">
       <div class="quiz-result-card" id="quizResult" tabindex="-1">
         <div class="quiz-type-pill">🧭 Waiting for answers</div>
         <div class="quiz-result-title">Your investor type will show here.</div>
@@ -3087,6 +3102,7 @@ body {
         </div>
 
         <p class="money-mini-note">Educational only. This does not tell you what to buy and does not guarantee returns.</p>
+      </div>
       </div>
 
     </div>
