@@ -2553,6 +2553,178 @@ body {
   letter-spacing: -0.2px;
 }
 
+
+/* APP-LIKE PAGES + SMART SEARCH */
+.top-search-wrap {
+  position: relative;
+  min-width: min(360px, 42vw);
+}
+
+.top-search {
+  width: 100%;
+  background: rgba(255,255,255,0.055);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 9px 14px 9px 36px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  outline: none;
+}
+
+.top-search:focus {
+  border-color: rgba(82,214,255,0.42);
+  box-shadow: 0 0 0 1px rgba(82,214,255,0.10);
+}
+
+.top-search-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 13px;
+  pointer-events: none;
+}
+
+.search-suggestions {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: rgba(16,20,29,0.98);
+  border: 1px solid rgba(255,255,255,0.13);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+  z-index: 220;
+}
+
+.search-suggestions.show {
+  display: block;
+}
+
+.search-suggestion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: var(--text);
+  padding: 11px 13px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.search-suggestion:last-child {
+  border-bottom: none;
+}
+
+.search-suggestion:hover {
+  background: rgba(82,214,255,0.08);
+}
+
+.search-suggestion-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(82,214,255,0.10);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.search-suggestion strong {
+  display: block;
+  font-size: 13px;
+  line-height: 1.15;
+}
+
+.search-suggestion span {
+  display: block;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.app-page-tabs {
+  position: sticky;
+  top: 49px;
+  z-index: 90;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 40px;
+  background: rgba(8,13,20,0.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.app-page-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.page-tab {
+  white-space: nowrap;
+  border: 1px solid rgba(255,255,255,0.11);
+  background: rgba(255,255,255,0.045);
+  color: var(--muted2);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 900;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+}
+
+.page-tab:hover,
+.page-tab.active {
+  background: linear-gradient(135deg, var(--future2, var(--accent)), var(--future, var(--accent2))) !important;
+  color: #041018 !important;
+  border-color: transparent !important;
+}
+
+.page-section {
+  display: none;
+}
+
+.page-section.active-page {
+  display: block;
+}
+
+.section-divider-label {
+  display: none !important;
+}
+
+.menu-section-content .menu-link.primary-route {
+  background: rgba(82,214,255,0.10);
+  border-color: rgba(82,214,255,0.20);
+  color: var(--text);
+}
+
+@media(max-width:900px){
+  .top-search-wrap {
+    display: none;
+  }
+  .app-page-tabs {
+    top: 47px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+@media(min-width:901px){
+  .nav-right {
+    flex: 1;
+    justify-content: flex-end;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2682,6 +2854,12 @@ body {
 <nav>
   <div class="logo"><div class="logo-icon">$</div><span>Cash Flo</span></div>
   <div class="nav-right">
+
+    <div class="top-search-wrap">
+      <span class="top-search-icon">⌕</span>
+      <input class="top-search" id="topAppSearch" placeholder="Search Cash Flo: quiz, stocks, Tesla, Pro tools..." oninput="handleTopSearch()" onkeydown="handleTopSearchKey(event)" />
+      <div class="search-suggestions" id="searchSuggestions"></div>
+    </div>
     <span id="planIndicator" style="font-size:13px;color:var(--muted)">Free Plan</span>
     <button class="nav-cta" onclick="openAuthModal()">Sign Up →</button>
     <button class="menu-toggle" onclick="toggleAppMenu()" aria-label="Open menu">
@@ -2725,6 +2903,23 @@ body {
         <button class="menu-link" onclick="jumpToSection('startHere')">Start Here</button>
       </div>
     </div>
+
+
+    <div class="menu-section open">
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
+        <span>🧭 Quick Navigation <small>Move through the app</small></span>
+        <span>⌄</span>
+      </button>
+      <div class="menu-section-content">
+        <button class="menu-link primary-route" onclick="showAppPage('home'); closeAppMenu()">Home Dashboard</button>
+        <button class="menu-link" onclick="showAppPage('profile'); closeAppMenu()">Profile Quiz</button>
+        <button class="menu-link" onclick="showAppPage('tools'); closeAppMenu()">Pro Tools</button>
+        <button class="menu-link" onclick="showAppPage('stocks'); closeAppMenu()">Stock Tracker</button>
+        <button class="menu-link" onclick="showAppPage('learn'); closeAppMenu()">Learn Center</button>
+        <button class="menu-link" onclick="showAppPage('pricing'); closeAppMenu()">Pricing</button>
+      </div>
+    </div>
+
 
     <div class="menu-section">
       <button class="menu-section-btn" onclick="toggleMenuSection(this)">
@@ -2841,8 +3036,19 @@ body {
   </div>
 </div>
 
+
+<!-- APP PAGE TABS -->
+<div class="app-page-tabs" id="appPageTabs">
+  <button class="page-tab active" onclick="showAppPage('home', this)">Home</button>
+  <button class="page-tab" onclick="showAppPage('profile', this)">Profile Quiz</button>
+  <button class="page-tab" onclick="showAppPage('tools', this)">Pro Tools</button>
+  <button class="page-tab" onclick="showAppPage('stocks', this)">Stocks</button>
+  <button class="page-tab" onclick="showAppPage('learn', this)">Learn</button>
+  <button class="page-tab" onclick="showAppPage('pricing', this)">Pricing</button>
+</div>
+
 <!-- HERO -->
-<section class="hero">
+<section class="hero page-section active-page" data-page="home">
   <div class="hero-glow"></div>
   <div class="hero-inner">
     <div class="future-tagline">Built for beginners with big futures</div>
@@ -2850,7 +3056,7 @@ body {
     <p class="hero-subline">An easier way to learn stocks, understand high and low risks, and build smarter money habits for your future.</p>
     <div class="hero-btns">
       <button class="btn-primary" onclick="openInvestorQuiz()">Take Investor Quiz →</button>
-      <button class="btn-ghost" onclick="document.getElementById('stocks').scrollIntoView({behavior:'smooth'})">See Live Stocks</button>
+      <button class="btn-ghost" onclick="showAppPage('stocks'); setTimeout(()=>document.getElementById('stocks')?.scrollIntoView({behavior:'smooth'}),80)">See Live Stocks</button>
     </div>
     <p class="free-note"><strong>You stay in control.</strong> Cash Flo helps you learn, compare, and slow down before real decisions.</p>
   </div>
@@ -2858,7 +3064,7 @@ body {
 
 
 <!-- STUDENT-FRIENDLY VALUE STRIP -->
-<section class="value-strip">
+<section class="value-strip page-section active-page" data-page="home">
   <div class="value-strip-inner">
     <div class="value-pill"><strong>For beginners:</strong> plain English, not finance jargon.</div>
     <div class="value-pill"><strong>For future goals:</strong> learn habits before chasing hype.</div>
@@ -2867,7 +3073,7 @@ body {
 </section>
 
 <!-- STATS -->
-<div class="stat-strip">
+<div class="stat-strip page-section active-page" data-page="home">
   <div class="stat-item">
     <span class="stat-num">10.5%</span>
     <span class="stat-label">S&P 500 average annual return since 1957</span>
@@ -2895,7 +3101,7 @@ body {
 
 
 <!-- DASHBOARD / ORGANIZED APP HOME -->
-<section class="dashboard-section" id="dashboard">
+<section class="dashboard-section page-section active-page" data-page="home" id="dashboard">
   <div class="dashboard-inner">
     <div class="dashboard-top">
       <div>
@@ -2943,7 +3149,7 @@ body {
 
 
 <!-- SITE MAP / CLEAN ORGANIZATION -->
-<section class="site-map-section" id="startHere">
+<section class="site-map-section page-section active-page" data-page="home" id="startHere">
   <div class="site-map-inner">
     <div class="section-tag">Start here</div>
     <div class="guide-title">Pick where you want to start.</div>
@@ -2970,7 +3176,7 @@ body {
 
 
 <!-- INVESTOR PROFILE QUIZ GATEWAY -->
-<section class="quiz-gateway" id="investorQuizGateway">
+<section class="quiz-gateway page-section" data-page="profile" id="investorQuizGateway">
   <div class="quiz-gateway-inner">
     <div class="quiz-gateway-card">
       <div class="section-tag">Investor Profile</div>
@@ -2987,7 +3193,7 @@ body {
 </section>
 
 <!-- INVESTOR PROFILE QUIZ -->
-<section class="quiz-section quiz-page" id="investorProfileQuiz">
+<section class="quiz-section quiz-page page-section" data-page="profile" id="investorProfileQuiz">
   <div class="quiz-inner">
     <div class="quiz-close-row"><button class="btn-ghost" onclick="closeInvestorQuiz()">← Back to main page</button><button class="btn-primary" onclick="calculateInvestorProfile()">Submit →</button></div>
     <div class="quiz-top">
@@ -3165,7 +3371,7 @@ body {
   </div>
 </section>
 <!-- WHY CASH FLO -->
-<section class="why-section">
+<section class="why-section page-section" data-page="learn">
   <div class="section-tag">Why Cash Flo?</div>
   <h2>Less random advice. More clear next steps.</h2>
   <p>Cash Flo helps beginners understand investing without confusion, hype, or hours of searching.</p>
@@ -3232,7 +3438,7 @@ body {
 </section>
 
 <!-- INVESTOR GUIDE -->
-<section class="guide-section" id="investorGuide">
+<section class="guide-section page-section" data-page="learn" id="investorGuide">
   <div class="guide-inner">
     <div class="guide-top">
       <div>
@@ -3285,7 +3491,7 @@ body {
 
 <div class="section-divider-label">Research</div>
 <!-- CASH FLO DIFFERENTIATOR TOOLS -->
-<section class="different-section" id="cashFloTools">
+<section class="different-section page-section" data-page="tools" id="cashFloTools">
   <div class="different-inner">
     <div class="different-top">
       <div>
@@ -3457,7 +3663,7 @@ body {
 </section>
 
 <!-- STOCKS -->
-<section id="stocks" class="stocks-section">
+<section id="stocks" class="stocks-section page-section" data-page="stocks">
   <div class="stocks-top">
     <div class="stocks-title">Stock Tracker</div>
     <div class="stocks-controls">
@@ -3546,7 +3752,7 @@ body {
 
 
 <!-- PRICING -->
-<section class="pricing-section">
+<section class="pricing-section page-section" data-page="pricing">
   <div class="pricing-inner">
     <div class="section-tag" style="text-align:center">Pricing</div>
     <div class="pricing-title">Start free. Upgrade when you’re ready.</div>
@@ -5691,6 +5897,211 @@ function showPlanChoiceOnLoad() {
 document.getElementById('planChoiceModal')?.addEventListener('click', e => {
   if (e.target === e.currentTarget) closePlanChoice();
 });
+
+
+// APP-LIKE PAGE ROUTING + SMART SEARCH
+const appSearchItems = [
+  { title: 'Home Dashboard', subtitle: 'Your main Cash Flo starting point', page: 'home', target: 'dashboard', icon: '🏠', keywords: ['home','dashboard','start','main'] },
+  { title: 'Investor Profile Quiz', subtitle: 'Find your risk style and goals', page: 'profile', target: 'investorQuizGateway', icon: '🧭', keywords: ['quiz','profile','risk','survey','questions','investor type'] },
+  { title: 'Future Money Growth Calculator', subtitle: 'Project money every 5 years', page: 'profile', target: 'moneyGoalCalculator', icon: '🧮', keywords: ['calculator','money','goal','growth','future','monthly','return','profit'] },
+  { title: 'Pro Tools', subtitle: 'Risk Check, ETF Compare, Mistake Detector', page: 'tools', target: 'cashFloTools', icon: '🧰', keywords: ['tools','pro','risk check','compare','mistake','watchlist builder'] },
+  { title: 'Stock Tracker', subtitle: 'Search tickers or company names', page: 'stocks', target: 'stocks', icon: '📊', keywords: ['stocks','tracker','stock list','market','prices','watchlist'] },
+  { title: 'Top Stocks For Me', subtitle: 'Profile-based stock sorting after quiz', page: 'stocks', target: 'stocks', icon: '⭐', action: 'personalStocks', keywords: ['top stocks','for me','matches','profile match','best stocks'] },
+  { title: 'AI Advisor', subtitle: 'Ask beginner investing questions', page: 'learn', target: 'advisor', icon: '🤖', keywords: ['ai','advisor','chat','chatbot','question','ask'] },
+  { title: 'Investor Guide', subtitle: 'Learn before using real money', page: 'learn', target: 'investorGuide', icon: '📘', keywords: ['learn','guide','education','beginner','etf','risk'] },
+  { title: 'Pricing', subtitle: '$5/month Pro plan later', page: 'pricing', target: null, icon: '💸', keywords: ['pricing','price','pro','payment','cost'] },
+];
+
+function showAppPage(page, btn) {
+  const sections = document.querySelectorAll('.page-section');
+  sections.forEach(sec => {
+    const secPage = sec.getAttribute('data-page');
+    sec.classList.toggle('active-page', secPage === page);
+  });
+
+  document.querySelectorAll('.page-tab').forEach(tab => tab.classList.remove('active'));
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    const matching = Array.from(document.querySelectorAll('.page-tab')).find(tab =>
+      tab.textContent.toLowerCase().includes(page === 'profile' ? 'profile' : page)
+    );
+    if (matching) matching.classList.add('active');
+  }
+
+  // If user opens profile page, show the gateway unless quiz is already open.
+  if (page === 'profile') {
+    const gateway = document.getElementById('investorQuizGateway');
+    const quiz = document.getElementById('investorProfileQuiz');
+    if (gateway && quiz && !quiz.classList.contains('show')) {
+      gateway.classList.remove('hide');
+    }
+  }
+
+  const tabs = document.getElementById('appPageTabs');
+  if (tabs) setTimeout(() => tabs.scrollIntoView({ behavior: 'smooth', block: 'start' }), 20);
+}
+
+function navigateToAppItem(item) {
+  if (!item) return;
+
+  showAppPage(item.page);
+
+  if (item.action === 'personalStocks') {
+    setTimeout(() => {
+      if (typeof quickSort === 'function') quickSort('personal', document.querySelectorAll('.sort-chip')[1]);
+    }, 80);
+  }
+
+  setTimeout(() => {
+    const target = item.target ? document.getElementById(item.target) : null;
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 120);
+
+  closeSearchSuggestions();
+}
+
+function getTopSearchMatches(query) {
+  const q = normalizeSearchText ? normalizeSearchText(query) : String(query || '').toUpperCase().trim();
+  if (!q) return [];
+
+  const matches = [];
+
+  // App destinations
+  for (const item of appSearchItems) {
+    const haystack = [item.title, item.subtitle, ...(item.keywords || [])].join(' ').toUpperCase();
+    if (haystack.includes(q) || q.split(' ').some(part => part.length > 2 && haystack.includes(part))) {
+      matches.push({ type: 'page', ...item });
+    }
+  }
+
+  // Company/ticker search
+  if (typeof resolveSearchToTicker === 'function') {
+    const ticker = resolveSearchToTicker(query);
+    if (ticker && ticker.length <= 6) {
+      matches.unshift({
+        type: 'stock',
+        title: `${ticker}${stockNames && stockNames[ticker] ? ' · ' + stockNames[ticker] : ''}`,
+        subtitle: 'Open in Stock Tracker',
+        page: 'stocks',
+        target: 'stocks',
+        icon: '📈',
+        ticker
+      });
+    }
+  }
+
+  // Deduplicate by title
+  const seen = new Set();
+  return matches.filter(item => {
+    const key = item.type + ':' + item.title;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, 6);
+}
+
+function handleTopSearch() {
+  const input = document.getElementById('topAppSearch');
+  const box = document.getElementById('searchSuggestions');
+  if (!input || !box) return;
+
+  const matches = getTopSearchMatches(input.value);
+  if (!input.value.trim() || matches.length === 0) {
+    box.classList.remove('show');
+    box.innerHTML = '';
+    return;
+  }
+
+  box.innerHTML = matches.map((item, index) => `
+    <button class="search-suggestion" data-index="${index}" onclick="selectTopSearchResult(${index})">
+      <span class="search-suggestion-icon">${item.icon || '⌕'}</span>
+      <span><strong>${item.title}</strong><span>${item.subtitle}</span></span>
+    </button>
+  `).join('');
+  box.dataset.results = JSON.stringify(matches);
+  box.classList.add('show');
+}
+
+function selectTopSearchResult(index) {
+  const box = document.getElementById('searchSuggestions');
+  const input = document.getElementById('topAppSearch');
+  if (!box) return;
+
+  let matches = [];
+  try { matches = JSON.parse(box.dataset.results || '[]'); } catch(e) {}
+  const item = matches[index];
+  if (!item) return;
+
+  if (item.type === 'stock' && item.ticker) {
+    showAppPage('stocks');
+    const stockInput = document.getElementById('stockSearch');
+    if (stockInput) stockInput.value = item.ticker;
+    setTimeout(() => {
+      if (typeof addTickerFromSearch === 'function') addTickerFromSearch();
+      document.getElementById('stocks')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 120);
+  } else {
+    navigateToAppItem(item);
+  }
+
+  if (input) input.value = '';
+  closeSearchSuggestions();
+}
+
+function handleTopSearchKey(event) {
+  if (event.key === 'Enter') {
+    const matches = getTopSearchMatches(event.target.value);
+    if (matches.length) {
+      event.preventDefault();
+      if (matches[0].type === 'stock') selectTopSearchResult(0);
+      else navigateToAppItem(matches[0]);
+    }
+  }
+
+  if (event.key === 'Escape') {
+    closeSearchSuggestions();
+  }
+}
+
+function closeSearchSuggestions() {
+  const box = document.getElementById('searchSuggestions');
+  if (box) {
+    box.classList.remove('show');
+    box.innerHTML = '';
+    box.dataset.results = '[]';
+  }
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.top-search-wrap')) closeSearchSuggestions();
+});
+
+// Keep old jump buttons working by showing the correct app page first.
+const oldJumpToSection = typeof jumpToSection === 'function' ? jumpToSection : null;
+jumpToSection = function(id) {
+  const target = document.getElementById(id);
+  if (target && target.classList.contains('page-section')) {
+    showAppPage(target.getAttribute('data-page') || 'home');
+  } else if (target) {
+    const parentPage = target.closest('.page-section');
+    if (parentPage) showAppPage(parentPage.getAttribute('data-page') || 'home');
+  }
+
+  const overlay = document.getElementById('appMenuOverlay');
+  if (overlay) overlay.classList.remove('show');
+
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+};
+
+// Make hero/profile buttons route to pages cleanly.
+document.addEventListener('DOMContentLoaded', () => {
+  showAppPage('home');
+});
+
 
 // INIT
 showPlanChoiceOnLoad();
