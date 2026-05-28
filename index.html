@@ -685,7 +685,7 @@ let currentSector = 'all';
 // Step 1: Create a free Finnhub account.
 // Step 2: Replace the placeholder below with your token.
 // Example: const FINNHUB_API_KEY = "abc123";
-const FINNHUB_API_KEY = "PASTE_YOUR_FINNHUB_API_KEY_HERE";
+const FINNHUB_API_KEY = "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
 
 // This is your starting watchlist. Users can add any ticker with the search box.
 let stockSymbols = ['AAPL','MSFT','NVDA','AMZN','GOOGL','META','TSLA','AMD','VOO','SPY','QQQ','VTI'];
@@ -775,7 +775,7 @@ async function loadLiveStocks(manual=false) {
   renderStocks();
   renderTicker();
 
-  const demoMode = !FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE";
+  const demoMode = !FINNHUB_API_KEY || FINNHUB_API_KEY === "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
   if (status) {
     status.textContent = demoMode
       ? 'Demo fallback prices showing. Add your Finnhub API key to make the prices truly live and update every 60 seconds.'
