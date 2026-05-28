@@ -2965,6 +2965,52 @@ body {
   }
 }
 
+
+/* DASHBOARD CLEANUP: MAKE RECOMMENDED FLOW THE MAIN CARD */
+.dashboard-section .dashboard-grid,
+.dashboard-section .dashboard-cards,
+.dashboard-section .dashboard-layout,
+.dashboard-section .profile-dashboard-grid {
+  grid-template-columns: 1fr !important;
+}
+
+.dashboard-section .dashboard-card:first-child,
+.dashboard-section .profile-card:first-child,
+.dashboard-section .profile-summary-card,
+.dashboard-section .dashboard-profile-card {
+  display: none !important;
+}
+
+.dashboard-section .flow-card,
+.dashboard-section .recommended-flow,
+.dashboard-section .dashboard-card:nth-child(2) {
+  width: 100% !important;
+  max-width: 1180px !important;
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+.dashboard-section .flow-card,
+.dashboard-section .recommended-flow {
+  min-height: 360px;
+}
+
+.dashboard-section .dashboard-inner,
+.dashboard-section .dashboard-wrap,
+.dashboard-section > div {
+  max-width: 1240px !important;
+}
+
+
+/* KEEP STAT CARDS ONLY ON HOME TAB */
+.stat-strip.page-section:not(.active-page) {
+  display: none !important;
+}
+
+.stat-strip.page-section.active-page {
+  display: grid !important;
+}
+
 </style>
 </head>
 <body>
@@ -3353,6 +3399,11 @@ body {
 </section>
 
 <!-- STATS -->
+
+
+
+
+<!-- DASHBOARD / ORGANIZED APP HOME -->
 <div class="stat-strip page-section active-page" data-page="home">
   <div class="stat-item">
     <span class="stat-num">10.5%</span>
@@ -3379,8 +3430,6 @@ body {
   </div>
 </div>
 
-
-<!-- DASHBOARD / ORGANIZED APP HOME -->
 <section class="dashboard-section page-section" data-page="dashboard" id="dashboard">
   <div class="dashboard-inner">
     <div class="dashboard-top">
@@ -5677,6 +5726,7 @@ function calculateInvestorProfile() {
 
   localStorage.setItem('cashFloInvestorProfile', JSON.stringify({ type, risk, longTerm, etf, hype, answers: investorQuizAnswers }));
   updateProfileMiniCard();
+cleanDashboardLayout();
   updateProfileGuidance();
   updateDashboardProfileCard();
   renderStocks();
@@ -6126,6 +6176,7 @@ function showAppPage(page, btn) {
 
   const tabs = document.getElementById('appPageTabs');
   if (tabs) setTimeout(() => tabs.scrollIntoView({ behavior: 'smooth', block: 'start' }), 20);
+  setTimeout(cleanDashboardLayout, 40);
 }
 
 function navigateToAppItem(item) {
@@ -6297,8 +6348,48 @@ function scrollToStartHere() {
   }, 80);
 }
 
+
+function cleanDashboardLayout() {
+  const dashboard = document.getElementById('dashboard');
+  if (!dashboard) return;
+
+  const allCards = Array.from(dashboard.querySelectorAll('div'));
+  const profileCard = allCards.find(el => {
+    const text = (el.textContent || '').toLowerCase();
+    return text.includes('risk comfort') &&
+           text.includes('best first tool') &&
+           text.includes('profile matches') &&
+           text.includes('retake quiz');
+  });
+
+  if (profileCard) {
+    profileCard.style.display = 'none';
+  }
+
+  const flowCard = allCards.find(el => {
+    const text = (el.textContent || '').toLowerCase();
+    return text.includes('recommended flow') &&
+           text.includes('find your profile') &&
+           text.includes('review top stocks for me');
+  });
+
+  if (flowCard) {
+    flowCard.style.width = '100%';
+    flowCard.style.maxWidth = '1180px';
+    flowCard.style.marginLeft = '0';
+    flowCard.style.marginRight = 'auto';
+  }
+
+  const grid = flowCard?.parentElement;
+  if (grid) {
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = '1fr';
+  }
+}
+
 // INIT
 showPlanChoiceOnLoad();
+setTimeout(cleanDashboardLayout, 300);
 updateProfileMiniCard();
 updateProfileGuidance();
 updateDashboardProfileCard();
