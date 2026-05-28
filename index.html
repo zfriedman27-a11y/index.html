@@ -7,22 +7,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#080b14; --surface:#101624; --surface2:#162033;
-  --border:rgba(255,255,255,0.08); --border2:rgba(255,255,255,0.16);
-  --accent:#2f9bff; --accent2:#7c6dfa; --text:#f4f7ff;
-  --muted:#7f8aa8; --muted2:#b0bad6; --red:#ff4d6a; --green:#2f9bff; --amber:#f7c35f;
+  --bg:#090c12; --surface:#111722; --surface2:#171f2d;
+  --border:rgba(255,255,255,0.075); --border2:rgba(255,255,255,0.14);
+  --accent:#4da3ff; --accentSoft:#203a5a; --accent2:#8b7cff;
+  --text:#f5f7fb; --muted:#7f889b; --muted2:#b5bed0;
+  --red:#ff4d6a; --green:#22c55e; --amber:#f7c35f;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
 body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:999;opacity:0.4}
 
-/* MODERN BACKGROUND GLOW */
+/* MODERN BACKGROUND GLOW - more subtle */
 body {
   background:
-    radial-gradient(circle at 20% 10%, rgba(47,155,255,0.12), transparent 28%),
-    radial-gradient(circle at 80% 20%, rgba(124,109,250,0.16), transparent 30%),
-    radial-gradient(circle at 50% 90%, rgba(247,195,95,0.08), transparent 35%),
+    radial-gradient(circle at 18% 8%, rgba(77,163,255,0.08), transparent 26%),
+    radial-gradient(circle at 82% 18%, rgba(139,124,255,0.07), transparent 30%),
+    radial-gradient(circle at 50% 95%, rgba(255,255,255,0.035), transparent 34%),
     var(--bg);
 }
 
@@ -33,7 +34,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .logo-icon {
   width: 38px;
   height: 38px;
-  background: linear-gradient(135deg, #2f9bff, #7c6dfa, #00d4ff);
+  background: linear-gradient(135deg, #4da3ff, #8b7cff, #d6e9ff);
   color: #050508;
   border-radius: 14px;
   display: flex;
@@ -42,7 +43,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
   font-size: 21px;
   font-weight: 900;
   flex-shrink: 0;
-  box-shadow: 0 0 22px rgba(47,155,255,0.35);
+  box-shadow: 0 0 18px rgba(77,163,255,0.22);
   position: relative;
   overflow: hidden;
 }
@@ -158,7 +159,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
 .stock-search-wrap{display:flex;gap:8px;align-items:center}
 .stock-search{background:var(--surface);border:0.5px solid var(--border2);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 12px;border-radius:9px;outline:none;width:190px}
-.stock-search:focus{border-color:rgba(47,155,255,.55)}
+.stock-search:focus{border-color:rgba(77,163,255,.45)}
 .stock-search-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;border-radius:9px;padding:9px 14px;font-size:13px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif}
 .live-status{font-size:12px;color:var(--muted);margin-top:12px}
 
@@ -210,14 +211,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .advisor-inner{max-width:760px;margin:0 auto}
 .section-tag{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
 .advisor-box {
-  background: rgba(10,10,15,0.72);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 26px;
+  background: rgba(13,18,28,0.82);
+  border: 1px solid rgba(255,255,255,0.105);
+  border-radius: 24px;
   overflow: hidden;
   margin-top: 32px;
   box-shadow:
-    0 25px 80px rgba(0,0,0,0.45),
-    0 0 60px rgba(47,155,255,0.08);
+    0 22px 70px rgba(0,0,0,0.38),
+    0 0 34px rgba(77,163,255,0.055);
   backdrop-filter: blur(18px);
 }
 .advisor-head{padding:20px 28px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:12px}
@@ -258,7 +259,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .adv-input::placeholder{color:var(--muted)}
 .adv-input:focus{border-color:rgba(47,155,255,.4)}
 .send-btn {
-  background: linear-gradient(135deg, #2f9bff, #6ec2ff);
+  background: linear-gradient(135deg, #4da3ff, #78bfff);
   color: #000;
   border: none;
   padding: 10px 22px;
@@ -268,7 +269,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
   cursor: pointer;
   font-family: 'DM Sans', sans-serif;
   transition: all .2s;
-  box-shadow: 0 0 22px rgba(47,155,255,0.25);
+  box-shadow: 0 0 16px rgba(77,163,255,0.18);
 }
 .send-btn:hover {
   opacity: .9;
@@ -306,6 +307,46 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .price-btn.pro:hover{opacity:.85}
 .popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#000;font-size:11px;font-weight:800;padding:4px 14px;border-radius:100px;letter-spacing:.5px;white-space:nowrap}
 
+
+
+/* SUBTLE MODERN BUTTON HOVERS */
+button,
+.dropdown-btn,
+.pill,
+.price-btn,
+.nav-plan,
+.nav-cta,
+.btn-primary,
+.btn-ghost,
+.unlock-btn,
+.stock-search-btn,
+.auth-btn {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, filter .18s ease, opacity .18s ease;
+}
+
+button:hover,
+.dropdown-btn:hover,
+.pill:hover,
+.price-btn:hover,
+.nav-plan:hover,
+.nav-cta:hover,
+.btn-primary:hover,
+.btn-ghost:hover,
+.unlock-btn:hover,
+.stock-search-btn:hover,
+.auth-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+  box-shadow: 0 0 18px rgba(77,163,255,0.14);
+}
+
+.btn-ghost:hover,
+.nav-plan:hover,
+.dropdown-btn:hover,
+.pill:hover {
+  border-color: rgba(77,163,255,0.32);
+  background: rgba(77,163,255,0.055);
+}
 
 /* AUTH BUTTONS */
 .auth-btn {
@@ -541,7 +582,7 @@ footer p{font-size:12px;color:var(--muted)}
       <tbody id="stockBody"></tbody>
     </table>
   </div>
-  <div class="live-status" id="liveStatus">Live prices load every 60 seconds after you add your Finnhub API key.</div>
+  <div class="live-status" id="liveStatus">Add your Finnhub API key for real live prices. Demo fallback numbers may become outdated.</div>
 </section>
 
 <!-- AI ADVISOR -->
@@ -664,18 +705,18 @@ const symbolSector = {
 };
 
 const fallbackPrices = {
-  AAPL:{c:213.42, dp:1.8, d:3.76, pc:209.66},
-  MSFT:{c:412.60, dp:0.9, d:3.68, pc:408.92},
-  NVDA:{c:891.20, dp:3.2, d:27.64, pc:863.56},
-  AMZN:{c:188.55, dp:2.1, d:3.88, pc:184.67},
-  GOOGL:{c:172.30, dp:0.7, d:1.20, pc:171.10},
-  META:{c:521.80, dp:1.4, d:7.20, pc:514.60},
-  TSLA:{c:248.10, dp:-1.1, d:-2.76, pc:250.86},
-  AMD:{c:162.40, dp:4.8, d:7.42, pc:154.98},
-  VOO:{c:498.20, dp:0.6, d:2.98, pc:495.22},
-  SPY:{c:519.40, dp:0.5, d:2.58, pc:516.82},
-  QQQ:{c:447.60, dp:1.1, d:4.87, pc:442.73},
-  VTI:{c:244.80, dp:0.5, d:1.22, pc:243.58}
+  AAPL:{c:310.850, dp:0.834, d:2.570, pc:308.280},
+  MSFT:{c:412.670, dp:-0.800, d:-3.330, pc:416.000},
+  NVDA:{c:212.600, dp:-1.061, d:-2.280, pc:214.880},
+  AMZN:{c:271.850, dp:2.473, d:6.560, pc:265.290},
+  GOOGL:{c:388.830, dp:-0.010, d:-0.040, pc:388.870},
+  META:{c:635.255, dp:3.742, d:22.915, pc:612.340},
+  TSLA:{c:440.360, dp:1.557, d:6.750, pc:433.610},
+  AMD:{c:495.540, dp:-1.613, d:-8.125, pc:503.665},
+  VOO:{c:689.960, dp:0.006, d:0.040, pc:689.920},
+  SPY:{c:750.460, dp:-0.023, d:-0.175, pc:750.635},
+  QQQ:{c:729.450, dp:-0.120, d:-0.880, pc:730.330},
+  VTI:{c:369.360, dp:-0.005, d:-0.020, pc:369.380}
 };
 
 function getStockMeta(symbol) {
@@ -737,7 +778,7 @@ async function loadLiveStocks(manual=false) {
   const demoMode = !FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE";
   if (status) {
     status.textContent = demoMode
-      ? 'Demo prices showing. Add your Finnhub API key in the code to make prices live. Auto-refresh: every 60 seconds.'
+      ? 'Demo fallback prices showing. Add your Finnhub API key to make the prices truly live and update every 60 seconds.'
       : `Live prices updated ${lastUpdated.toLocaleTimeString()}. Auto-refresh: every 60 seconds.`;
   }
 }
