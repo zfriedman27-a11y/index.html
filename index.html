@@ -2542,6 +2542,17 @@ body {
   font-weight: 900;
 }
 
+
+/* BIGGER HERO SUBLINE */
+.hero-subline {
+  font-size: clamp(19px, 2.1vw, 25px) !important;
+  line-height: 1.55 !important;
+  max-width: 720px !important;
+  color: var(--muted2) !important;
+  margin-bottom: 32px !important;
+  letter-spacing: -0.2px;
+}
+
 </style>
 </head>
 <body>
@@ -2836,7 +2847,7 @@ body {
   <div class="hero-inner">
     <div class="future-tagline">Built for beginners with big futures</div>
     <h1>Investing,<br><em>finally simple.</em></h1>
-    <p>A cleaner way to learn stocks, ETFs, risk, and smart money habits — without noise, pressure, or confusing dashboards.</p>
+    <p class="hero-subline">An easier way to learn stocks, understand high and low risks, and build smarter money habits for your future.</p>
     <div class="hero-btns">
       <button class="btn-primary" onclick="openInvestorQuiz()">Take Investor Quiz →</button>
       <button class="btn-ghost" onclick="document.getElementById('stocks').scrollIntoView({behavior:'smooth'})">See Live Stocks</button>
