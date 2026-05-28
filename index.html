@@ -1934,6 +1934,111 @@ nav {
   .watchlist-active-banner { flex-direction:column; align-items:flex-start; }
 }
 
+
+/* PERSONALIZED PRO GUIDANCE FROM QUIZ */
+.profile-guidance-card {
+  background: rgba(143,183,255,0.055);
+  border: 1px solid rgba(143,183,255,0.16);
+  border-radius: 20px;
+  padding: 18px;
+  margin: 20px 0 18px;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 14px;
+  align-items: stretch;
+}
+
+.profile-guidance-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 21px;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.profile-guidance-card p {
+  color: var(--muted2);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.profile-guidance-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.profile-guidance-pill {
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.035);
+  color: var(--muted2);
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.profile-guidance-actions {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 14px;
+}
+
+.profile-guidance-actions h4 {
+  font-family: 'Syne', sans-serif;
+  margin-bottom: 9px;
+}
+
+.profile-guidance-actions ul {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.profile-guidance-actions li {
+  color: var(--muted2);
+  font-size: 13px;
+}
+
+.profile-guidance-actions li::before {
+  content: "→";
+  color: var(--accent);
+  font-weight: 900;
+  margin-right: 8px;
+}
+
+.tool-tab.recommended {
+  box-shadow: 0 0 0 1px rgba(247,195,95,0.45), 0 0 18px rgba(247,195,95,0.10);
+}
+
+.tool-tab.recommended::after {
+  content: " Recommended";
+  color: var(--amber);
+  font-size: 10px;
+  margin-left: 5px;
+}
+
+.personalized-tool-note {
+  margin-top: 12px;
+  padding: 12px 13px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.032);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted2);
+  font-size: 13px;
+}
+
+.personalized-tool-note strong {
+  color: var(--accent);
+}
+
+@media(max-width:850px){
+  .profile-guidance-card {
+    grid-template-columns: 1fr;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -2129,7 +2234,7 @@ nav {
         <span>⌄</span>
       </button>
       <div class="menu-section-content">
-        <button class="menu-link" onclick="jumpToSection('cashFloTools')">Open Pro Tools</button>
+        <button class="menu-link" onclick="jumpToSection('cashFloTools'); setTimeout(openRecommendedProTool, 150)">Open Recommended Pro Tool</button>
         <button class="menu-link" onclick="showToolTab('risk', document.querySelectorAll('.tool-tab')[0]); jumpToSection('cashFloTools')">Risk Check</button>
         <button class="menu-link" onclick="showToolTab('compare', document.querySelectorAll('.tool-tab')[1]); jumpToSection('cashFloTools')">Compare to ETF</button>
         <button class="menu-link" onclick="showToolTab('mistake', document.querySelectorAll('.tool-tab')[4]); jumpToSection('cashFloTools')">Mistake Detector</button>
@@ -2143,9 +2248,10 @@ nav {
       </button>
       <div class="menu-section-content">
         <button class="menu-link" onclick="jumpToSection('stocks')">Open Stock Tracker</button>
-        <button class="menu-link" onclick="quickSort('gainers', document.querySelector('.sort-chip:nth-child(2)')); jumpToSection('stocks')">Biggest Gainers</button>
-        <button class="menu-link" onclick="quickSort('losers', document.querySelector('.sort-chip:nth-child(3)')); jumpToSection('stocks')">Biggest Losers</button>
-        <button class="menu-link" onclick="quickSort('alphabetical', document.querySelector('.sort-chip:nth-child(7)')); jumpToSection('stocks')">A–Z Stocks</button>
+        <button class="menu-link" onclick="quickSort('personal', document.querySelectorAll('.sort-chip')[1]); jumpToSection('stocks')">Top Stocks For Me</button>
+        <button class="menu-link" onclick="quickSort('gainers', document.querySelectorAll('.sort-chip')[2]); jumpToSection('stocks')">Biggest Gainers</button>
+        <button class="menu-link" onclick="quickSort('losers', document.querySelectorAll('.sort-chip')[3]); jumpToSection('stocks')">Biggest Losers</button>
+        <button class="menu-link" onclick="quickSort('alphabetical', document.querySelectorAll('.sort-chip')[7]); jumpToSection('stocks')">A–Z Stocks</button>
       </div>
     </div>
 
@@ -2582,6 +2688,27 @@ nav {
     </div>
 
 
+
+    <div class="profile-guidance-card" id="profileGuidanceCard">
+      <div>
+        <h3>Personalized Pro path</h3>
+        <p>Take the Investor Profile Quiz so Cash Flo can guide which tool to use first and how to read each stock based on your goals and risk comfort.</p>
+        <div class="profile-guidance-pill-row">
+          <span class="profile-guidance-pill">Risk comfort: —</span>
+          <span class="profile-guidance-pill">Time horizon: —</span>
+          <span class="profile-guidance-pill">ETF readiness: —</span>
+        </div>
+      </div>
+      <div class="profile-guidance-actions">
+        <h4>Your next steps</h4>
+        <ul>
+          <li>Take the 10-question quiz</li>
+          <li>Come back to Pro Tools</li>
+          <li>Use the recommended tool first</li>
+        </ul>
+      </div>
+    </div>
+
     <div class="pro-tools-teaser" id="proToolsTeaser">
       <h3>Cash Flo Tools are for Pro members</h3>
       <p>Free users can still use the starter watchlist and one AI preview question. Pro unlocks the guided research tools that make Cash Flo different from a normal chatbot or basic stock app.</p>
@@ -2631,7 +2758,7 @@ nav {
               <div class="metric"><div class="metric-label">Hype Risk</div><div class="metric-value">Medium</div></div>
               <div class="metric"><div class="metric-label">Diversification</div><div class="metric-value">Needs comparison</div></div>
             </div>
-            <p class="unique-note"><strong>Different from a chatbot:</strong> Cash Flo turns the stock into a simple risk profile you can scan quickly.</p>
+            <p class="unique-note"><strong>Different from a chatbot:</strong> Cash Flo turns the stock into a simple risk profile you can scan quickly.</p><div class="personalized-tool-note" id="riskPersonalNote"><strong>Personalized guidance:</strong> Take the quiz to unlock guidance based on your risk level.</div>
           </div>
         </div>
       </div>
@@ -2660,7 +2787,7 @@ nav {
               <div class="compare-box"><h4>Single Stock</h4><p>Higher upside potential, but more company-specific risk.</p></div>
               <div class="compare-box"><h4>ETF</h4><p>More diversified, usually less dependent on one company.</p></div>
             </div>
-            <p class="unique-note"><strong>Cash Flo angle:</strong> Every stock should be compared to a broader alternative before someone gets too excited.</p>
+            <p class="unique-note"><strong>Cash Flo angle:</strong> Every stock should be compared to a broader alternative before someone gets too excited.</p><div class="personalized-tool-note" id="comparePersonalNote"><strong>Personalized guidance:</strong> Your quiz profile will explain whether ETF comparison should be your first step.</div>
           </div>
         </div>
       </div>
@@ -2741,6 +2868,7 @@ nav {
         </button>
         <div class="dropdown-menu" id="sortMenu">
           <div class="dropdown-item active" onclick="setSort('top','⭐ Top Today', event)">⭐ Top Today</div>
+          <div class="dropdown-item" onclick="setSort('personal','🧭 Top Stocks For Me', event)">🧭 Top Stocks For Me</div>
           <div class="dropdown-item" onclick="setSort('gainers','📈 Biggest Gainers', event)">📈 Biggest Gainers</div>
           <div class="dropdown-item" onclick="setSort('losers','📉 Biggest Losers', event)">📉 Biggest Losers</div>
           <div class="dropdown-item" onclick="setSort('movers','🚀 Biggest Movers', event)">🚀 Biggest Movers</div>
@@ -2774,6 +2902,7 @@ nav {
 
   <div class="sort-chip-row" id="quickSortRow">
     <button class="sort-chip active" onclick="quickSort('top', this)">Top Today</button>
+    <button class="sort-chip" onclick="quickSort('personal', this)">Top Stocks For Me</button>
     <button class="sort-chip" onclick="quickSort('gainers', this)">Biggest Gainers</button>
     <button class="sort-chip" onclick="quickSort('losers', this)">Biggest Losers</button>
     <button class="sort-chip" onclick="quickSort('movers', this)">Biggest Movers</button>
@@ -2784,6 +2913,7 @@ nav {
   </div>
 
   <div class="watchlist-active-banner" id="watchlistBanner"><span>Showing your saved watchlist.</span><button class="unlock-btn" onclick="showAllStocks()">Show All Stocks</button></div>
+  <div class="stock-note" id="personalSortNote">Use <strong>Top Stocks For Me</strong> after the quiz to rank stocks by your risk comfort, time horizon, and ETF readiness. Free users can favorite stocks, while Pro users see the full personalized fit list.</div>
   <div class="stock-note">Free users see TSLA, AMZN, and NVDA with one clean unlock message. Pro users see all stocks normally with no blur or shaded locked rows.</div>
 
   <div class="stock-table-wrap">
@@ -3349,7 +3479,25 @@ function getFiltered() {
     data = data.filter(s => s.sector === currentSector);
   }
 
-  if (currentSort === 'top' || currentSort === 'gainers') {
+  
+  if (currentSort === 'personal') {
+    const profile = getSavedProfile();
+    data.sort((a,b) => {
+      const af = getPersonalFit(a).score ?? -1;
+      const bf = getPersonalFit(b).score ?? -1;
+      return bf - af || Math.abs(b.day) - Math.abs(a.day);
+    });
+
+    // If no quiz profile exists yet, keep the list beginner-friendly instead of random.
+    if (!profile) {
+      const starter = ['VOO','VTI','SPY','QQQ','AAPL','MSFT','AMZN','NVDA','TSLA'];
+      data.sort((a,b) => {
+        const ai = starter.includes(a.ticker) ? starter.indexOf(a.ticker) : 999;
+        const bi = starter.includes(b.ticker) ? starter.indexOf(b.ticker) : 999;
+        return ai - bi || b.day - a.day;
+      });
+    }
+  } else if (currentSort === 'top' || currentSort === 'gainers') {
     data.sort((a,b) => b.day - a.day);
   } else if (currentSort === 'losers') {
     data.sort((a,b) => a.day - b.day);
@@ -3411,6 +3559,9 @@ function renderStocks() {
   } else if (watchlistOnly) {
     // Free users can still see their saved watchlist, but chart/fit stays locked.
     displayList = filtered;
+  } else if (currentSort === 'personal') {
+    // Free users get a 3-stock preview of their personalized ranking.
+    displayList = filtered.slice(0, 3);
   } else {
     displayList = freeTop.map(t => liveStocks.find(s => s.ticker === t) || fallbackQuote(t));
   }
@@ -3463,7 +3614,7 @@ function renderStocks() {
     const totalLocked = Math.max(0, filtered.length - 3);
     htmlRows += `<tr><td colspan="7" class="lock-overlay-cell">
       <div class="lock-banner clean-lock-banner">
-        <p>🔒 <strong>${totalLocked} more stocks</strong> unlock with Pro. Free users see TSLA, AMZN, and NVDA.</p>
+        <p>🔒 <strong>${totalLocked} more stocks</strong> unlock with Pro. Free users see a 3-stock preview; Pro users see the full personalized ranking.</p>
         <button class="unlock-btn" onclick="openModal()">Unlock Pro →</button>
       </div>
     </td></tr>`;
@@ -3504,6 +3655,7 @@ function toggleDropdown(which) {
 
 function quickSort(val, btn) {
   currentSearchSymbol = '';
+  watchlistOnly = false;
   const input = document.getElementById('stockSearch');
   if (input) input.value = '';
   currentSort = val;
@@ -3515,6 +3667,7 @@ function quickSort(val, btn) {
 
   const labels = {
     top:'⭐ Top Today',
+    personal:'🧭 Top Stocks For Me',
     gainers:'📈 Biggest Gainers',
     losers:'📉 Biggest Losers',
     movers:'🚀 Biggest Movers',
@@ -3828,6 +3981,127 @@ function getPersonalFit(stock) {
 }
 
 
+
+function getProfileGuidance(profile) {
+  if (!profile) {
+    return {
+      recommended: 'risk',
+      title: 'Personalized Pro path',
+      summary: 'Take the Investor Profile Quiz so Cash Flo can guide which tool to use first and how to read each stock based on your goals and risk comfort.',
+      pills: ['Risk comfort: —', 'Time horizon: —', 'ETF readiness: —'],
+      steps: ['Take the 10-question quiz', 'Come back to Pro Tools', 'Use the recommended tool first'],
+      riskNote: 'Take the quiz to unlock guidance based on your risk level.',
+      compareNote: 'Your quiz profile will explain whether ETF comparison should be your first step.'
+    };
+  }
+
+  const type = profile.type || 'Your Profile';
+  const risk = Number(profile.risk || 50);
+  const longTerm = Number(profile.longTerm || 50);
+  const etf = Number(profile.etf || 50);
+  const hype = Number(profile.hype || 0);
+
+  if (type.includes('Hype') || hype >= 45 || (risk > 75 && longTerm < 55)) {
+    return {
+      recommended: 'mistake',
+      title: `${type}: slow down before chasing movers`,
+      summary: 'Your answers suggest you may be attracted to exciting or fast-moving stocks. Cash Flo will guide you toward risk checks, mistake detection, and ETF comparisons before focusing on hype.',
+      pills: [`Risk comfort: ${risk}%`, `Long-term mindset: ${longTerm}%`, `ETF readiness: ${etf}%`],
+      steps: ['Use Mistake Detector before looking at big movers', 'Run Risk Check on any stock that feels exciting', 'Compare the stock to VOO, VTI, or QQQ'],
+      riskNote: 'Because your profile may chase excitement, treat high-volatility stocks as watchlist ideas first.',
+      compareNote: 'ETF comparison is very important for you because it shows the difference between a single hype stock and a diversified basket.'
+    };
+  }
+
+  if (type.includes('Long-Term') || (longTerm >= 75 && etf >= 60)) {
+    return {
+      recommended: 'compare',
+      title: `${type}: compare stocks to ETFs first`,
+      summary: 'Your answers fit a long-term style. Cash Flo will guide you toward broad ETF comparisons, calmer watchlists, and avoiding short-term noise.',
+      pills: [`Risk comfort: ${risk}%`, `Long-term mindset: ${longTerm}%`, `ETF readiness: ${etf}%`],
+      steps: ['Start with Compare to ETF', 'Use Before You Buy to check your reasoning', 'Build a watchlist around ETFs plus companies you understand'],
+      riskNote: 'For your profile, a stock is more useful when you can explain why it belongs next to a long-term ETF.',
+      compareNote: 'This is your best first tool. Compare single stocks to broad ETFs before deciding whether the extra risk makes sense.'
+    };
+  }
+
+  if (type.includes('Cautious') || risk <= 35) {
+    return {
+      recommended: 'compare',
+      title: `${type}: keep the path calm and diversified`,
+      summary: 'Your answers suggest you may not like big drops. Cash Flo will guide you toward ETFs, simple explanations, and risk warnings before single-stock ideas.',
+      pills: [`Risk comfort: ${risk}%`, `Long-term mindset: ${longTerm}%`, `ETF readiness: ${etf}%`],
+      steps: ['Start with Compare to ETF', 'Avoid high-risk stocks until you understand volatility', 'Use Before You Buy before saving a stock'],
+      riskNote: 'High-risk stocks may not match your comfort level. Focus on understanding downside risk before excitement.',
+      compareNote: 'ETF comparison can help you see calmer alternatives before looking at individual stocks.'
+    };
+  }
+
+  if (type.includes('Growth') || risk >= 65) {
+    return {
+      recommended: 'risk',
+      title: `${type}: growth is okay, but check risk first`,
+      summary: 'Your answers suggest you can handle some risk. Cash Flo will guide you to check volatility, compare to ETFs, and avoid putting too much into one idea.',
+      pills: [`Risk comfort: ${risk}%`, `Long-term mindset: ${longTerm}%`, `ETF readiness: ${etf}%`],
+      steps: ['Start with Risk Check', 'Compare growth stocks to QQQ or XLK', 'Use Mistake Detector if the stock is trending'],
+      riskNote: 'Your profile can handle risk, but the app will still flag stocks that may be too concentrated or hype-driven.',
+      compareNote: 'Compare growth stocks to QQQ or XLK so you can see whether a basket makes more sense than one company.'
+    };
+  }
+
+  return {
+    recommended: 'beforeBuy',
+    title: `${type}: build understanding first`,
+    summary: 'Your answers suggest you are still learning. Cash Flo will guide you through simple checklists, ETF comparisons, and basic risk explanations before advanced tools.',
+    pills: [`Risk comfort: ${risk}%`, `Long-term mindset: ${longTerm}%`, `ETF readiness: ${etf}%`],
+    steps: ['Start with Before You Buy', 'Use Compare to ETF for any stock you like', 'Save stocks to your watchlist instead of rushing'],
+    riskNote: 'Use this as a learning tool. The goal is to understand the risk, not to rush into a decision.',
+    compareNote: 'ETF comparison is a strong learning step because it shows how diversification changes risk.'
+  };
+}
+
+function updateProfileGuidance() {
+  const card = document.getElementById('profileGuidanceCard');
+  if (!card) return;
+
+  const profile = getSavedProfile();
+  const guide = getProfileGuidance(profile);
+
+  document.querySelectorAll('.tool-tab').forEach(tab => tab.classList.remove('recommended'));
+  const tabMap = { risk: 0, compare: 1, beforeBuy: 2, builder: 3, mistake: 4 };
+  const recTab = document.querySelectorAll('.tool-tab')[tabMap[guide.recommended] ?? 0];
+  if (recTab) recTab.classList.add('recommended');
+
+  card.innerHTML = `
+    <div>
+      <h3>${guide.title}</h3>
+      <p>${guide.summary}</p>
+      <div class="profile-guidance-pill-row">
+        ${guide.pills.map(pill => `<span class="profile-guidance-pill">${pill}</span>`).join('')}
+      </div>
+    </div>
+    <div class="profile-guidance-actions">
+      <h4>Your next steps</h4>
+      <ul>${guide.steps.map(step => `<li>${step}</li>`).join('')}</ul>
+      ${profile ? `<button class="btn-ghost" onclick="openInvestorQuiz()" style="margin-top:12px">Retake Quiz</button>` : `<button class="btn-primary" onclick="openInvestorQuiz()" style="margin-top:12px">Take Quiz →</button>`}
+    </div>
+  `;
+
+  const riskNote = document.getElementById('riskPersonalNote');
+  if (riskNote) riskNote.innerHTML = `<strong>Personalized guidance:</strong> ${guide.riskNote}`;
+
+  const compareNote = document.getElementById('comparePersonalNote');
+  if (compareNote) compareNote.innerHTML = `<strong>Personalized guidance:</strong> ${guide.compareNote}`;
+}
+
+function openRecommendedProTool() {
+  const profile = getSavedProfile();
+  const guide = getProfileGuidance(profile);
+  const tabMap = { risk: 0, compare: 1, beforeBuy: 2, builder: 3, mistake: 4 };
+  const tab = document.querySelectorAll('.tool-tab')[tabMap[guide.recommended] ?? 0];
+  if (tab) showToolTab(guide.recommended, tab);
+}
+
 function calculateInvestorProfile() {
   const needed = ['goal','drop','time','knowledge','behavior','experience','check','singleStock','loss','priority'];
   const missing = needed.filter(q => !investorQuizAnswers[q]);
@@ -3950,6 +4224,7 @@ function calculateInvestorProfile() {
 
   localStorage.setItem('cashFloInvestorProfile', JSON.stringify({ type, risk, longTerm, etf, hype, answers: investorQuizAnswers }));
   updateProfileMiniCard();
+  updateProfileGuidance();
   renderStocks();
 
   const result = document.getElementById('quizResult');
@@ -3992,6 +4267,7 @@ function resetInvestorQuiz() {
   document.querySelectorAll('.quiz-option').forEach(b => b.classList.remove('active'));
   localStorage.removeItem('cashFloInvestorProfile');
   updateProfileMiniCard();
+  updateProfileGuidance();
   renderStocks();
 
   const result = document.getElementById('quizResult');
@@ -4291,6 +4567,7 @@ document.getElementById('planChoiceModal')?.addEventListener('click', e => {
 // INIT
 showPlanChoiceOnLoad();
 updateProfileMiniCard();
+updateProfileGuidance();
 updateProToolAccess();
 initializeFallbackStocksNow();
 loadLiveStocks();
