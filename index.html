@@ -547,11 +547,7 @@ button:hover,
   overflow: hidden;
 }
 
-# {
-  width: 100%;
-  height: 360px;
-  display: block;
-}
+
 
 .chart-loading {
   position: absolute;
@@ -1869,7 +1865,7 @@ nav {
       <tbody id="stockBody"></tbody>
     </table>
   </div>
-  <div class="live-status" id="liveStatus">Add your Finnhub API key for real live prices. Demo fallback numbers may become outdated.</div>
+  <div class="live-status" id="liveStatus">Market data loads from Finnhub when available. Some data may be delayed or limited.</div>
 </section>
 
 
@@ -2238,7 +2234,7 @@ function initializeFallbackStocksNow() {
   renderTicker();
   const status = document.getElementById('liveStatus');
   if (status) {
-    status.textContent = 'Showing backup prices while live prices load...';
+    status.textContent = 'Loading market data...';
   }
 }
 
@@ -2250,7 +2246,7 @@ async function loadLiveStocks(manual=false) {
   }
 
   if (status) {
-    status.textContent = manual ? 'Refreshing live prices...' : 'Loading live prices... backup prices are showing until Finnhub responds.';
+    status.textContent = manual ? 'Refreshing live prices...' : 'Loading live prices...';
   }
 
   const quotePromises = stockSymbols.map(async (sym) => {
@@ -2274,9 +2270,9 @@ async function loadLiveStocks(manual=false) {
     if (currentSearchSymbol) {
       status.textContent = `Showing only ${currentSearchSymbol}. Price updated ${lastUpdated.toLocaleTimeString()}. Click Show All to return to the full watchlist.`;
     } else if (failed.length === stockSymbols.length) {
-      status.textContent = 'Finnhub did not return live prices, so backup demo prices are showing. Check your API key, internet connection, or API limit.';
+      status.textContent = 'Live market data is temporarily unavailable. Prices may be delayed or limited.';
     } else if (failed.length > 0) {
-      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Backup demo prices are showing for some tickers: ${failed.slice(0,8).join(', ')}.`;
+      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Some prices may be delayed or limited: ${failed.slice(0,8).join(', ')}.`;
     } else {
       status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Auto-refresh: every 60 seconds.`;
     }
@@ -2330,7 +2326,7 @@ async function addTickerFromSearch() {
     renderStocks();
     renderTicker();
 
-    if (status) status.textContent = `Could not load live Finnhub data for ${symbol}, so backup demo data is showing. Check the ticker, API key, or Finnhub limit.`;
+    if (status) status.textContent = `Could not load live market data for ${symbol}, so limited backup data is showing. Check the ticker, API key, or market-data limit.`;
   }
 }
 
@@ -2876,7 +2872,7 @@ function openPlanChoice() {
 function closePlanChoice() {
   const modal = document.getElementById('planChoiceModal');
   if (modal) modal.classList.remove('show');
-  sessionStorage.setItem('cashFloPlanChoiceSeen', 'true');
+  
 }
 
 function chooseFreePlan() {
@@ -2890,10 +2886,7 @@ function chooseProPlan() {
 }
 
 function showPlanChoiceOnLoad() {
-  const alreadySeen = sessionStorage.getItem('cashFloPlanChoiceSeen') === 'true';
-  if (!alreadySeen) {
-    setTimeout(openPlanChoice, 650);
-  }
+  setTimeout(openPlanChoice, 650);
 }
 
 document.getElementById('planChoiceModal')?.addEventListener('click', e => {
