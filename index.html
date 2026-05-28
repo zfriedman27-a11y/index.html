@@ -2725,6 +2725,88 @@ body {
   }
 }
 
+
+/* STRONGER QUIZ SELECTED STATE */
+.quiz-option {
+  position: relative;
+}
+
+.quiz-option.active {
+  background: linear-gradient(135deg, rgba(82,214,255,0.28), rgba(56,242,181,0.18)) !important;
+  border-color: rgba(82,214,255,0.80) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 2px rgba(82,214,255,0.18), 0 14px 34px rgba(82,214,255,0.14) !important;
+  transform: translateY(-1px);
+}
+
+.quiz-option.active::after {
+  content: "✓";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: var(--future, #38f2b5);
+  color: #041018;
+  font-weight: 1000;
+  font-size: 14px;
+}
+
+
+/* FORCE STATS BACK TO HORIZONTAL CARDS */
+.stat-strip {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+@media(max-width:900px){
+  .stat-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media(max-width:540px){
+  .stat-strip {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+/* STANDALONE GROWTH CALCULATOR PAGE */
+.calculator-section {
+  padding: 76px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background:
+    radial-gradient(circle at 12% 12%, rgba(82,214,255,0.07), transparent 34%),
+    radial-gradient(circle at 88% 14%, rgba(56,242,181,0.055), transparent 34%),
+    linear-gradient(180deg, var(--surface), var(--bg));
+}
+
+.calculator-section .money-goal-card {
+  max-width: 920px;
+  margin: 18px auto 0;
+}
+
+.calculator-section .section-tag {
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* compact tabs extra */
+
+.app-page-tabs {
+  align-items: center;
+}
+
+.page-tab {
+  flex: 0 0 auto;
+}
+
 </style>
 </head>
 <body>
@@ -2740,6 +2822,7 @@ body {
     <div class="modal-features">
       <div class="modal-feat">Full live stock screener with all filters</div>
       <div class="modal-feat">AI Advisor — unlimited questions</div>
+      <div class="modal-feat">Investor Profile Quiz with personal match scores</div>
       <div class="modal-feat">Stock history charts and cleaner research tools</div>
       <div class="modal-feat">Weekly educational watchlist ideas</div>
       <div class="modal-feat">Portfolio simulator and alerts later</div>
@@ -2899,7 +2982,7 @@ body {
         <span>⌄</span>
       </button>
       <div class="menu-section-content">
-        <button class="menu-link" onclick="openInvestorQuiz()">Take 10-Question Investor Quiz</button>
+        <button class="menu-link" onclick="openInvestorQuiz()">Learn Your Investing Style</button>
         <button class="menu-link" onclick="jumpToSection('startHere')">Start Here</button>
       </div>
     </div>
@@ -2914,6 +2997,7 @@ body {
         <button class="menu-link primary-route" onclick="showAppPage('home'); closeAppMenu()">Home Dashboard</button>
         <button class="menu-link" onclick="showAppPage('profile'); closeAppMenu()">Profile Quiz</button>
         <button class="menu-link" onclick="showAppPage('tools'); closeAppMenu()">Pro Tools</button>
+        <button class="menu-link" onclick="showAppPage('calculator'); closeAppMenu()">Growth Calculator</button>
         <button class="menu-link" onclick="showAppPage('stocks'); closeAppMenu()">Stock Tracker</button>
         <button class="menu-link" onclick="showAppPage('learn'); closeAppMenu()">Learn Center</button>
         <button class="menu-link" onclick="showAppPage('pricing'); closeAppMenu()">Pricing</button>
@@ -3042,6 +3126,7 @@ body {
   <button class="page-tab active" onclick="showAppPage('home', this)">Home</button>
   <button class="page-tab" onclick="showAppPage('profile', this)">Profile Quiz</button>
   <button class="page-tab" onclick="showAppPage('tools', this)">Pro Tools</button>
+  <button class="page-tab" onclick="showAppPage('calculator', this)">Growth Calculator</button>
   <button class="page-tab" onclick="showAppPage('stocks', this)">Stocks</button>
   <button class="page-tab" onclick="showAppPage('learn', this)">Learn</button>
   <button class="page-tab" onclick="showAppPage('pricing', this)">Pricing</button>
@@ -3055,10 +3140,10 @@ body {
     <h1>Investing,<br><em>finally simple.</em></h1>
     <p class="hero-subline">An easier way to learn stocks, understand high and low risks, and build smarter money habits for your future.</p>
     <div class="hero-btns">
-      <button class="btn-primary" onclick="openInvestorQuiz()">Take Investor Quiz →</button>
+      <button class="btn-primary" onclick="openInvestorQuiz()">Learn Your Investing Style →</button>
       <button class="btn-ghost" onclick="showAppPage('stocks'); setTimeout(()=>document.getElementById('stocks')?.scrollIntoView({behavior:'smooth'}),80)">See Live Stocks</button>
     </div>
-    <p class="free-note"><strong>You stay in control.</strong> Cash Flo helps you learn, compare, and slow down before real decisions.</p>
+    <p class="free-note"><strong>Build your edge.</strong> Cash Flo helps you learn smarter strategies, compare risks, and approach the market with more confidence than random advice.</p>
   </div>
 </section>
 
@@ -3066,8 +3151,8 @@ body {
 <!-- STUDENT-FRIENDLY VALUE STRIP -->
 <section class="value-strip page-section active-page" data-page="home">
   <div class="value-strip-inner">
-    <div class="value-pill"><strong>For beginners:</strong> plain English, not finance jargon.</div>
-    <div class="value-pill"><strong>For future goals:</strong> learn habits before chasing hype.</div>
+    <div class="value-pill"><strong>Turning beginners into masters:</strong> simple lessons that build real confidence.</div>
+    <div class="value-pill"><strong>Building the brightest futures for all:</strong> better habits before risky hype.</div>
     <div class="value-pill"><strong>For control:</strong> Cash Flo guides research, but you make the decision.</div>
   </div>
 </section>
@@ -3182,7 +3267,7 @@ body {
       <div class="section-tag">Investor Profile</div>
       <h2>Get your personal investor type.</h2>
       <p>Take the full 10-question quiz to see whether you are more long-term, cautious, growth-focused, or high-risk. Pro users also get a profile match score on each stock.</p>
-      <button class="btn-primary" onclick="openInvestorQuiz()">Take the 10-question quiz →</button>
+      <button class="btn-primary" onclick="openInvestorQuiz()">Learn Your Investing Style →</button>
       <button class="btn-ghost" onclick="jumpToSection('stocks')" style="margin-left:8px">Skip to watchlist</button>
     </div>
     <div class="profile-small-card" id="profileMiniCard">
@@ -3343,16 +3428,7 @@ body {
       </div>
 
 
-      <div class="money-goal-card" id="moneyGoalCalculator">
-        <h3>Future Money Growth Calculator</h3>
-        <p>Enter your age, an average yearly return, and either a monthly amount OR a one-time amount. Cash Flo will project what it could become every 5 years.</p>
-
-        <div class="money-goal-grid">
-          <input class="money-goal-input" id="goalAgeNow" type="number" min="1" max="100" placeholder="Age now" />
-          <input class="money-goal-input" id="goalReturn" type="number" min="0" max="50" step="0.1" placeholder="Avg yearly return (%)" />
-          <input class="money-goal-input" id="goalMonthly" type="number" min="0" placeholder="Monthly investing ($)" />
-          <input class="money-goal-input" id="goalLumpSum" type="number" min="0" placeholder="Money putting in ($)" />
-        </div>
+      
 
         <div class="money-goal-actions">
           <button class="btn-primary" onclick="calculateMoneyGoal()">Calculate Growth →</button>
@@ -3491,6 +3567,24 @@ body {
 
 <div class="section-divider-label">Research</div>
 <!-- CASH FLO DIFFERENTIATOR TOOLS -->
+
+<!-- GROWTH CALCULATOR PAGE -->
+<section class="calculator-section page-section" data-page="calculator" id="calculatorPage">
+  <div class="quiz-inner">
+    <div class="section-tag">Growth Calculator</div>
+    <div class="money-goal-card" id="moneyGoalCalculator">
+        <h3>Future Money Growth Calculator</h3>
+        <p>Enter your age, an average yearly return, and either a monthly amount OR a one-time amount. Cash Flo will project what it could become every 5 years.</p>
+
+        <div class="money-goal-grid">
+          <input class="money-goal-input" id="goalAgeNow" type="number" min="1" max="100" placeholder="Age now" />
+          <input class="money-goal-input" id="goalReturn" type="number" min="0" max="50" step="0.1" placeholder="Avg yearly return (%)" />
+          <input class="money-goal-input" id="goalMonthly" type="number" min="0" placeholder="Monthly investing ($)" />
+          <input class="money-goal-input" id="goalLumpSum" type="number" min="0" placeholder="Money putting in ($)" />
+        </div>
+  </div>
+</section>
+
 <section class="different-section page-section" data-page="tools" id="cashFloTools">
   <div class="different-inner">
     <div class="different-top">
@@ -3516,7 +3610,7 @@ body {
       <div class="profile-guidance-actions">
         <h4>Your next steps</h4>
         <ul>
-          <li>Take the 10-question quiz</li>
+          <li>Learn Your Investing Style</li>
           <li>Come back to Pro Tools</li>
           <li>Use the recommended tool first</li>
         </ul>
@@ -4924,7 +5018,23 @@ document.getElementById('advisorInput').addEventListener('keydown', e => { if(e.
 // INVESTOR PROFILE QUIZ
 const investorQuizAnswers = {};
 
+
+function requireProForQuizAnswer() {
+  if (isPro) return true;
+
+  const modal = document.getElementById('upgradeModal');
+  if (modal) {
+    modal.classList.add('show');
+  } else if (typeof openModal === 'function') {
+    openModal();
+  }
+
+  const note = document.getElementById('authNote');
+  return false;
+}
+
 function selectQuizOption(question, value, btn) {
+  if (!requireProForQuizAnswer()) return;
   investorQuizAnswers[question] = value;
 
   const wrap = document.querySelector(`.quiz-question[data-question="${question}"]`);
@@ -5096,7 +5206,7 @@ function getProfileGuidance(profile) {
       title: 'Personalized Pro path',
       summary: 'Take the Investor Profile Quiz so Cash Flo can guide which tool to use first and how to read each stock based on your goals and risk comfort.',
       pills: ['Risk comfort: —', 'Time horizon: —', 'ETF readiness: —'],
-      steps: ['Take the 10-question quiz', 'Come back to Pro Tools', 'Use the recommended tool first'],
+      steps: ['Learn Your Investing Style', 'Come back to Pro Tools', 'Use the recommended tool first'],
       riskNote: 'Take the quiz to unlock guidance based on your risk level.',
       compareNote: 'Your quiz profile will explain whether ETF comparison should be your first step.'
     };
@@ -5903,7 +6013,7 @@ document.getElementById('planChoiceModal')?.addEventListener('click', e => {
 const appSearchItems = [
   { title: 'Home Dashboard', subtitle: 'Your main Cash Flo starting point', page: 'home', target: 'dashboard', icon: '🏠', keywords: ['home','dashboard','start','main'] },
   { title: 'Investor Profile Quiz', subtitle: 'Find your risk style and goals', page: 'profile', target: 'investorQuizGateway', icon: '🧭', keywords: ['quiz','profile','risk','survey','questions','investor type'] },
-  { title: 'Future Money Growth Calculator', subtitle: 'Project money every 5 years', page: 'profile', target: 'moneyGoalCalculator', icon: '🧮', keywords: ['calculator','money','goal','growth','future','monthly','return','profit'] },
+  { title: 'Growth Calculator', subtitle: 'Project money every 5 years', page: 'calculator', target: 'moneyGoalCalculator', icon: '🧮', keywords: ['calculator','money','goal','growth','future','monthly','return','profit'] },
   { title: 'Pro Tools', subtitle: 'Risk Check, ETF Compare, Mistake Detector', page: 'tools', target: 'cashFloTools', icon: '🧰', keywords: ['tools','pro','risk check','compare','mistake','watchlist builder'] },
   { title: 'Stock Tracker', subtitle: 'Search tickers or company names', page: 'stocks', target: 'stocks', icon: '📊', keywords: ['stocks','tracker','stock list','market','prices','watchlist'] },
   { title: 'Top Stocks For Me', subtitle: 'Profile-based stock sorting after quiz', page: 'stocks', target: 'stocks', icon: '⭐', action: 'personalStocks', keywords: ['top stocks','for me','matches','profile match','best stocks'] },
