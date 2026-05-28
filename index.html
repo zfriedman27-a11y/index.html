@@ -443,6 +443,90 @@ button:hover,
   color: #fff;
 }
 
+
+/* STOCK CHART MODAL */
+.chart-modal {
+  max-width: 860px;
+  width: 92%;
+}
+
+.chart-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.chart-modal h2 {
+  margin-bottom: 2px;
+}
+
+.range-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 18px;
+}
+
+.range-btn {
+  background: rgba(255,255,255,0.045);
+  color: var(--muted2);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 999px;
+  padding: 8px 13px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.range-btn:hover {
+  color: var(--text);
+  border-color: rgba(143,183,255,0.24);
+  background: rgba(255,255,255,0.06);
+}
+
+.range-btn.active {
+  color: #050508;
+  background: linear-gradient(135deg, #d8e7ff, #a493ff);
+  border-color: transparent;
+}
+
+.chart-wrap {
+  position: relative;
+  width: 100%;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 14px;
+  overflow: hidden;
+}
+
+#stockChartCanvas {
+  width: 100%;
+  height: 360px;
+  display: block;
+}
+
+.chart-loading {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(9,11,16,0.55);
+  color: var(--muted2);
+  font-size: 13px;
+  backdrop-filter: blur(4px);
+}
+
+.stock-row {
+  cursor: pointer;
+}
+
+.stock-row.free-chart {
+  cursor: not-allowed;
+}
+
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.show{display:flex}
@@ -499,6 +583,39 @@ footer p{font-size:12px;color:var(--muted)}
     <button class="auth-btn google" onclick="signInWithGoogleNow()">Continue with Google</button>
 
     <p class="modal-trial-note" id="authNote">Google sign-up is connected with Firebase.</p>
+  </div>
+</div>
+
+
+<!-- STOCK CHART MODAL -->
+<div class="modal-overlay" id="chartModal">
+  <div class="modal chart-modal">
+    <button class="modal-close" onclick="closeChartModal()">✕</button>
+    <div class="chart-modal-head">
+      <div>
+        <div class="section-tag">Pro Stock History</div>
+        <h2 id="chartTitle">Stock Chart</h2>
+        <p id="chartSubtitle">Click a range to view price history.</p>
+      </div>
+      <div class="premium-badge">PRO</div>
+    </div>
+
+    <div class="range-row">
+      <button class="range-btn active" onclick="changeChartRange('1D', this)">1D</button>
+      <button class="range-btn" onclick="changeChartRange('1W', this)">1W</button>
+      <button class="range-btn" onclick="changeChartRange('1M', this)">1M</button>
+      <button class="range-btn" onclick="changeChartRange('1Y', this)">1Y</button>
+      <button class="range-btn" onclick="changeChartRange('YTD', this)">YTD</button>
+      <button class="range-btn" onclick="changeChartRange('2Y', this)">2Y</button>
+      <button class="range-btn" onclick="changeChartRange('5Y', this)">5Y</button>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="stockChartCanvas" width="760" height="360"></canvas>
+      <div class="chart-loading" id="chartLoading">Loading chart...</div>
+    </div>
+
+    <p class="modal-trial-note" id="chartNote">Historical data loads from Finnhub. If it does not load, a demo chart is shown.</p>
   </div>
 </div>
 
@@ -758,7 +875,7 @@ let currentSearchSymbol = '';
 const FINNHUB_API_KEY = "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
 
 // This is your starting watchlist. Users can add any ticker with the search box.
-let stockSymbols = ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "GOOG", "META", "TSLA", "AMD", "AVGO", "NFLX", "ORCL", "ADBE", "CRM", "INTC", "QCOM", "CSCO", "TXN", "IBM", "NOW", "SHOP", "UBER", "PYPL", "SQ", "SNOW", "PLTR", "MU", "AMAT", "LRCX", "PANW", "JPM", "BAC", "WFC", "GS", "MS", "V", "MA", "AXP", "C", "BLK", "SCHW", "COF", "USB", "WMT", "COST", "HD", "LOW", "TGT", "NKE", "SBUX", "MCD", "DIS", "CMG", "PEP", "KO", "PG", "EL", "LULU", "ABNB", "JNJ", "LLY", "UNH", "MRK", "PFE", "ABBV", "TMO", "ABT", "ISRG", "AMGN", "GILD", "CVS", "XOM", "CVX", "COP", "SLB", "EOG", "OXY", "BA", "CAT", "GE", "HON", "LMT", "RTX", "DE", "UPS", "VOO", "SPY", "QQQ", "VTI", "DIA", "IWM", "SCHD", "VYM", "XLK", "XLF", "XLE", "XLV", "ARKK"];
+let stockSymbols = ["TSLA", "AMZN", "NVDA", "AAPL", "MSFT", "GOOGL", "GOOG", "META", "AMD", "AVGO", "NFLX", "ORCL", "ADBE", "CRM", "INTC", "QCOM", "CSCO", "TXN", "IBM", "NOW", "SHOP", "UBER", "PYPL", "SQ", "SNOW", "PLTR", "MU", "AMAT", "LRCX", "PANW", "JPM", "BAC", "WFC", "GS", "MS", "V", "MA", "AXP", "C", "BLK", "SCHW", "COF", "USB", "WMT", "COST", "HD", "LOW", "TGT", "NKE", "SBUX", "MCD", "DIS", "CMG", "PEP", "KO", "PG", "EL", "LULU", "ABNB", "JNJ", "LLY", "UNH", "MRK", "PFE", "ABBV", "TMO", "ABT", "ISRG", "AMGN", "GILD", "CVS", "XOM", "CVX", "COP", "SLB", "EOG", "OXY", "BA", "CAT", "GE", "HON", "LMT", "RTX", "DE", "UPS", "VOO", "SPY", "QQQ", "VTI", "DIA", "IWM", "SCHD", "VYM", "XLK", "XLF", "XLE", "XLV", "ARKK"];
 let liveStocks = [];
 let lastUpdated = null;
 
@@ -1157,9 +1274,20 @@ function getRating(s) {
 function renderStocks() {
   const filtered = getFiltered();
   const body = document.getElementById('stockBody');
+  const freeTop = ['TSLA','AMZN','NVDA'];
+  let displayList = [];
+
+  if (currentSearchSymbol) {
+    displayList = filtered;
+  } else {
+    const topThree = freeTop.map(t => liveStocks.find(s => s.ticker === t)).filter(Boolean);
+    const rest = filtered.filter(s => !freeTop.includes(s.ticker));
+    displayList = [...topThree, ...rest];
+  }
+
   let html = '';
 
-  filtered.forEach((s, index) => {
+  displayList.forEach((s, index) => {
     const dayClass = s.day >= 0 ? 'up' : 'down';
     const dayStr = (s.day >= 0 ? '+' : '') + s.day.toFixed(2) + '%';
     const changeStr = (s.change >= 0 ? '+' : '') + s.change.toFixed(2);
@@ -1175,7 +1303,8 @@ function renderStocks() {
       return;
     }
 
-    html += `<tr class="stock-row">
+    const proClass = isPro ? '' : ' free-chart';
+    html += `<tr class="stock-row${proClass}" onclick="openStockChart('${s.ticker}')">
       <td><div class="stock-info"><div class="s-icon" style="background:${s.color}22;color:${s.color}">${s.icon}</div><div><div class="s-ticker">${s.ticker}</div><div class="s-name">${s.name}</div></div></div></td>
       <td class="s-price">$${s.price.toFixed(2)}</td>
       <td class="${dayClass}" style="font-weight:600">${dayStr}</td>
@@ -1185,16 +1314,16 @@ function renderStocks() {
     </tr>`;
   });
 
-  if (!isPro && filtered.length > 10) {
+  if (!currentSearchSymbol && !isPro && displayList.length > 3) {
     html += `<tr><td colspan="6" class="lock-overlay-cell">
       <div class="lock-banner">
-        <p>🔒 <strong>${filtered.length - 3} more live stocks</strong> are locked. Free users see the top 3. Upgrade to Pro for the full watchlist.</p>
+        <p>🔒 <strong>${displayList.length - 3} more live stocks</strong> are locked. Free users see TSLA, AMZN, and NVDA. Pro unlocks stock charts and the full watchlist.</p>
         <button class="unlock-btn" onclick="openModal()">Unlock Pro →</button>
       </div>
     </td></tr>`;
   }
 
-  if (filtered.length === 0) {
+  if (displayList.length === 0) {
     html = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted)">No matching stock found. Try a ticker like AAPL, NVDA, TSLA, VOO, or SPY.</td></tr>`;
   }
 
@@ -1299,7 +1428,7 @@ function demoSignUp(provider) {
 }
 
 function activatePro() {
-  alert("Payment is coming later. For now, Google sign-up is active.");
+  alert("Payment is coming later. Pro charts will unlock after payment is connected. For testing, add ?pro=true to the end of your website URL.");
 }
 
 // AI ADVISOR
@@ -1414,6 +1543,232 @@ function askPill(btn) {
 
 document.getElementById('advisorInput').addEventListener('keydown', e => { if(e.key==='Enter') sendQ(); });
 
+
+// STOCK HISTORY CHARTS - PRO ONLY
+let currentChartSymbol = null;
+let currentChartRange = '1D';
+
+function openStockChart(symbol) {
+  if (!isPro) {
+    openModal();
+    return;
+  }
+
+  currentChartSymbol = symbol;
+  currentChartRange = '1D';
+
+  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+  const firstBtn = document.querySelector('.range-btn');
+  if (firstBtn) firstBtn.classList.add('active');
+
+  const modal = document.getElementById('chartModal');
+  const title = document.getElementById('chartTitle');
+  const subtitle = document.getElementById('chartSubtitle');
+
+  title.textContent = `${symbol} Stock History`;
+  subtitle.textContent = `${stockNames[symbol] || symbol} · 1D chart`;
+
+  modal.classList.add('show');
+  loadStockHistory(symbol, '1D');
+}
+
+function closeChartModal() {
+  document.getElementById('chartModal').classList.remove('show');
+}
+
+function changeChartRange(range, btn) {
+  currentChartRange = range;
+  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const subtitle = document.getElementById('chartSubtitle');
+  if (subtitle) subtitle.textContent = `${stockNames[currentChartSymbol] || currentChartSymbol} · ${range} chart`;
+
+  loadStockHistory(currentChartSymbol, range);
+}
+
+function getRangeConfig(range) {
+  const now = Math.floor(Date.now() / 1000);
+  const date = new Date();
+  let from = now - 24 * 60 * 60;
+  let resolution = '5';
+
+  if (range === '1D') {
+    from = now - 24 * 60 * 60;
+    resolution = '5';
+  } else if (range === '1W') {
+    from = now - 7 * 24 * 60 * 60;
+    resolution = '30';
+  } else if (range === '1M') {
+    from = now - 30 * 24 * 60 * 60;
+    resolution = '60';
+  } else if (range === '1Y') {
+    from = now - 365 * 24 * 60 * 60;
+    resolution = 'D';
+  } else if (range === 'YTD') {
+    const start = new Date(date.getFullYear(), 0, 1);
+    from = Math.floor(start.getTime() / 1000);
+    resolution = 'D';
+  } else if (range === '2Y') {
+    from = now - 2 * 365 * 24 * 60 * 60;
+    resolution = 'W';
+  } else if (range === '5Y') {
+    from = now - 5 * 365 * 24 * 60 * 60;
+    resolution = 'W';
+  }
+
+  return { from, to: now, resolution };
+}
+
+async function loadStockHistory(symbol, range) {
+  const loading = document.getElementById('chartLoading');
+  const note = document.getElementById('chartNote');
+  if (loading) loading.style.display = 'flex';
+  if (note) note.textContent = 'Loading historical data from Finnhub...';
+
+  try {
+    const cfg = getRangeConfig(range);
+    const url = `https://finnhub.io/api/v1/stock/candle?symbol=${encodeURIComponent(symbol)}&resolution=${cfg.resolution}&from=${cfg.from}&to=${cfg.to}&token=${FINNHUB_API_KEY}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!data || data.s !== 'ok' || !data.c || data.c.length < 2) {
+      throw new Error('No candle data returned');
+    }
+
+    drawStockChart(data.c, symbol, range, false);
+    if (note) note.textContent = `${symbol} ${range} history loaded. Educational only, not financial advice.`;
+  } catch (err) {
+    console.warn(err);
+    const quote = liveStocks.find(s => s.ticker === symbol);
+    const base = quote ? quote.price : 100;
+    const demo = generateDemoHistory(base, range);
+    drawStockChart(demo, symbol, range, true);
+    if (note) note.textContent = `Could not load live history for ${symbol}, so a demo chart is shown. Check Finnhub candle access/API limits.`;
+  } finally {
+    if (loading) loading.style.display = 'none';
+  }
+}
+
+function generateDemoHistory(base, range) {
+  const points = range === '1D' ? 60 : range === '1W' ? 80 : range === '1M' ? 90 : range === '1Y' ? 120 : range === 'YTD' ? 100 : range === '2Y' ? 130 : 160;
+  const arr = [];
+  let price = base;
+  for (let i = 0; i < points; i++) {
+    const wave = Math.sin(i / 7) * base * 0.003;
+    const trend = (i - points / 2) * base * 0.00008;
+    const noise = (Math.random() - 0.5) * base * 0.006;
+    price = Math.max(1, price + wave + trend + noise);
+    arr.push(price);
+  }
+  return arr;
+}
+
+function drawStockChart(prices, symbol, range, isDemo) {
+  const canvas = document.getElementById('stockChartCanvas');
+  const ctx = canvas.getContext('2d');
+
+  const ratio = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * ratio;
+  canvas.height = rect.height * ratio;
+  ctx.scale(ratio, ratio);
+
+  const w = rect.width;
+  const h = rect.height;
+  const pad = 44;
+
+  ctx.clearRect(0, 0, w, h);
+
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  const start = prices[0];
+  const end = prices[prices.length - 1];
+  const isUp = end >= start;
+  const lineColor = isUp ? '#22c55e' : '#ff4d6a';
+
+  // background grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = pad + ((h - pad * 2) / 4) * i;
+    ctx.beginPath();
+    ctx.moveTo(pad, y);
+    ctx.lineTo(w - pad, y);
+    ctx.stroke();
+  }
+
+  const xFor = i => pad + (i / (prices.length - 1)) * (w - pad * 2);
+  const yFor = p => h - pad - ((p - min) / (max - min || 1)) * (h - pad * 2);
+
+  // area fill
+  const grad = ctx.createLinearGradient(0, pad, 0, h - pad);
+  grad.addColorStop(0, isUp ? 'rgba(34,197,94,0.20)' : 'rgba(255,77,106,0.20)');
+  grad.addColorStop(1, 'rgba(255,255,255,0.00)');
+
+  ctx.beginPath();
+  prices.forEach((p, i) => {
+    const x = xFor(i);
+    const y = yFor(p);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.lineTo(w - pad, h - pad);
+  ctx.lineTo(pad, h - pad);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // line
+  ctx.beginPath();
+  prices.forEach((p, i) => {
+    const x = xFor(i);
+    const y = yFor(p);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.strokeStyle = lineColor;
+  ctx.lineWidth = 2.6;
+  ctx.stroke();
+
+  // labels
+  ctx.fillStyle = '#f5f7fb';
+  ctx.font = '700 18px DM Sans';
+  ctx.fillText(`${symbol} · ${range}`, pad, 26);
+
+  const pct = ((end - start) / start) * 100;
+  ctx.fillStyle = lineColor;
+  ctx.font = '700 14px DM Sans';
+  ctx.fillText(`${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`, pad + 120, 26);
+
+  ctx.fillStyle = 'rgba(181,189,204,0.95)';
+  ctx.font = '12px DM Sans';
+  ctx.fillText(`High $${max.toFixed(2)}`, w - pad - 105, pad - 10);
+  ctx.fillText(`Low $${min.toFixed(2)}`, w - pad - 105, h - pad + 24);
+  ctx.fillText(isDemo ? 'Demo history' : 'Finnhub history', pad, h - 14);
+}
+
+window.addEventListener('resize', () => {
+  if (document.getElementById('chartModal')?.classList.contains('show') && currentChartSymbol) {
+    loadStockHistory(currentChartSymbol, currentChartRange);
+  }
+});
+
+document.getElementById('chartModal')?.addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeChartModal();
+});
+
+// Developer testing: add ?pro=true to the URL to preview Pro-only charts before payment is connected.
+if (new URLSearchParams(window.location.search).get('pro') === 'true') {
+  isPro = true;
+  setTimeout(() => {
+    const planIndicator = document.getElementById('planIndicator');
+    if (planIndicator) planIndicator.innerHTML = '<span class="premium-badge">PRO TEST</span>';
+    renderStocks();
+  }, 500);
+}
+
+
 // INIT
 loadLiveStocks();
 setInterval(loadLiveStocks, 60000);
@@ -1467,7 +1822,7 @@ setInterval(loadLiveStocks, 60000);
     if (user) {
       localStorage.setItem("cashFloUser", user.email || user.displayName || "Google user");
 
-      if (planIndicator) {
+      if (planIndicator && !isPro) {
         planIndicator.textContent = user.email ? `Signed in: ${user.email}` : "Signed in";
       }
 
@@ -1478,7 +1833,7 @@ setInterval(loadLiveStocks, 60000);
     } else {
       localStorage.removeItem("cashFloUser");
 
-      if (planIndicator) {
+      if (planIndicator && !isPro) {
         planIndicator.textContent = "Free Plan";
       }
 
