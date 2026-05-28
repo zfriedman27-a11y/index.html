@@ -527,6 +527,264 @@ button:hover,
   cursor: not-allowed;
 }
 
+
+/* HAMBURGER APP MENU */
+.menu-toggle {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--border2);
+  background: rgba(255,255,255,0.035);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  flex-direction: column;
+}
+
+.menu-toggle span {
+  width: 18px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 999px;
+  display: block;
+}
+
+.app-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  background: rgba(0,0,0,0.62);
+  backdrop-filter: blur(6px);
+}
+
+.app-menu-overlay.show {
+  display: block;
+}
+
+.app-menu {
+  position: fixed;
+  top: 74px;
+  right: 24px;
+  width: min(390px, calc(100vw - 32px));
+  max-height: calc(100vh - 96px);
+  overflow-y: auto;
+  background: rgba(16,20,29,0.96);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 22px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.55);
+  padding: 16px;
+}
+
+.menu-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 6px 4px 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+
+.menu-head h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  letter-spacing: -0.5px;
+}
+
+.menu-head p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.menu-section {
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.025);
+  border-radius: 16px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+
+.menu-section-btn {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  padding: 14px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 800;
+  font-size: 14px;
+  text-align: left;
+}
+
+.menu-section-btn small {
+  display: block;
+  color: var(--muted);
+  font-weight: 500;
+  margin-top: 2px;
+  font-size: 12px;
+}
+
+.menu-section-content {
+  display: none;
+  padding: 0 14px 14px;
+}
+
+.menu-section.open .menu-section-content {
+  display: block;
+}
+
+.menu-link {
+  width: 100%;
+  display: block;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 11px;
+  border: 1px solid transparent;
+  background: rgba(255,255,255,0.025);
+  color: var(--muted2);
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.menu-link:hover {
+  color: var(--text);
+  border-color: rgba(143,183,255,0.20);
+  background: rgba(255,255,255,0.055);
+}
+
+.menu-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.menu-mini-pill {
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.035);
+  color: var(--muted2);
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* EDUCATION GUIDE SECTION */
+.guide-section {
+  padding: 70px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background:
+    radial-gradient(circle at 16% 15%, rgba(143,183,255,0.05), transparent 34%),
+    var(--bg);
+}
+
+.guide-inner {
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+.guide-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.guide-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(28px, 4vw, 46px);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -1.3px;
+  max-width: 620px;
+}
+
+.guide-sub {
+  color: var(--muted2);
+  max-width: 420px;
+  font-size: 15px;
+}
+
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.guide-card {
+  background: rgba(16,20,29,0.82);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 18px;
+  padding: 22px;
+  text-align: left;
+}
+
+.guide-card .emoji {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.guide-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.guide-card p {
+  color: var(--muted2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.checklist {
+  margin-top: 24px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 22px;
+}
+
+.checklist h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.checklist ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 18px;
+}
+
+.checklist li {
+  color: var(--muted2);
+  font-size: 14px;
+}
+
+.checklist li::before {
+  content: "✓";
+  color: var(--accent);
+  font-weight: 900;
+  margin-right: 8px;
+}
+
+@media(max-width:800px){
+  .guide-section{padding-left:18px;padding-right:18px}
+  .guide-grid,.checklist ul{grid-template-columns:1fr}
+  .app-menu{right:16px;top:68px}
+}
+
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.show{display:flex}
@@ -562,9 +820,9 @@ footer p{font-size:12px;color:var(--muted)}
     <div class="modal-features">
       <div class="modal-feat">Full live stock screener with all filters</div>
       <div class="modal-feat">AI Advisor — unlimited questions</div>
-      <div class="modal-feat">Top 50 stocks ranked by any metric</div>
-      <div class="modal-feat">Weekly curated picks with analysis</div>
-      <div class="modal-feat">Portfolio tracker & alerts</div>
+      <div class="modal-feat">Stock history charts and cleaner research tools</div>
+      <div class="modal-feat">Weekly educational watchlist ideas</div>
+      <div class="modal-feat">Portfolio simulator and alerts later</div>
     </div>
     <button class="btn-primary" style="width:100%;font-size:15px;padding:14px" onclick="activatePro()">Pro Coming Soon →</button>
     <p class="modal-trial-note"><strong>Payment coming later.</strong> Google sign-up works first.</p>
@@ -624,10 +882,111 @@ footer p{font-size:12px;color:var(--muted)}
   <div class="logo"><div class="logo-icon">$</div><span>Cash Flo</span></div>
   <div class="nav-right">
     <span id="planIndicator" style="font-size:13px;color:var(--muted)">Free Plan</span>
-    <button class="nav-plan" onclick="openModal()">Upgrade to Pro</button>
     <button class="nav-cta" onclick="openAuthModal()">Sign Up →</button>
+    <button class="menu-toggle" onclick="toggleAppMenu()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- APP MENU -->
+<div class="app-menu-overlay" id="appMenuOverlay" onclick="closeAppMenu(event)">
+  <div class="app-menu" onclick="event.stopPropagation()">
+    <div class="menu-head">
+      <div>
+        <h3>Cash Flo Menu</h3>
+        <p>Simple investing tools, organized.</p>
+      </div>
+      <button class="modal-close" onclick="toggleAppMenu()">✕</button>
+    </div>
+
+    <div class="menu-section open">
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
+        <span>🤖 AI Guide <small>Ask simple investing questions</small></span>
+        <span>⌄</span>
+      </button>
+      <div class="menu-section-content">
+        <button class="menu-link" onclick="jumpToSection('advisor')">Open AI Advisor</button>
+        <button class="menu-link" onclick="quickAskFromMenu('What is the safest way for a beginner to start investing?')">Beginner starting advice</button>
+        <button class="menu-link" onclick="quickAskFromMenu('Explain ETFs in simple words')">Explain ETFs</button>
+      </div>
+    </div>
+
+    <div class="menu-section">
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
+        <span>📈 Investor Guide <small>Learn before using real money</small></span>
+        <span>⌄</span>
+      </button>
+      <div class="menu-section-content">
+        <button class="menu-link" onclick="jumpToSection('investorGuide')">Open Investor Guide</button>
+        <button class="menu-link" onclick="jumpToSection('decisionChecklist')">Decision Checklist</button>
+        <div class="menu-pill-row">
+          <span class="menu-mini-pill">No trade placing</span>
+          <span class="menu-mini-pill">Educational only</span>
+          <span class="menu-mini-pill">You stay in control</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-section">
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
+        <span>📊 Stocks & Filters <small>Sort the watchlist</small></span>
+        <span>⌄</span>
+      </button>
+      <div class="menu-section-content">
+        <button class="menu-link" onclick="jumpToSection('stocks')">Open Stock Tracker</button>
+        <button class="menu-link" onclick="quickSort('gainers', document.querySelector('.sort-chip:nth-child(2)')); jumpToSection('stocks')">Biggest Gainers</button>
+        <button class="menu-link" onclick="quickSort('losers', document.querySelector('.sort-chip:nth-child(3)')); jumpToSection('stocks')">Biggest Losers</button>
+        <button class="menu-link" onclick="quickSort('alphabetical', document.querySelector('.sort-chip:nth-child(7)')); jumpToSection('stocks')">A–Z Stocks</button>
+      </div>
+    </div>
+
+    <div class="menu-section">
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
+        <span>📉 Charts <small>Pro stock history popups</small></span>
+        <span>⌄</span>
+      </button>
+      <div class="menu-section-content">
+        <button class="menu-link" onclick="jumpToSection('stocks')">Click a stock to open chart</button>
+        <button class="menu-link" onclick="openModal()">Unlock Pro Charts</button>
+        <div class="menu-pill-row">
+          <span class="menu-mini-pill">1D</span>
+          <span class="menu-mini-pill">1W</span>
+          <span class="menu-mini-pill">1M</span>
+          <span class="menu-mini-pill">YTD</span>
+          <span class="menu-mini-pill">5Y</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-section">
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
+        <span>👤 Account <small>Google sign-up and Pro later</small></span>
+        <span>⌄</span>
+      </button>
+      <div class="menu-section-content">
+        <button class="menu-link" onclick="openAuthModal()">Sign up / sign in with Google</button>
+        <button class="menu-link" onclick="openModal()">View Pro plan</button>
+      </div>
+    </div>
+
+    <div class="menu-section">
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
+        <span>⚠️ Legal / Safety <small>No financial advice</small></span>
+        <span>⌄</span>
+      </button>
+      <div class="menu-section-content">
+        <button class="menu-link" onclick="jumpToSection('safetyDisclosure')">View disclosure</button>
+        <div class="menu-pill-row">
+          <span class="menu-mini-pill">No trades</span>
+          <span class="menu-mini-pill">No money control</span>
+          <span class="menu-mini-pill">Education only</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- TICKER -->
 <div class="ticker-wrap">
@@ -645,12 +1004,12 @@ footer p{font-size:12px;color:var(--muted)}
   <div class="hero-inner">
     <div class="hero-label">AI-Powered · Updated Weekly</div>
     <h1>Investing,<br><em>finally simple.</em></h1>
-    <p>Live stock rankings, AI-powered advice, and weekly picks — all in one place. No experience needed.</p>
+    <p>A simple investing guide that explains stocks, ETFs, risks, and market ideas without placing trades or controlling your money.</p>
     <div class="hero-btns">
-      <button class="btn-primary" onclick="openModal()">Start Free — 1 Month on Us →</button>
+      <button class="btn-primary" onclick="openModal()">Start Free — Google Sign-Up →</button>
       <button class="btn-ghost" onclick="document.getElementById('stocks').scrollIntoView({behavior:'smooth'})">See Live Stocks</button>
     </div>
-    <p class="free-note"><strong>First month free.</strong> Then $5/mo. Cancel anytime.</p>
+    <p class="free-note"><strong>You stay in control.</strong> Cash Flo explains ideas, but never places trades.</p>
   </div>
 </section>
 
@@ -719,14 +1078,66 @@ footer p{font-size:12px;color:var(--muted)}
 
     <div class="why-card">
       <h3>Everything in one place</h3>
-      <p>Stock rankings, filters, AI explanations, and weekly ideas without jumping between YouTube, TikTok, Reddit, and Google.</p>
+      <p>Stock rankings, filters, AI explanations, charts, and beginner checklists without feeling overstimulated.</p>
     </div>
   </div>
 
   <p class="disclaimer">
-    Educational only. Not financial advice. Cash Flo does not guarantee returns or tell you exactly what to buy.
+    Educational only. Not financial advice. Cash Flo does not place trades, manage your money, or tell you exactly what to buy.
   </p>
 </section>
+
+<!-- INVESTOR GUIDE -->
+<section class="guide-section" id="investorGuide">
+  <div class="guide-inner">
+    <div class="guide-top">
+      <div>
+        <div class="section-tag">Investor Guide</div>
+        <div class="guide-title">Cash Flo guides you — it does not trade for you.</div>
+      </div>
+      <p class="guide-sub">
+        Cash Flo is built for people who feel overwhelmed by investing apps. It explains the market in plain English,
+        helps you compare options, and gives you a calmer path to learn before using real money.
+      </p>
+    </div>
+
+    <div class="guide-grid">
+      <div class="guide-card">
+        <div class="emoji">🧭</div>
+        <h3>Guidance, not control</h3>
+        <p>Cash Flo can explain stocks, ETFs, risk, and beginner strategy ideas, but it does not place trades or manage your money.</p>
+      </div>
+      <div class="guide-card">
+        <div class="emoji">🧠</div>
+        <h3>Simple explanations</h3>
+        <p>No confusing dashboards. Get normal-language breakdowns of what a company does, why people like it, and what risks to check.</p>
+      </div>
+      <div class="guide-card">
+        <div class="emoji">🧪</div>
+        <h3>Practice first</h3>
+        <p>Use watchlists, charts, and simulated thinking before making real decisions inside your own brokerage account.</p>
+      </div>
+    </div>
+
+    <div class="checklist" id="decisionChecklist">
+      <h3>Before investing, ask yourself:</h3>
+      <ul>
+        <li>Do I understand what this company or ETF actually does?</li>
+        <li>Am I okay if this drops 10–20%?</li>
+        <li>Is this a long-term idea or am I chasing hype?</li>
+        <li>Did I compare this to a broad ETF like VOO, SPY, or VTI?</li>
+        <li>Am I putting too much money into one stock?</li>
+        <li>Do I understand that Cash Flo is educational only?</li>
+      </ul>
+    </div>
+
+    <p class="disclaimer" id="safetyDisclosure">
+      Cash Flo is an educational investing guide. It does not provide financial advice, place trades, manage money,
+      or guarantee returns. Users stay responsible for every investment decision and must use their own brokerage account.
+    </p>
+  </div>
+</section>
+
 <!-- STOCKS -->
 <section id="stocks" class="stocks-section">
   <div class="stocks-top">
@@ -789,7 +1200,7 @@ footer p{font-size:12px;color:var(--muted)}
     <button class="sort-chip" onclick="quickSort('etf', this)">ETFs</button>
   </div>
 
-  <div class="stock-note">TSLA, AMZN, and NVDA always stay at the top for free users. If live data is slow or Finnhub hits a limit, backup prices show first so the site does not go blank.</div>
+  <div class="stock-note">TSLA, AMZN, and NVDA always show first. Filters stay simple. Backup prices appear first, then live Finnhub prices update if the API responds.</div>
 
   <div class="stock-table-wrap">
     <table class="stock-table">
@@ -840,12 +1251,12 @@ footer p{font-size:12px;color:var(--muted)}
         <div class="price-sub" style="color:var(--accent)">Payment setup coming later</div>
         <ul class="price-features">
           <li>Everything in Free</li>
-          <li>Full screener — 50+ stocks</li>
+          <li>Full research view</li>
           <li>All sort & filter options</li>
           <li>Unlimited AI Advisor</li>
           <li>Weekly curated picks</li>
-          <li>Biggest movers, undervalued, dividends</li>
-          <li>Portfolio tracker & alerts</li>
+          <li>Biggest movers and dividend watchlists</li>
+          <li>Portfolio simulator and alerts later</li>
         </ul>
         <button class="price-btn pro" onclick="openModal()">Pro Coming Soon →</button>
       </div>
@@ -862,7 +1273,6 @@ footer p{font-size:12px;color:var(--muted)}
 <script>
 // STATE
 let isPro = false;
-window.isCashFloPro = function() { return isPro; };
 let questionsUsed = 0;
 const FREE_Q_LIMIT = 1;
 let currentSort = 'top';
@@ -1172,12 +1582,8 @@ function fallbackQuote(symbol) {
 function initializeFallbackStocksNow() {
   liveStocks = stockSymbols.map(sym => fallbackQuote(sym));
   lastUpdated = new Date();
-
-  if (document.getElementById('stockBody')) {
-    renderStocks();
-    renderTicker();
-  }
-
+  renderStocks();
+  renderTicker();
   const status = document.getElementById('liveStatus');
   if (status) {
     status.textContent = 'Showing backup prices while live prices load...';
@@ -1284,11 +1690,6 @@ function showAllStocks() {
 }
 
 function getFiltered() {
-  if (!liveStocks || liveStocks.length === 0) {
-    liveStocks = stockSymbols.map(sym => fallbackQuote(sym));
-    lastUpdated = new Date();
-  }
-
   let data = [...liveStocks];
 
   if (currentSearchSymbol) {
@@ -1343,11 +1744,6 @@ function getRating(s) {
 }
 
 function renderStocks() {
-  if (!liveStocks || liveStocks.length === 0) {
-    liveStocks = stockSymbols.map(sym => fallbackQuote(sym));
-    lastUpdated = new Date();
-  }
-
   const filtered = getFiltered();
   const body = document.getElementById('stockBody');
   const freeTop = ['TSLA','AMZN','NVDA'];
@@ -1400,18 +1796,10 @@ function renderStocks() {
   }
 
   if (displayList.length === 0) {
-    html = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted)">Loading stocks... If this stays here, press Refresh or hard-refresh the page.</td></tr>`;
+    html = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted)">No matching stock found. Try a ticker like AAPL, NVDA, TSLA, VOO, or SPY.</td></tr>`;
   }
 
   body.innerHTML = html;
-
-  if (body && body.textContent.includes('Loading stocks')) {
-    setTimeout(() => {
-      if (body.textContent.includes('Loading stocks')) {
-        initializeFallbackStocksNow();
-      }
-    }, 300);
-  }
 }
 
 function renderTicker() {
@@ -1853,12 +2241,50 @@ if (new URLSearchParams(window.location.search).get('pro') === 'true') {
 }
 
 
+
+// HAMBURGER MENU
+function toggleAppMenu() {
+  const overlay = document.getElementById('appMenuOverlay');
+  if (overlay) overlay.classList.toggle('show');
+}
+
+function closeAppMenu(event) {
+  if (!event || event.target.id === 'appMenuOverlay') {
+    const overlay = document.getElementById('appMenuOverlay');
+    if (overlay) overlay.classList.remove('show');
+  }
+}
+
+function toggleMenuSection(btn) {
+  const section = btn.closest('.menu-section');
+  if (!section) return;
+  section.classList.toggle('open');
+}
+
+function jumpToSection(id) {
+  const overlay = document.getElementById('appMenuOverlay');
+  if (overlay) overlay.classList.remove('show');
+
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function quickAskFromMenu(question) {
+  const overlay = document.getElementById('appMenuOverlay');
+  if (overlay) overlay.classList.remove('show');
+
+  const input = document.getElementById('advisorInput');
+  if (input) {
+    input.value = question;
+    document.getElementById('advisor')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => sendQ(), 450);
+  }
+}
+
 // INIT
-document.addEventListener('DOMContentLoaded', () => {
-  initializeFallbackStocksNow();
-  loadLiveStocks();
-  setInterval(loadLiveStocks, 60000);
-});
+initializeFallbackStocksNow();
+loadLiveStocks();
+setInterval(loadLiveStocks, 60000);
 </script>
 
 <!-- GOOGLE SIGN-UP ONLY: FIREBASE SETUP -->
@@ -1909,7 +2335,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (user) {
       localStorage.setItem("cashFloUser", user.email || user.displayName || "Google user");
 
-      if (planIndicator && !(window.isCashFloPro && window.isCashFloPro())) {
+      if (planIndicator && !isPro) {
         planIndicator.textContent = user.email ? `Signed in: ${user.email}` : "Signed in";
       }
 
@@ -1920,7 +2346,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       localStorage.removeItem("cashFloUser");
 
-      if (planIndicator && !(window.isCashFloPro && window.isCashFloPro())) {
+      if (planIndicator && !isPro) {
         planIndicator.textContent = "Free Plan";
       }
 
