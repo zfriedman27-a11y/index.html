@@ -1401,6 +1401,48 @@ nav {
   opacity: .85;
 }
 
+
+/* CASH FLO DIFFERENTIATOR FEATURES */
+.different-section{padding:76px 40px;border-bottom:.5px solid var(--border);background:radial-gradient(circle at 14% 14%,rgba(143,183,255,.055),transparent 35%),radial-gradient(circle at 86% 18%,rgba(164,147,255,.045),transparent 34%),var(--bg)}
+.different-inner{max-width:1120px;margin:0 auto}
+.different-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:24px}
+.different-title{font-family:'Syne',sans-serif;font-size:clamp(30px,4vw,52px);line-height:1.04;font-weight:800;letter-spacing:-1.4px;max-width:690px}
+.different-sub{color:var(--muted2);max-width:430px;font-size:15px}
+.tool-tabs{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0}
+.tool-tab{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.10);color:var(--muted2);font-size:12px;font-weight:900;padding:9px 13px;border-radius:999px}
+.tool-tab.active{background:linear-gradient(135deg,#d8e7ff,#a493ff);color:#050508;border-color:transparent}
+.tool-panel{display:none}.tool-panel.active{display:block}
+.tool-card{background:rgba(16,20,29,.84);border:1px solid rgba(255,255,255,.10);border-radius:22px;padding:24px;box-shadow:0 22px 70px rgba(0,0,0,.26)}
+.tool-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;align-items:stretch}
+.tool-input-card,.tool-output{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:20px}
+.tool-input-card h3,.tool-output h3{font-family:'Syne',sans-serif;font-size:20px;margin-bottom:10px}
+.tool-input-card p{color:var(--muted2);font-size:14px;margin-bottom:14px}
+.tool-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tool-input{flex:1;min-width:150px;background:var(--surface);border:1px solid rgba(255,255,255,.13);color:var(--text);border-radius:11px;padding:10px 12px;outline:none}
+.tool-input:focus{border-color:rgba(143,183,255,.38)}
+.tool-button{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border:none;border-radius:11px;padding:10px 14px;font-size:13px;font-weight:900}
+.quick-tool-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.quick-tool-buttons button{background:rgba(255,255,255,.035);color:var(--muted2);border:1px solid rgba(255,255,255,.10);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800}
+.score-ring{width:132px;height:132px;border-radius:999px;display:grid;place-items:center;margin:8px auto 18px;background:conic-gradient(var(--accent) var(--score-deg),rgba(255,255,255,.08) 0);position:relative}
+.score-ring:after{content:"";position:absolute;inset:11px;border-radius:999px;background:var(--surface);border:1px solid rgba(255,255,255,.08)}
+.score-ring span{position:relative;z-index:2;font-family:'Syne',sans-serif;font-weight:900;font-size:32px;color:var(--text)}
+.metric-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.metric{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+.metric-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:900}
+.metric-value{color:var(--text);font-size:14px;margin-top:4px;font-weight:800}
+.tool-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.tool-list li{color:var(--muted2);font-size:14px}.tool-list li:before{content:"✓";color:var(--accent);font-weight:900;margin-right:8px}
+.warning-list li:before{content:"!";color:var(--amber)}
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.compare-box{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:15px;padding:14px}
+.compare-box h4{font-family:'Syne',sans-serif;margin-bottom:7px}.compare-box p{color:var(--muted2);font-size:13px}
+.builder-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.builder-option{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.10);color:var(--muted2);border-radius:12px;padding:10px;font-size:12px;font-weight:800;text-align:center}
+.builder-option.active{background:rgba(143,183,255,.12);border-color:rgba(143,183,255,.32);color:var(--text)}
+.unique-note{margin-top:18px;padding:14px;border-radius:16px;background:rgba(143,183,255,.055);border:1px solid rgba(143,183,255,.14);color:var(--muted2);font-size:13px}
+.unique-note strong{color:var(--accent)}
+@media(max-width:850px){.different-section{padding:62px 18px}.tool-grid,.compare-grid,.metric-list,.builder-options{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -1574,6 +1616,20 @@ nav {
           <span class="menu-mini-pill">Educational only</span>
           <span class="menu-mini-pill">You stay in control</span>
         </div>
+      </div>
+    </div>
+
+
+    <div class="menu-section">
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
+        <span>🧰 Cash Flo Tools <small>Risk check, ETF compare, mistake detector</small></span>
+        <span>⌄</span>
+      </button>
+      <div class="menu-section-content">
+        <button class="menu-link" onclick="jumpToSection('cashFloTools')">Open Cash Flo Tools</button>
+        <button class="menu-link" onclick="showToolTab('risk', document.querySelectorAll('.tool-tab')[0]); jumpToSection('cashFloTools')">Risk Check</button>
+        <button class="menu-link" onclick="showToolTab('compare', document.querySelectorAll('.tool-tab')[1]); jumpToSection('cashFloTools')">Compare to ETF</button>
+        <button class="menu-link" onclick="showToolTab('mistake', document.querySelectorAll('.tool-tab')[4]); jumpToSection('cashFloTools')">Mistake Detector</button>
       </div>
     </div>
 
@@ -1804,6 +1860,142 @@ nav {
       Cash Flo is an educational investing guide. It does not provide financial advice, place trades, manage money,
       connect to brokerage accounts, or guarantee returns. Users stay responsible for every investment decision.
     </p>
+  </div>
+</section>
+
+
+<!-- CASH FLO DIFFERENTIATOR TOOLS -->
+<section class="different-section" id="cashFloTools">
+  <div class="different-inner">
+    <div class="different-top">
+      <div>
+        <div class="section-tag">Cash Flo Tools</div>
+        <div class="different-title">Not just advice. A guided research path.</div>
+      </div>
+      <p class="different-sub">ChatGPT gives answers. Cash Flo gives beginners a structured way to check risk, compare ETFs, build a watchlist, and think before using real money.</p>
+    </div>
+
+    <div class="tool-tabs">
+      <button class="tool-tab active" onclick="showToolTab('risk', this)">Risk Check</button>
+      <button class="tool-tab" onclick="showToolTab('compare', this)">Compare to ETF</button>
+      <button class="tool-tab" onclick="showToolTab('beforeBuy', this)">Before You Buy</button>
+      <button class="tool-tab" onclick="showToolTab('builder', this)">Watchlist Builder</button>
+      <button class="tool-tab" onclick="showToolTab('mistake', this)">Mistake Detector</button>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-panel active" id="tool-risk">
+        <div class="tool-grid">
+          <div class="tool-input-card">
+            <h3>Stock Risk Check</h3>
+            <p>Type a ticker and Cash Flo gives a beginner-friendly risk breakdown instead of just a price chart.</p>
+            <div class="tool-row">
+              <input class="tool-input" id="riskTicker" placeholder="Try TSLA, NVDA, AAPL" />
+              <button class="tool-button" onclick="runRiskCheck()">Check Risk</button>
+            </div>
+            <div class="quick-tool-buttons">
+              <button onclick="fillAndRunRisk('TSLA')">TSLA</button>
+              <button onclick="fillAndRunRisk('NVDA')">NVDA</button>
+              <button onclick="fillAndRunRisk('AAPL')">AAPL</button>
+              <button onclick="fillAndRunRisk('VOO')">VOO</button>
+            </div>
+          </div>
+          <div class="tool-output" id="riskOutput">
+            <h3>Cash Flo Score</h3>
+            <div class="score-ring" style="--score-deg:252deg"><span>70</span></div>
+            <div class="metric-list">
+              <div class="metric"><div class="metric-label">Risk Level</div><div class="metric-value">Medium</div></div>
+              <div class="metric"><div class="metric-label">Beginner Clarity</div><div class="metric-value">Good</div></div>
+              <div class="metric"><div class="metric-label">Hype Risk</div><div class="metric-value">Medium</div></div>
+              <div class="metric"><div class="metric-label">Diversification</div><div class="metric-value">Needs comparison</div></div>
+            </div>
+            <p class="unique-note"><strong>Different from a chatbot:</strong> Cash Flo turns the stock into a simple risk profile you can scan quickly.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-panel" id="tool-compare">
+        <div class="tool-grid">
+          <div class="tool-input-card">
+            <h3>Compare to ETF</h3>
+            <p>See how a single stock compares to a broader ETF, so beginners do not only think about hype stocks.</p>
+            <div class="tool-row">
+              <input class="tool-input" id="compareTicker" placeholder="Stock, ex: NVDA" />
+              <select class="tool-input" id="compareETF">
+                <option value="VOO">VOO</option><option value="QQQ">QQQ</option><option value="VTI">VTI</option><option value="SPY">SPY</option>
+              </select>
+              <button class="tool-button" onclick="runETFCompare()">Compare</button>
+            </div>
+            <div class="quick-tool-buttons">
+              <button onclick="fillAndCompare('NVDA','QQQ')">NVDA vs QQQ</button>
+              <button onclick="fillAndCompare('TSLA','VOO')">TSLA vs VOO</button>
+              <button onclick="fillAndCompare('AAPL','VTI')">AAPL vs VTI</button>
+            </div>
+          </div>
+          <div class="tool-output" id="compareOutput">
+            <h3>Single Stock vs ETF</h3>
+            <div class="compare-grid">
+              <div class="compare-box"><h4>Single Stock</h4><p>Higher upside potential, but more company-specific risk.</p></div>
+              <div class="compare-box"><h4>ETF</h4><p>More diversified, usually less dependent on one company.</p></div>
+            </div>
+            <p class="unique-note"><strong>Cash Flo angle:</strong> Every stock should be compared to a broader alternative before someone gets too excited.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-panel" id="tool-beforeBuy">
+        <div class="tool-grid">
+          <div class="tool-input-card">
+            <h3>Before You Buy Checklist</h3>
+            <p>Cash Flo does not say “buy” or “don’t buy.” It helps users slow down and ask better questions.</p>
+            <div class="tool-row"><input class="tool-input" id="checkTicker" placeholder="Ticker, ex: AMZN" /><button class="tool-button" onclick="runBeforeBuy()">Build Checklist</button></div>
+            <div class="quick-tool-buttons"><button onclick="fillBeforeBuy('AMZN')">AMZN</button><button onclick="fillBeforeBuy('META')">META</button><button onclick="fillBeforeBuy('VOO')">VOO</button></div>
+          </div>
+          <div class="tool-output" id="checkOutput">
+            <h3>Before buying any stock, ask:</h3>
+            <ul class="tool-list"><li>Do I understand what this company or ETF does?</li><li>Am I okay with the risks I’m taking?</li><li>Did I compare it to VOO, SPY, QQQ, or VTI?</li><li>Am I putting too much money into one idea?</li><li>Is this long-term thinking or hype?</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-panel" id="tool-builder">
+        <div class="tool-grid">
+          <div class="tool-input-card">
+            <h3>Beginner Watchlist Builder</h3>
+            <p>Instead of random stock picks, users get a simple watchlist structure based on what they want to learn.</p>
+            <div class="builder-options">
+              <button class="builder-option active" onclick="setBuilderMode('balanced', this)">Balanced</button>
+              <button class="builder-option" onclick="setBuilderMode('tech', this)">Tech Curious</button>
+              <button class="builder-option" onclick="setBuilderMode('safe', this)">Safer Start</button>
+            </div>
+            <button class="tool-button" onclick="buildWatchlist()">Build Watchlist</button>
+          </div>
+          <div class="tool-output" id="builderOutput">
+            <h3>Starter watchlist structure</h3>
+            <ul class="tool-list"><li>Broad market ETF: VOO or VTI</li><li>Tech ETF: QQQ or XLK</li><li>Company you understand: AAPL, AMZN, or MSFT</li><li>Riskier growth stock to watch only: TSLA or NVDA</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-panel" id="tool-mistake">
+        <div class="tool-grid">
+          <div class="tool-input-card">
+            <h3>Mistake Detector</h3>
+            <p>Answer honestly. Cash Flo flags common beginner mistakes without controlling your money.</p>
+            <div class="tool-row"><input class="tool-input" id="mistakeTicker" placeholder="What ticker are you thinking about?" /></div>
+            <div class="tool-row"><input class="tool-input" id="mistakePercent" placeholder="% of your money, ex: 50" /></div>
+            <div class="tool-row"><input class="tool-input" id="mistakeReason" placeholder="Why do you want it?" /></div>
+            <button class="tool-button" onclick="runMistakeDetector()">Check Mistakes</button>
+          </div>
+          <div class="tool-output" id="mistakeOutput">
+            <h3>Common mistakes Cash Flo checks</h3>
+            <ul class="tool-list warning-list"><li>Putting too much money into one stock</li><li>Buying because of hype only</li><li>Not comparing to an ETF</li><li>Not understanding what the company does</li><li>Ignoring downside risk</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="unique-note"><strong>Why this is different:</strong> Cash Flo is not just a blank chat box. It gives users repeatable tools, checklists, comparisons, and guardrails so beginners know what to do next.</p>
   </div>
 </section>
 
@@ -2759,6 +2951,32 @@ document.getElementById('advisorInput').addEventListener('keydown', e => { if(e.
 
 
 
+
+
+// CASH FLO DIFFERENTIATOR TOOLS
+let builderMode = 'balanced';
+const cashFloProfiles = {
+  TSLA:{score:54,risk:'High',clarity:'Medium',hype:'High',diversification:'Weak alone',summary:'Tesla is exciting but very volatile. It can move on growth expectations, competition, Elon Musk news, and market hype.'},
+  NVDA:{score:62,risk:'High',clarity:'Good',hype:'High',diversification:'Weak alone',summary:'Nvidia has strong AI demand, but expectations are already high. A beginner should compare it to QQQ or XLK before focusing only on NVDA.'},
+  AAPL:{score:78,risk:'Medium',clarity:'High',hype:'Medium',diversification:'Still one company',summary:'Apple is easier for beginners to understand because of its products and brand, but it is still one stock and should be compared to broad ETFs.'},
+  AMZN:{score:72,risk:'Medium',clarity:'Good',hype:'Medium',diversification:'Still one company',summary:'Amazon has multiple business lines like e-commerce, cloud, and ads. The risk is valuation, competition, and market expectations.'},
+  META:{score:69,risk:'Medium',clarity:'Medium',hype:'Medium',diversification:'Still one company',summary:'Meta makes money mostly from ads and social platforms, with AI and metaverse bets adding opportunity and risk.'},
+  VOO:{score:88,risk:'Lower',clarity:'High',hype:'Low',diversification:'Strong',summary:'VOO tracks the S&P 500, making it more diversified than owning one company.'},
+  SPY:{score:86,risk:'Lower',clarity:'High',hype:'Low',diversification:'Strong',summary:'SPY is a broad S&P 500 ETF. It is diversified, but still moves with the market.'},
+  QQQ:{score:76,risk:'Medium',clarity:'Good',hype:'Medium',diversification:'Tech-heavy',summary:'QQQ is diversified across many large growth companies, but it is still tech-heavy.'},
+  VTI:{score:90,risk:'Lower',clarity:'High',hype:'Low',diversification:'Very strong',summary:'VTI tracks a broad U.S. stock market basket, making it one of the most diversified simple ETF examples.'}
+};
+function getProfile(symbol){const s=(symbol||'').trim().toUpperCase()||'TSLA'; if(cashFloProfiles[s]) return {symbol:s,...cashFloProfiles[s]}; const sector=symbolSector[s]||'other'; const isETF=sector==='etf'; return {symbol:s,score:isETF?80:64,risk:isETF?'Lower to Medium':'Medium to High',clarity:stockNames[s]?'Medium':'Unknown',hype:['TSLA','NVDA','AMD','PLTR'].includes(s)?'High':'Medium',diversification:isETF?'Stronger':'Weak alone',summary:`${s} needs research before making any decision. Compare it to broad ETFs and check whether you understand the risk.`};}
+function showToolTab(name,btn){document.querySelectorAll('.tool-tab').forEach(b=>b.classList.remove('active')); document.querySelectorAll('.tool-panel').forEach(p=>p.classList.remove('active')); if(btn)btn.classList.add('active'); const panel=document.getElementById('tool-'+name); if(panel)panel.classList.add('active');}
+function runRiskCheck(){const p=getProfile(document.getElementById('riskTicker')?.value); const deg=Math.round((p.score/100)*360); document.getElementById('riskOutput').innerHTML=`<h3>${p.symbol} Cash Flo Score</h3><div class="score-ring" style="--score-deg:${deg}deg"><span>${p.score}</span></div><div class="metric-list"><div class="metric"><div class="metric-label">Risk Level</div><div class="metric-value">${p.risk}</div></div><div class="metric"><div class="metric-label">Beginner Clarity</div><div class="metric-value">${p.clarity}</div></div><div class="metric"><div class="metric-label">Hype Risk</div><div class="metric-value">${p.hype}</div></div><div class="metric"><div class="metric-label">Diversification</div><div class="metric-value">${p.diversification}</div></div></div><p class="unique-note"><strong>Beginner summary:</strong> ${p.summary}</p>`;}
+function fillAndRunRisk(symbol){document.getElementById('riskTicker').value=symbol;runRiskCheck();}
+function runETFCompare(){const stock=(document.getElementById('compareTicker').value||'NVDA').trim().toUpperCase(); const etf=document.getElementById('compareETF').value; const sp=getProfile(stock), ep=getProfile(etf); document.getElementById('compareOutput').innerHTML=`<h3>${stock} vs ${etf}</h3><div class="compare-grid"><div class="compare-box"><h4>${stockNames[stock]||stock}</h4><p><strong>Risk:</strong> ${sp.risk}</p><p><strong>Why it matters:</strong> Single stocks can move harder because one company’s news matters a lot.</p></div><div class="compare-box"><h4>${stockNames[etf]||etf}</h4><p><strong>Risk:</strong> ${ep.risk}</p><p><strong>Why it matters:</strong> ETFs spread exposure across many companies, lowering single-company risk.</p></div></div><p class="unique-note"><strong>Cash Flo thought:</strong> If you like ${stock}, compare it to ${etf} so you understand concentration vs diversification.</p>`;}
+function fillAndCompare(stock,etf){document.getElementById('compareTicker').value=stock;document.getElementById('compareETF').value=etf;runETFCompare();}
+function runBeforeBuy(){const s=(document.getElementById('checkTicker').value||'this stock').trim().toUpperCase(); document.getElementById('checkOutput').innerHTML=`<h3>Before buying ${s}, ask:</h3><ul class="tool-list"><li>Do I understand what ${s} actually does?</li><li>Do I know the biggest risk with ${s}?</li><li>Did I compare ${s} to VOO, SPY, QQQ, or VTI?</li><li>Would I still be okay if ${s} dropped a lot?</li><li>Am I buying because of a plan, or because of hype?</li><li>Am I putting too much money into one stock?</li></ul><p class="unique-note"><strong>Cash Flo rule:</strong> If you cannot explain the investment in one simple sentence, slow down and research more.</p>`;}
+function fillBeforeBuy(symbol){document.getElementById('checkTicker').value=symbol;runBeforeBuy();}
+function setBuilderMode(mode,btn){builderMode=mode;document.querySelectorAll('.builder-option').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active');}
+function buildWatchlist(){let list;if(builderMode==='tech'){list=['Broad foundation: VOO or VTI','Tech ETF: QQQ or XLK','Large tech company to understand: AAPL or MSFT','AI/growth watch-only idea: NVDA','Risk reminder: do not confuse exciting with safe'];}else if(builderMode==='safe'){list=['Broad foundation: VTI or VOO','Dividend/steady ETF example: SCHD or VYM','Company you already understand: AAPL, COST, or KO','Growth stock only as a small watchlist idea','Risk reminder: simple and diversified first'];}else{list=['Broad market ETF: VOO or VTI','Growth/tech ETF: QQQ or XLK','Company you understand: AAPL, AMZN, or MSFT','Riskier growth stock to watch only: TSLA or NVDA','Compare every stock to an ETF before deciding'];} document.getElementById('builderOutput').innerHTML=`<h3>${builderMode==='tech'?'Tech-curious':builderMode==='safe'?'Safer-start':'Balanced'} watchlist structure</h3><ul class="tool-list">${list.map(i=>`<li>${i}</li>`).join('')}</ul><p class="unique-note"><strong>Important:</strong> This is an educational watchlist structure, not a recommendation to buy.</p>`;}
+function runMistakeDetector(){const ticker=(document.getElementById('mistakeTicker').value||'this stock').trim().toUpperCase(); const percentRaw=document.getElementById('mistakePercent').value.trim(); const percent=Number(percentRaw.replace('%','')); const reason=(document.getElementById('mistakeReason').value||'').toLowerCase(); const warnings=[]; if(!percentRaw||Number.isNaN(percent)) warnings.push('You did not give a clear percentage. Beginners should know how much of their money one idea represents.'); else if(percent>=40) warnings.push(`Putting ${percent}% into ${ticker} may create major single-stock risk.`); else if(percent>=20) warnings.push(`Putting ${percent}% into ${ticker} may still be concentrated. Compare it to an ETF first.`); else warnings.push(`Your ${percent}% amount may be more controlled, but risk still depends on what else you own.`); if(reason.includes('tiktok')||reason.includes('hype')||reason.includes('everyone')||reason.includes('friend')) warnings.push('Your reason sounds hype-based. Slow down and check fundamentals, risk, and ETF alternatives.'); else if(!reason) warnings.push('You did not explain why you want it. If there is no reason, there is no plan.'); else warnings.push('You gave a reason. Now check if that reason is based on facts, not just excitement.'); warnings.push(`Compare ${ticker} to VOO, SPY, QQQ, or VTI before making any real-money decision.`); warnings.push('Cash Flo does not place trades. You stay responsible for every decision.'); document.getElementById('mistakeOutput').innerHTML=`<h3>${ticker} Mistake Check</h3><ul class="tool-list warning-list">${warnings.map(w=>`<li>${w}</li>`).join('')}</ul>`;}
 
 // STOCK HISTORY CHARTS - PRO ONLY
 // FINAL FIX: chart popups use TradingView iframe, not Finnhub candle/canvas code.
