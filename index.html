@@ -3282,7 +3282,7 @@ body {
     <div class="stocks-title">Stock Tracker</div>
     <div class="stocks-controls">
       <div class="stock-search-wrap">
-        <input class="stock-search" id="stockSearch" placeholder="Search any ticker, ex: AAPL" />
+        <input class="stock-search" id="stockSearch" placeholder="Search ticker or company, ex: Tesla" />
         <button class="stock-search-btn" onclick="addTickerFromSearch()">Search</button>
         <button class="stock-search-btn secondary" onclick="showAllStocks()">Show All</button>
         <button class="stock-search-btn secondary" onclick="showWatchlistOnly()">★ My Watchlist</button>
@@ -3538,6 +3538,148 @@ const stockNames = {
   "ARKK": "ARK Innovation ETF"
 };
 
+
+const companySearchAliases = {
+  "TESLA": "TSLA",
+  "TESLA INC": "TSLA",
+  "ELON MUSK": "TSLA",
+  "NVIDIA": "NVDA",
+  "NVIDIA CORP": "NVDA",
+  "NVIDIA CORPORATION": "NVDA",
+  "APPLE": "AAPL",
+  "APPLE INC": "AAPL",
+  "MICROSOFT": "MSFT",
+  "MICROSOFT CORP": "MSFT",
+  "AMAZON": "AMZN",
+  "AMAZON COM": "AMZN",
+  "META": "META",
+  "META PLATFORMS": "META",
+  "FACEBOOK": "META",
+  "GOOGLE": "GOOGL",
+  "ALPHABET": "GOOGL",
+  "ALPHABET CLASS A": "GOOGL",
+  "BROADCOM": "AVGO",
+  "NETFLIX": "NFLX",
+  "ORACLE": "ORCL",
+  "ADOBE": "ADBE",
+  "SALESFORCE": "CRM",
+  "INTEL": "INTC",
+  "QUALCOMM": "QCOM",
+  "CISCO": "CSCO",
+  "IBM": "IBM",
+  "SERVICENOW": "NOW",
+  "SHOPIFY": "SHOP",
+  "UBER": "UBER",
+  "PAYPAL": "PYPL",
+  "BLOCK": "SQ",
+  "SQUARE": "SQ",
+  "SNOWFLAKE": "SNOW",
+  "PALANTIR": "PLTR",
+  "MICRON": "MU",
+  "JPMORGAN": "JPM",
+  "CHASE": "JPM",
+  "BANK OF AMERICA": "BAC",
+  "WELLS FARGO": "WFC",
+  "GOLDMAN SACHS": "GS",
+  "MORGAN STANLEY": "MS",
+  "VISA": "V",
+  "MASTERCARD": "MA",
+  "AMERICAN EXPRESS": "AXP",
+  "BLACKROCK": "BLK",
+  "WALMART": "WMT",
+  "COSTCO": "COST",
+  "HOME DEPOT": "HD",
+  "LOWES": "LOW",
+  "LOWE'S": "LOW",
+  "TARGET": "TGT",
+  "NIKE": "NKE",
+  "STARBUCKS": "SBUX",
+  "MCDONALDS": "MCD",
+  "MCDONALD'S": "MCD",
+  "DISNEY": "DIS",
+  "CHIPOTLE": "CMG",
+  "PEPSI": "PEP",
+  "PEPSICO": "PEP",
+  "COCA COLA": "KO",
+  "COKE": "KO",
+  "PROCTER GAMBLE": "PG",
+  "JOHNSON JOHNSON": "JNJ",
+  "ELI LILLY": "LLY",
+  "UNITEDHEALTH": "UNH",
+  "MERCK": "MRK",
+  "PFIZER": "PFE",
+  "ABBVIE": "ABBV",
+  "EXXON": "XOM",
+  "EXXON MOBIL": "XOM",
+  "CHEVRON": "CVX",
+  "BOEING": "BA",
+  "CATERPILLAR": "CAT",
+  "LOCKHEED": "LMT",
+  "LOCKHEED MARTIN": "LMT",
+  "UPS": "UPS",
+  "VANGUARD S&P 500": "VOO",
+  "VANGUARD SP 500": "VOO",
+  "S&P 500 ETF": "VOO",
+  "SPY ETF": "SPY",
+  "SPDR S&P 500": "SPY",
+  "QQQ ETF": "QQQ",
+  "NASDAQ ETF": "QQQ",
+  "VANGUARD TOTAL MARKET": "VTI",
+  "TOTAL MARKET ETF": "VTI",
+  "SCHWAB DIVIDEND": "SCHD",
+  "DIVIDEND ETF": "SCHD"
+};
+
+function normalizeSearchText(value) {
+  return String(value || "")
+    .toUpperCase()
+    .replace(/&/g, " AND ")
+    .replace(/[^A-Z0-9.\-\s']/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function resolveSearchToTicker(rawValue) {
+  const cleaned = normalizeSearchText(rawValue);
+  if (!cleaned) return "";
+
+  // If the user already typed a ticker exactly, use it.
+  const compactTicker = cleaned.replace(/\s+/g, "");
+  if (stockSymbols.includes(compactTicker) || stockNames[compactTicker] || symbolSector[compactTicker]) {
+    return compactTicker;
+  }
+
+  // Direct alias match: "TESLA" -> TSLA, "NVIDIA" -> NVDA, etc.
+  if (companySearchAliases[cleaned]) return companySearchAliases[cleaned];
+
+  // Remove common extra words people type.
+  const withoutExtras = cleaned
+    .replace(/\b(STOCK|STOCKS|SHARES|COMPANY|INC|CORP|CORPORATION|CLASS A|CLASS C)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (companySearchAliases[withoutExtras]) return companySearchAliases[withoutExtras];
+
+  // Match official company names from stockNames.
+  for (const [ticker, name] of Object.entries(stockNames)) {
+    const normalizedName = normalizeSearchText(name)
+      .replace(/\b(INC|CORP|CORPORATION|CLASS A|CLASS C)\b/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    if (
+      withoutExtras === normalizedName ||
+      normalizedName.includes(withoutExtras) ||
+      withoutExtras.includes(normalizedName)
+    ) {
+      return ticker;
+    }
+  }
+
+  // Last fallback: treat it like a ticker, ex: "RIVN" or "SOFI".
+  return compactTicker.replace(/[^A-Z.\-]/g, "");
+}
+
 const symbolSector = {
   "AAPL": "tech",
   "MSFT": "tech",
@@ -3780,7 +3922,8 @@ async function loadLiveStocks(manual=false) {
 
 async function addTickerFromSearch() {
   const input = document.getElementById('stockSearch');
-  const symbol = input.value.trim().toUpperCase().replace(/[^A-Z.\-]/g,'');
+  const rawSearch = input.value.trim();
+  const symbol = resolveSearchToTicker(rawSearch);
   if (!symbol) return;
 
   currentSearchSymbol = symbol;
@@ -3790,7 +3933,7 @@ async function addTickerFromSearch() {
   }
 
   const status = document.getElementById('liveStatus');
-  if (status) status.textContent = `Searching ${symbol}...`;
+  if (status) status.textContent = rawSearch.toUpperCase() === symbol ? `Searching ${symbol}...` : `Searching ${rawSearch} as ${symbol}...`;
 
   try {
     const quote = await fetchQuote(symbol);
@@ -4051,7 +4194,7 @@ function renderStocks() {
   }
 
   if (displayList.length === 0) {
-    htmlRows = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted)">${watchlistOnly ? 'Your watchlist is empty. Click the star next to stocks to save them.' : 'No stocks match this filter. Try All Sectors or Show All.'}</td></tr>`;
+    htmlRows = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted)">${watchlistOnly ? 'Your watchlist is empty. Click the star next to stocks to save them.' : 'No stocks match this filter. Try All Sectors, Show All, or search a company name like Tesla.'}</td></tr>`;
   }
 
   body.innerHTML = htmlRows;
@@ -4975,7 +5118,7 @@ const tradingViewSymbolMap = {
   AMD:'NASDAQ:AMD', AVGO:'NASDAQ:AVGO', NFLX:'NASDAQ:NFLX', ORCL:'NYSE:ORCL',
   ADBE:'NASDAQ:ADBE', CRM:'NYSE:CRM', INTC:'NASDAQ:INTC', QCOM:'NASDAQ:QCOM',
   CSCO:'NASDAQ:CSCO', TXN:'NASDAQ:TXN', IBM:'NYSE:IBM', NOW:'NYSE:NOW',
-  SHOP:'NYSE:SHOP', UBER:'NYSE:UBER', PYPL:'NASDAQ:PYPL', SQ:'NYSE:SQ',
+  SHOP:'NASDAQ:SHOP', UBER:'NYSE:UBER', PYPL:'NASDAQ:PYPL', SQ:'NYSE:SQ',
   SNOW:'NYSE:SNOW', PLTR:'NASDAQ:PLTR', MU:'NASDAQ:MU', AMAT:'NASDAQ:AMAT',
   LRCX:'NASDAQ:LRCX', PANW:'NASDAQ:PANW', JPM:'NYSE:JPM', BAC:'NYSE:BAC',
   WFC:'NYSE:WFC', GS:'NYSE:GS', MS:'NYSE:MS', V:'NYSE:V', MA:'NYSE:MA',
