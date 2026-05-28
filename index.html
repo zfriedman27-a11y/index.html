@@ -10,7 +10,7 @@
 :root {
   --bg:#090b10; --surface:#10141d; --surface2:#151b26;
   --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.13);
-  --accent:#8fb7ff; --accentSoft:#1b2638; --accent2:#a493ff;
+  --accent:#7fb3ff; --accentSoft:#172238; --accent2:#8c7dff;
   --text:#f5f7fb; --muted:#828a9a; --muted2:#b5bdcc;
   --red:#ff4d6a; --green:#22c55e; --amber:#f7c35f;
 }
@@ -2047,6 +2047,165 @@ nav {
   border-radius: 8px;
 }
 
+
+/* CASH FLO DASHBOARD / CLEAN APP HOME */
+.dashboard-section {
+  padding: 64px 40px;
+  border-bottom: 0.5px solid var(--border);
+  background:
+    radial-gradient(circle at 12% 10%, rgba(127,179,255,0.07), transparent 34%),
+    linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.004));
+}
+
+.dashboard-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.dashboard-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.dashboard-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(30px, 4vw, 50px);
+  line-height: 1.05;
+  letter-spacing: -1.4px;
+  font-weight: 900;
+}
+
+.dashboard-sub {
+  color: var(--muted2);
+  max-width: 460px;
+  font-size: 14px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.dashboard-card {
+  background: rgba(16,20,29,0.78);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 20px 58px rgba(0,0,0,0.20);
+}
+
+.dashboard-card.primary {
+  background:
+    radial-gradient(circle at 15% 10%, rgba(127,179,255,0.11), transparent 38%),
+    rgba(16,20,29,0.86);
+  border-color: rgba(127,179,255,0.18);
+}
+
+.dashboard-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 21px;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.dashboard-card p {
+  color: var(--muted2);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.dashboard-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.dashboard-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.dashboard-metric {
+  background: rgba(255,255,255,0.032);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 15px;
+  padding: 13px;
+}
+
+.dashboard-metric span {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 5px;
+}
+
+.dashboard-metric strong {
+  color: var(--text);
+  font-size: 15px;
+}
+
+.dashboard-steps {
+  display: grid;
+  gap: 10px;
+}
+
+.dashboard-step {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  background: rgba(255,255,255,0.028);
+  border: 1px solid rgba(255,255,255,0.075);
+  border-radius: 15px;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.dashboard-step:hover {
+  border-color: rgba(127,179,255,0.25);
+  background: rgba(255,255,255,0.045);
+}
+
+.dashboard-step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: rgba(127,179,255,0.13);
+  color: var(--accent);
+  font-weight: 900;
+  flex-shrink: 0;
+}
+
+.dashboard-step h4 {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  margin-bottom: 3px;
+}
+
+.dashboard-step p {
+  font-size: 12.5px;
+  color: var(--muted2);
+}
+
+@media(max-width:850px){
+  .dashboard-section{padding-left:18px;padding-right:18px}
+  .dashboard-grid{grid-template-columns:1fr}
+  .dashboard-metric-grid{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 <body>
@@ -2196,7 +2355,20 @@ nav {
     </div>
 
 
-    <div class="menu-section">
+    
+    <div class="menu-section open">
+      <button class="menu-section-btn" onclick="toggleMenuSection(this)">
+        <span>🏠 Dashboard <small>Your clean Cash Flo home</small></span>
+        <span>⌄</span>
+      </button>
+      <div class="menu-section-content">
+        <button class="menu-link" onclick="jumpToSection('dashboard')">Open Dashboard</button>
+        <button class="menu-link" onclick="openInvestorQuiz()">Take Investor Quiz</button>
+        <button class="menu-link" onclick="quickSort('personal', document.querySelectorAll('.sort-chip')[1]); jumpToSection('stocks')">Top Stocks For Me</button>
+      </div>
+    </div>
+
+<div class="menu-section">
       <button class="menu-section-btn" onclick="toggleMenuSection(this)">
         <span>🧭 Investor Profile <small>Goals, risk type, and quiz</small></span>
         <span>⌄</span>
@@ -2207,7 +2379,7 @@ nav {
       </div>
     </div>
 
-    <div class="menu-section open">
+    <div class="menu-section">
       <button class="menu-section-btn" onclick="toggleMenuSection(this)">
         <span>🤖 AI Guide <small>Ask simple investing questions</small></span>
         <span>⌄</span>
@@ -2363,27 +2535,76 @@ nav {
   </div>
 </div>
 
+
+<!-- DASHBOARD / ORGANIZED APP HOME -->
+<section class="dashboard-section" id="dashboard">
+  <div class="dashboard-inner">
+    <div class="dashboard-top">
+      <div>
+        <div class="section-tag">Your Cash Flo Dashboard</div>
+        <div class="dashboard-title">One clean path, not a crowded app.</div>
+      </div>
+      <p class="dashboard-sub">Take the quiz, get your investor profile, then use Cash Flo’s tools in the right order for your risk style and goals.</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="dashboard-card primary" id="dashboardProfileCard">
+        <h3>Start with your investor profile</h3>
+        <p>Cash Flo needs your quiz answers before it can show profile match percentages or personalized stock rankings.</p>
+        <div class="dashboard-metric-grid">
+          <div class="dashboard-metric"><span>Profile</span><strong>Not set</strong></div>
+          <div class="dashboard-metric"><span>Best first tool</span><strong>Quiz</strong></div>
+          <div class="dashboard-metric"><span>Stock matches</span><strong>Locked</strong></div>
+        </div>
+        <div class="dashboard-action-row">
+          <button class="btn-primary" onclick="openInvestorQuiz()">Take 10-question quiz →</button>
+          <button class="btn-ghost" onclick="jumpToSection('stocks')">View stocks</button>
+        </div>
+      </div>
+
+      <div class="dashboard-card">
+        <h3>Recommended flow</h3>
+        <div class="dashboard-steps">
+          <div class="dashboard-step" onclick="openInvestorQuiz()">
+            <div class="dashboard-step-num">1</div>
+            <div><h4>Find your profile</h4><p>Risk comfort, time horizon, ETF readiness, and investing habits.</p></div>
+          </div>
+          <div class="dashboard-step" onclick="jumpToSection('cashFloTools'); setTimeout(openRecommendedProTool, 150)">
+            <div class="dashboard-step-num">2</div>
+            <div><h4>Use the right Pro tool</h4><p>Risk Check, ETF Compare, Mistake Detector, or Before You Buy.</p></div>
+          </div>
+          <div class="dashboard-step" onclick="quickSort('personal', document.querySelectorAll('.sort-chip')[1]); jumpToSection('stocks')">
+            <div class="dashboard-step-num">3</div>
+            <div><h4>Review Top Stocks For Me</h4><p>See profile-based rankings after the quiz. Educational only.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <!-- SITE MAP / CLEAN ORGANIZATION -->
 <section class="site-map-section" id="startHere">
   <div class="site-map-inner">
     <div class="section-tag">Start here</div>
-    <div class="guide-title">Choose what you want Cash Flo to help with.</div>
+    <div class="guide-title">Choose your next step.</div>
     <div class="site-map-grid">
       <div class="site-map-card" onclick="openInvestorQuiz()">
         <h3>1. Investor Profile Quiz</h3>
-        <p>Open the full 10-question quiz so Cash Flo can personalize Pro stock fit scores.</p>
+        <p>Set your risk style and unlock profile match rankings.</p>
       </div>
       <div class="site-map-card" onclick="jumpToSection('advisor')">
         <h3>2. Ask the guide</h3>
-        <p>Use plain-English AI explanations when investing terms or stocks feel confusing.</p>
+        <p>Ask simple questions when investing terms feel confusing.</p>
       </div>
       <div class="site-map-card" onclick="jumpToSection('cashFloTools')">
         <h3>3. Pro research tools</h3>
-        <p>Risk checks, ETF comparisons, watchlist builder, and mistake detector for Pro members.</p>
+        <p>Use the guided research path for your quiz profile.</p>
       </div>
       <div class="site-map-card" onclick="jumpToSection('stocks')">
         <h3>4. Watch the market</h3>
-        <p>Track TSLA, AMZN, NVDA for free or use Pro test for the full watchlist.</p>
+        <p>Favorite stocks and view your Top Stocks For Me list.</p>
       </div>
     </div>
   </div>
@@ -2396,13 +2617,13 @@ nav {
     <div class="quiz-gateway-card">
       <div class="section-tag">Investor Profile</div>
       <h2>Get your personal investor type.</h2>
-      <p>Take the full 10-question quiz to see whether you are more long-term, cautious, growth-focused, or high-risk. Pro users also get a personal fit score on each stock.</p>
+      <p>Take the full 10-question quiz to see whether you are more long-term, cautious, growth-focused, or high-risk. Pro users also get a profile match score on each stock.</p>
       <button class="btn-primary" onclick="openInvestorQuiz()">Take the 10-question quiz →</button>
       <button class="btn-ghost" onclick="jumpToSection('stocks')" style="margin-left:8px">Skip to watchlist</button>
     </div>
     <div class="profile-small-card" id="profileMiniCard">
       <h3>No profile yet</h3>
-      <p>After the quiz, your profile is saved in this browser and Pro stock rows will show labels like “72% fit” and “High Risk for You.”</p>
+      <p>After the quiz, your profile is saved in this browser and Pro stock rows will show labels like “72% match” and “High Risk for You.”</p>
     </div>
   </div>
 </section>
@@ -2921,7 +3142,7 @@ nav {
   </div>
 
   <div class="watchlist-active-banner" id="watchlistBanner"><span>Showing your saved watchlist.</span><button class="unlock-btn" onclick="showAllStocks()">Show All Stocks</button></div>
-  <div class="stock-note" id="personalSortNote">Use <strong>Top Stocks For Me</strong> after the quiz to rank stocks by your risk comfort, time horizon, ETF readiness, and investing style. Fit percentages only appear after the quiz is completed. Free users can favorite stocks, while Pro users see the full personalized fit list.</div>
+  <div class="stock-note" id="personalSortNote">Use <strong>Top Stocks For Me</strong> after the quiz to rank stocks by your risk comfort, time horizon, ETF readiness, and investing style. Profile Match is educational, not a buy recommendation. Free users can favorite stocks, while Pro users see the full personalized match list.</div>
   <div class="stock-note">Free users see TSLA, AMZN, and NVDA with one clean unlock message. Pro users see all stocks normally with no blur or shaded locked rows.</div>
 
   <div class="stock-table-wrap">
@@ -2934,7 +3155,7 @@ nav {
           <th class="sortable-th" onclick="sortByColumn('change')">Change <span class="sort-arrow" id="sortArrow-change"></span></th>
           <th class="sortable-th" onclick="sortByColumn('updated')">Updated <span class="sort-arrow" id="sortArrow-updated"></span></th>
           <th class="sortable-th" onclick="sortByColumn('rating')">Rating <span class="sort-arrow" id="sortArrow-rating"></span></th>
-          <th class="sortable-th" onclick="sortByColumn('fit')">Personal Fit <span class="sort-arrow" id="sortArrow-fit"></span></th>
+          <th class="sortable-th" onclick="sortByColumn('fit')">Profile Match <span class="sort-arrow" id="sortArrow-fit"></span></th>
         </tr>
       </thead>
       <tbody id="stockBody"></tbody>
@@ -3496,7 +3717,7 @@ function getFiltered() {
         return bf - af || Math.abs(b.day) - Math.abs(a.day);
       });
     } else {
-      // No quiz yet: show beginner-friendly starter ranking, but no % fit.
+      // No quiz yet: show beginner-friendly starter ranking, but no % match.
       const starter = ['VOO','VTI','SPY','QQQ','AAPL','MSFT','AMZN','NVDA','TSLA'];
       data.sort((a,b) => {
         const ai = starter.includes(a.ticker) ? starter.indexOf(a.ticker) : 999;
@@ -3806,7 +4027,7 @@ function getCashFloAnswer(question) {
 
   function topFitsAnswer() {
     if (!profile || !liveStocks || liveStocks.length === 0) {
-      return "To see stock fit percentages, first take the Investor Profile Quiz. Before the quiz, Cash Flo can show a beginner-friendly starter list, but it should not show % fit because it does not know your risk comfort or goals yet. Educational only — not financial advice.";
+      return "To see stock profile match percentages, first take the Investor Profile Quiz. Before the quiz, Cash Flo can show a beginner-friendly starter list, but it should not show % match because it does not know your risk comfort or goals yet. Educational only — not financial advice.";
     }
 
     const ranked = [...liveStocks]
@@ -3835,7 +4056,7 @@ function getCashFloAnswer(question) {
       const fit = getPersonalFit(stock);
       fitText = `\n\nPersonal fit from your quiz: ${fit.label}. ${profileLine()}`;
     } else {
-      fitText = "\n\nFor a personal fit score, take the Investor Profile Quiz first.";
+      fitText = "\n\nFor a profile match score, take the Investor Profile Quiz first.";
     }
 
     return `${name} (${symbol}) can be worth researching, but Cash Flo should not tell you it is a guaranteed “buy.”\n\nWhy people like it: ${upsideText}\n\nMain risks: ${riskText}\n\nWhat to check before buying: ${cautionText}${fitText}\n\nA smart next step is to compare ${symbol} to an ETF like VOO, VTI, or QQQ and decide if the extra single-stock risk makes sense. Educational only — not financial advice.`;
@@ -4020,7 +4241,7 @@ function updateProfileMiniCard() {
   if (!card) return;
   const p = getSavedProfile();
   if (!p) {
-    card.innerHTML = `<h3>No profile yet</h3><p>After the quiz, your profile is saved in this browser and Pro stock rows will show labels like “72% fit” and “High Risk for You.”</p>`;
+    card.innerHTML = `<h3>No profile yet</h3><p>After the quiz, your profile is saved in this browser and Pro stock rows will show labels like “72% match” and “High Risk for You.”</p>`;
     return;
   }
   card.innerHTML = `<h3>${p.type}</h3><p>Risk comfort: ${p.risk}% · Long-term mindset: ${p.longTerm}% · ETF readiness: ${p.etf}%</p><button class="btn-ghost" onclick="openInvestorQuiz()" style="margin-top:12px">Retake Quiz</button>`;
@@ -4118,20 +4339,20 @@ function getPersonalFit(stock) {
 
   score = Math.max(12, Math.min(98, Math.round(score)));
 
-  let label = `${score}% fit`;
+  let label = `${score}% match`;
   let cls = 'fit-mid';
 
   if (score >= 90) {
-    label = `${score}% fit · Strong Fit`;
+    label = `${score}% match · Strong Fit`;
     cls = 'fit-good';
   } else if (score >= 78) {
-    label = `${score}% fit · Likely Fit`;
+    label = `${score}% match · Likely Fit`;
     cls = 'fit-good';
   } else if (score < 45 || (riskNum > 75 && riskComfort < 50)) {
-    label = `${score}% fit · High Risk for You`;
+    label = `${score}% match · High Risk for You`;
     cls = 'fit-risk';
   } else if (score < 65) {
-    label = `${score}% fit · Use Caution`;
+    label = `${score}% match · Use Caution`;
     cls = 'fit-mid';
   }
 
@@ -4216,6 +4437,55 @@ function getProfileGuidance(profile) {
     riskNote: 'Use this as a learning tool. The goal is to understand the risk, not to rush into a decision.',
     compareNote: 'ETF comparison is a strong learning step because it shows how diversification changes risk.'
   };
+}
+
+
+function updateDashboardProfileCard() {
+  const card = document.getElementById('dashboardProfileCard');
+  if (!card) return;
+
+  const profile = getSavedProfile();
+  if (!profile) {
+    card.innerHTML = `
+      <h3>Start with your investor profile</h3>
+      <p>Cash Flo needs your quiz answers before it can show profile match percentages or personalized stock rankings.</p>
+      <div class="dashboard-metric-grid">
+        <div class="dashboard-metric"><span>Profile</span><strong>Not set</strong></div>
+        <div class="dashboard-metric"><span>Best first tool</span><strong>Quiz</strong></div>
+        <div class="dashboard-metric"><span>Stock matches</span><strong>Locked</strong></div>
+      </div>
+      <div class="dashboard-action-row">
+        <button class="btn-primary" onclick="openInvestorQuiz()">Take 10-question quiz →</button>
+        <button class="btn-ghost" onclick="jumpToSection('stocks')">View stocks</button>
+      </div>
+    `;
+    return;
+  }
+
+  const guide = typeof getProfileGuidance === 'function' ? getProfileGuidance(profile) : null;
+  const bestTool = guide ? guide.recommended : 'risk';
+  const toolLabel = {
+    risk: 'Risk Check',
+    compare: 'Compare to ETF',
+    beforeBuy: 'Before You Buy',
+    builder: 'Watchlist Builder',
+    mistake: 'Mistake Detector'
+  }[bestTool] || 'Pro Tools';
+
+  card.innerHTML = `
+    <h3>${profile.type}</h3>
+    <p>${guide ? guide.summary : 'Your quiz profile is saved. Use Cash Flo tools to research in a more organized way.'}</p>
+    <div class="dashboard-metric-grid">
+      <div class="dashboard-metric"><span>Risk comfort</span><strong>${profile.risk}%</strong></div>
+      <div class="dashboard-metric"><span>Best first tool</span><strong>${toolLabel}</strong></div>
+      <div class="dashboard-metric"><span>Profile matches</span><strong>Unlocked</strong></div>
+    </div>
+    <div class="dashboard-action-row">
+      <button class="btn-primary" onclick="jumpToSection('cashFloTools'); setTimeout(openRecommendedProTool, 150)">Open ${toolLabel} →</button>
+      <button class="btn-ghost" onclick="quickSort('personal', document.querySelectorAll('.sort-chip')[1]); jumpToSection('stocks')">Top Stocks For Me</button>
+      <button class="btn-ghost" onclick="openInvestorQuiz()">Retake Quiz</button>
+    </div>
+  `;
 }
 
 function updateProfileGuidance() {
@@ -4383,6 +4653,7 @@ function calculateInvestorProfile() {
   localStorage.setItem('cashFloInvestorProfile', JSON.stringify({ type, risk, longTerm, etf, hype, answers: investorQuizAnswers }));
   updateProfileMiniCard();
   updateProfileGuidance();
+  updateDashboardProfileCard();
   renderStocks();
 
   const result = document.getElementById('quizResult');
@@ -4426,6 +4697,7 @@ function resetInvestorQuiz() {
   localStorage.removeItem('cashFloInvestorProfile');
   updateProfileMiniCard();
   updateProfileGuidance();
+  updateDashboardProfileCard();
   renderStocks();
 
   const result = document.getElementById('quizResult');
@@ -4726,6 +4998,7 @@ document.getElementById('planChoiceModal')?.addEventListener('click', e => {
 showPlanChoiceOnLoad();
 updateProfileMiniCard();
 updateProfileGuidance();
+updateDashboardProfileCard();
 updateProToolAccess();
 initializeFallbackStocksNow();
 loadLiveStocks();
