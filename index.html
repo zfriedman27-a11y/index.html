@@ -546,7 +546,7 @@ button:hover,
   overflow: hidden;
 }
 
-#stockChartCanvas {
+# {
   width: 100%;
   height: 360px;
   display: block;
@@ -1238,9 +1238,123 @@ nav {
   }
 }
 
+
+/* TRADINGVIEW REAL CHARTS */
+.accuracy-note {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(247,195,95,0.07);
+  border: 1px solid rgba(247,195,95,0.20);
+  color: var(--muted2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.accuracy-note strong {
+  color: var(--amber);
+}
+
+.tradingview-wrap {
+  height: 560px !important;
+  min-height: 560px !important;
+  padding: 0 !important;
+  background: #0d1118 !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
+
+#tradingViewChartBox {
+  width: 100%;
+  height: 560px;
+}
+
+#tradingViewChartBox iframe {
+  width: 100% !important;
+  height: 560px !important;
+  border: 0 !important;
+  border-radius: 18px;
+}
+
+
+/* TRADINGVIEW CHART FIX */
+.accuracy-note {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(247,195,95,0.07);
+  border: 1px solid rgba(247,195,95,0.20);
+  color: var(--muted2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.accuracy-note strong { color: var(--amber); }
+
+.tradingview-wrap {
+  height: 560px !important;
+  min-height: 560px !important;
+  padding: 0 !important;
+  background: #0d1118 !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
+
+#tradingViewChartBox {
+  width: 100% !important;
+  height: 560px !important;
+}
+
+#tradingViewChartBox iframe {
+  width: 100% !important;
+  height: 560px !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+}
+
+
+/* TRADINGVIEW IFRAME CHART FIX */
+.tradingview-wrap {
+  height: 560px !important;
+  min-height: 560px !important;
+  padding: 0 !important;
+  background: #0d1118 !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
+
+#tradingViewIframe {
+  width: 100% !important;
+  height: 560px !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: #0d1118 !important;
+}
+
+.accuracy-note {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(247,195,95,0.07);
+  border: 1px solid rgba(247,195,95,0.20);
+  color: var(--muted2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.accuracy-note strong {
+  color: var(--amber);
+}
+
+.version-marker {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+}
+
 </style>
 </head>
 <body>
+<div class="version-marker">TRADINGVIEW_IFRAME_FIX_1779938882</div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="upgradeModal">
@@ -1350,15 +1464,15 @@ nav {
     </div>
 
     <div class="chart-wrap tradingview-wrap">
-      <div id="tradingViewChartBox"></div>
-      <div class="chart-loading" id="chartLoading">Loading real chart...</div>
+      <iframe id="tradingViewIframe" title="TradingView real stock chart" loading="lazy"></iframe>
+      <div class="chart-loading" id="chartLoading">Loading TradingView chart...</div>
     </div>
 
     <div class="accuracy-note">
-      <strong>Real chart mode:</strong> Charts are loaded from TradingView instead of a fake demo generator. If the chart does not load, Cash Flo will show an error instead of making up prices.
+      <strong>Real chart mode:</strong> Charts are loaded directly from TradingView. Cash Flo does not use Finnhub candles for charts.
     </div>
 
-    <p class="modal-trial-note" id="chartNote">Real chart data is provided by TradingView. Cash Flo does not calculate or invent chart percentages.</p>
+    <p class="modal-trial-note" id="chartNote">Chart data is displayed by TradingView.</p>
   </div>
 </div>
 
@@ -2522,53 +2636,39 @@ document.getElementById('advisorInput').addEventListener('keydown', e => { if(e.
 
 
 
+
+
+
 // STOCK HISTORY CHARTS - PRO ONLY
-// This uses TradingView's real chart widget instead of fake/TradingView chart math.
+// FINAL FIX: charts use a direct TradingView iframe, not Finnhub candle/canvas code.
 let currentChartSymbol = null;
 let currentChartRange = '1D';
 
 const tradingViewSymbolMap = {
-  AAPL: 'NASDAQ:AAPL',
-  MSFT: 'NASDAQ:MSFT',
-  NVDA: 'NASDAQ:NVDA',
-  AMZN: 'NASDAQ:AMZN',
-  GOOGL: 'NASDAQ:GOOGL',
-  GOOG: 'NASDAQ:GOOG',
-  META: 'NASDAQ:META',
-  TSLA: 'NASDAQ:TSLA',
-  AMD: 'NASDAQ:AMD',
-  AVGO: 'NASDAQ:AVGO',
-  NFLX: 'NASDAQ:NFLX',
-  ORCL: 'NYSE:ORCL',
-  ADBE: 'NASDAQ:ADBE',
-  CRM: 'NYSE:CRM',
-  INTC: 'NASDAQ:INTC',
-  QCOM: 'NASDAQ:QCOM',
-  CSCO: 'NASDAQ:CSCO',
-  IBM: 'NYSE:IBM',
-  JPM: 'NYSE:JPM',
-  BAC: 'NYSE:BAC',
-  WMT: 'NYSE:WMT',
-  COST: 'NASDAQ:COST',
-  HD: 'NYSE:HD',
-  DIS: 'NYSE:DIS',
-  XOM: 'NYSE:XOM',
-  CVX: 'NYSE:CVX',
-  BA: 'NYSE:BA',
-  CAT: 'NYSE:CAT',
-  VOO: 'AMEX:VOO',
-  SPY: 'AMEX:SPY',
-  QQQ: 'NASDAQ:QQQ',
-  VTI: 'AMEX:VTI',
-  DIA: 'AMEX:DIA',
-  IWM: 'AMEX:IWM',
-  SCHD: 'AMEX:SCHD',
-  VYM: 'AMEX:VYM',
-  XLK: 'AMEX:XLK',
-  XLF: 'AMEX:XLF',
-  XLE: 'AMEX:XLE',
-  XLV: 'AMEX:XLV',
-  ARKK: 'AMEX:ARKK'
+  AAPL:'NASDAQ:AAPL', MSFT:'NASDAQ:MSFT', NVDA:'NASDAQ:NVDA', AMZN:'NASDAQ:AMZN',
+  GOOGL:'NASDAQ:GOOGL', GOOG:'NASDAQ:GOOG', META:'NASDAQ:META', TSLA:'NASDAQ:TSLA',
+  AMD:'NASDAQ:AMD', AVGO:'NASDAQ:AVGO', NFLX:'NASDAQ:NFLX', ORCL:'NYSE:ORCL',
+  ADBE:'NASDAQ:ADBE', CRM:'NYSE:CRM', INTC:'NASDAQ:INTC', QCOM:'NASDAQ:QCOM',
+  CSCO:'NASDAQ:CSCO', TXN:'NASDAQ:TXN', IBM:'NYSE:IBM', NOW:'NYSE:NOW',
+  SHOP:'NYSE:SHOP', UBER:'NYSE:UBER', PYPL:'NASDAQ:PYPL', SQ:'NYSE:SQ',
+  SNOW:'NYSE:SNOW', PLTR:'NASDAQ:PLTR', MU:'NASDAQ:MU', AMAT:'NASDAQ:AMAT',
+  LRCX:'NASDAQ:LRCX', PANW:'NASDAQ:PANW', JPM:'NYSE:JPM', BAC:'NYSE:BAC',
+  WFC:'NYSE:WFC', GS:'NYSE:GS', MS:'NYSE:MS', V:'NYSE:V', MA:'NYSE:MA',
+  AXP:'NYSE:AXP', C:'NYSE:C', BLK:'NYSE:BLK', SCHW:'NYSE:SCHW',
+  COF:'NYSE:COF', USB:'NYSE:USB', WMT:'NYSE:WMT', COST:'NASDAQ:COST',
+  HD:'NYSE:HD', LOW:'NYSE:LOW', TGT:'NYSE:TGT', NKE:'NYSE:NKE',
+  SBUX:'NASDAQ:SBUX', MCD:'NYSE:MCD', DIS:'NYSE:DIS', CMG:'NYSE:CMG',
+  PEP:'NASDAQ:PEP', KO:'NYSE:KO', PG:'NYSE:PG', EL:'NYSE:EL',
+  LULU:'NASDAQ:LULU', ABNB:'NASDAQ:ABNB', JNJ:'NYSE:JNJ', LLY:'NYSE:LLY',
+  UNH:'NYSE:UNH', MRK:'NYSE:MRK', PFE:'NYSE:PFE', ABBV:'NYSE:ABBV',
+  TMO:'NYSE:TMO', ABT:'NYSE:ABT', ISRG:'NASDAQ:ISRG', AMGN:'NASDAQ:AMGN',
+  GILD:'NASDAQ:GILD', CVS:'NYSE:CVS', XOM:'NYSE:XOM', CVX:'NYSE:CVX',
+  COP:'NYSE:COP', SLB:'NYSE:SLB', EOG:'NYSE:EOG', OXY:'NYSE:OXY',
+  BA:'NYSE:BA', CAT:'NYSE:CAT', GE:'NYSE:GE', HON:'NASDAQ:HON',
+  LMT:'NYSE:LMT', RTX:'NYSE:RTX', DE:'NYSE:DE', UPS:'NYSE:UPS',
+  VOO:'AMEX:VOO', SPY:'AMEX:SPY', QQQ:'NASDAQ:QQQ', VTI:'AMEX:VTI',
+  DIA:'AMEX:DIA', IWM:'AMEX:IWM', SCHD:'AMEX:SCHD', VYM:'AMEX:VYM',
+  XLK:'AMEX:XLK', XLF:'AMEX:XLF', XLE:'AMEX:XLE', XLV:'AMEX:XLV', ARKK:'AMEX:ARKK'
 };
 
 function openStockChart(symbol) {
@@ -2588,11 +2688,11 @@ function openStockChart(symbol) {
   const title = document.getElementById('chartTitle');
   const subtitle = document.getElementById('chartSubtitle');
 
-  title.textContent = `${symbol} Stock History`;
-  subtitle.textContent = `${stockNames[symbol] || symbol} · real TradingView chart`;
+  if (title) title.textContent = `${symbol} Stock History`;
+  if (subtitle) subtitle.textContent = `${stockNames[symbol] || symbol} · TradingView chart`;
 
   modal.classList.add('show');
-  loadTradingViewChart(symbol, '1D');
+  loadTradingViewIframe(symbol, '1D');
 }
 
 function closeChartModal() {
@@ -2601,13 +2701,18 @@ function closeChartModal() {
 
 function changeChartRange(range, btn) {
   currentChartRange = range;
+
   document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
   const subtitle = document.getElementById('chartSubtitle');
-  if (subtitle) subtitle.textContent = `${stockNames[currentChartSymbol] || currentChartSymbol} · ${range} real TradingView chart`;
+  if (subtitle) subtitle.textContent = `${stockNames[currentChartSymbol] || currentChartSymbol} · ${range} TradingView chart`;
 
-  loadTradingViewChart(currentChartSymbol, range);
+  loadTradingViewIframe(currentChartSymbol, range);
+}
+
+function getTradingViewSymbol(symbol) {
+  return tradingViewSymbolMap[symbol] || symbol;
 }
 
 function getTradingViewInterval(range) {
@@ -2632,65 +2737,47 @@ function getTradingViewRange(range) {
   return '12M';
 }
 
-function getTradingViewSymbol(symbol) {
-  return tradingViewSymbolMap[symbol] || symbol;
-}
-
-function loadTradingViewChart(symbol, range) {
-  const box = document.getElementById('tradingViewChartBox');
+function loadTradingViewIframe(symbol, range) {
+  const iframe = document.getElementById('tradingViewIframe');
   const loading = document.getElementById('chartLoading');
   const note = document.getElementById('chartNote');
-
-  if (!box) return;
+  if (!iframe) return;
 
   if (loading) loading.style.display = 'flex';
-  if (note) {
-    note.textContent = `Loading ${symbol} ${range} from TradingView. Cash Flo is not generating fake chart data.`;
-  }
+  if (note) note.textContent = `Loading ${symbol} ${range} from TradingView...`;
 
-  box.innerHTML = "";
+  const tvSymbol = encodeURIComponent(getTradingViewSymbol(symbol));
+  const interval = encodeURIComponent(getTradingViewInterval(range));
+  const tvRange = encodeURIComponent(getTradingViewRange(range));
 
-  const containerId = "tv_chart_" + Date.now();
-  const container = document.createElement("div");
-  container.id = containerId;
-  container.style.width = "100%";
-  container.style.height = "520px";
-  box.appendChild(container);
+  iframe.src =
+    `https://s.tradingview.com/widgetembed/?symbol=${tvSymbol}` +
+    `&interval=${interval}` +
+    `&range=${tvRange}` +
+    `&hidesidetoolbar=1` +
+    `&symboledit=0` +
+    `&saveimage=0` +
+    `&toolbarbg=0d1118` +
+    `&studies=[]` +
+    `&theme=dark` +
+    `&style=2` +
+    `&timezone=America%2FNew_York` +
+    `&withdateranges=1` +
+    `&hideideas=1` +
+    `&studies_overrides={}` +
+    `&overrides={}` +
+    `&enabled_features=[]` +
+    `&disabled_features=[]` +
+    `&locale=en`;
 
-  const tvSymbol = getTradingViewSymbol(symbol);
-  const interval = getTradingViewInterval(range);
-  const tvRange = getTradingViewRange(range);
-
-  const script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
-  script.async = true;
-  script.innerHTML = JSON.stringify({
-    autosize: true,
-    symbol: tvSymbol,
-    interval: interval,
-    range: tvRange,
-    timezone: "Etc/UTC",
-    theme: "dark",
-    style: "2",
-    locale: "en",
-    enable_publishing: false,
-    allow_symbol_change: false,
-    hide_top_toolbar: false,
-    hide_legend: false,
-    save_image: false,
-    calendar: false,
-    support_host: "https://www.tradingview.com"
-  });
-
-  container.appendChild(script);
+  iframe.onload = () => {
+    if (loading) loading.style.display = 'none';
+    if (note) note.textContent = `${symbol} ${range} is displayed through TradingView. Cash Flo is not using Finnhub candles for charts.`;
+  };
 
   setTimeout(() => {
     if (loading) loading.style.display = 'none';
-    if (note) {
-      note.textContent = `${symbol} ${range} is displayed through TradingView. Percent changes shown inside the chart come from TradingView, not Cash Flo.`;
-    }
-  }, 1200);
+  }, 2500);
 }
 
 document.getElementById('chartModal')?.addEventListener('click', e => {
