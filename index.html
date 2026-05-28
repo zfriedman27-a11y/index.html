@@ -2394,6 +2394,13 @@ body {
   .value-strip-inner{grid-template-columns:1fr}
 }
 
+
+/* QUIZ RESULT FOCUS AFTER SUBMIT */
+.quiz-result-card.result-focus {
+  border-color: rgba(82,214,255,0.38) !important;
+  box-shadow: 0 0 0 1px rgba(82,214,255,0.18), 0 22px 70px rgba(82,214,255,0.10);
+}
+
 </style>
 </head>
 <body>
@@ -2830,7 +2837,7 @@ body {
 <!-- INVESTOR PROFILE QUIZ -->
 <section class="quiz-section quiz-page" id="investorProfileQuiz">
   <div class="quiz-inner">
-    <div class="quiz-close-row"><button class="btn-ghost" onclick="closeInvestorQuiz()">← Back to main page</button><button class="btn-primary" onclick="calculateInvestorProfile()">Get My Profile →</button></div>
+    <div class="quiz-close-row"><button class="btn-ghost" onclick="closeInvestorQuiz()">← Back to main page</button><button class="btn-primary" onclick="calculateInvestorProfile()">Submit →</button></div>
     <div class="quiz-top">
       <div>
         <div class="section-tag">Investor Profile Quiz</div>
@@ -2945,12 +2952,12 @@ body {
         </div>
 
         <div class="quiz-actions">
-          <button class="btn-primary" onclick="calculateInvestorProfile()">Get My Profile →</button>
+          <button class="btn-primary" onclick="calculateInvestorProfile()">Submit →</button>
           <button class="btn-ghost" onclick="resetInvestorQuiz()">Reset</button>
         </div>
       </div>
 
-      <div class="quiz-result-card" id="quizResult">
+      <div class="quiz-result-card" id="quizResult" tabindex="-1">
         <div class="quiz-type-pill">🧭 Waiting for answers</div>
         <div class="quiz-result-title">Your investor type will show here.</div>
         <p style="color:var(--muted2);font-size:14px">Answer the 10 questions and Cash Flo will give you a beginner profile, risk level, goals, and a simple next-step plan.</p>
@@ -4872,6 +4879,19 @@ function openRecommendedProTool() {
   if (tab) showToolTab(guide.recommended, tab);
 }
 
+
+function scrollToQuizResult() {
+  const result = document.getElementById('quizResult');
+  if (!result) return;
+
+  setTimeout(() => {
+    result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    result.classList.add('result-focus');
+    try { result.focus({ preventScroll: true }); } catch(e) {}
+    setTimeout(() => result.classList.remove('result-focus'), 1600);
+  }, 80);
+}
+
 function calculateInvestorProfile() {
   const needed = ['goal','drop','time','knowledge','behavior','experience','check','singleStock','loss','priority'];
   const missing = needed.filter(q => !investorQuizAnswers[q]);
@@ -4883,6 +4903,7 @@ function calculateInvestorProfile() {
       <div class="quiz-result-title">Answer all 10 questions first.</div>
       <p style="color:var(--muted2);font-size:14px">You still need to answer ${missing.length} question${missing.length === 1 ? '' : 's'} before Cash Flo can build your profile.</p>
     `;
+    scrollToQuizResult();
     return;
   }
 
@@ -5031,6 +5052,7 @@ function calculateInvestorProfile() {
 
     <p class="quiz-saved-note">Saved in this browser. Educational only — this is not financial advice.</p>
   `;
+  scrollToQuizResult();
 }
 
 function resetInvestorQuiz() {
