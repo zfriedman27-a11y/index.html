@@ -789,7 +789,7 @@ footer p{font-size:12px;color:var(--muted)}
     <button class="sort-chip" onclick="quickSort('etf', this)">ETFs</button>
   </div>
 
-  <div class="stock-note">TSLA, AMZN, and NVDA always stay at the top for free users. If Finnhub fails or hits a limit, backup demo prices show so the site does not go blank.</div>
+  <div class="stock-note">TSLA, AMZN, and NVDA always stay at the top for free users. If live data is slow or Finnhub hits a limit, backup prices show first so the site does not go blank.</div>
 
   <div class="stock-table-wrap">
     <table class="stock-table">
@@ -1167,41 +1167,55 @@ function fallbackQuote(symbol) {
   };
 }
 
+
+function initializeFallbackStocksNow() {
+  liveStocks = stockSymbols.map(sym => fallbackQuote(sym));
+  lastUpdated = new Date();
+  renderStocks();
+  renderTicker();
+  const status = document.getElementById('liveStatus');
+  if (status) {
+    status.textContent = 'Showing backup prices while live prices load...';
+  }
+}
+
 async function loadLiveStocks(manual=false) {
   const status = document.getElementById('liveStatus');
-  if (status) status.textContent = manual ? 'Refreshing live prices...' : 'Loading live prices...';
 
-  const results = [];
-  const errors = [];
-
-  for (const sym of stockSymbols) {
-    try {
-      results.push(await fetchQuote(sym));
-    } catch (err) {
-      console.warn(err);
-      errors.push(sym);
-      results.push(fallbackQuote(sym));
-    }
+  if (!liveStocks || liveStocks.length === 0) {
+    initializeFallbackStocksNow();
   }
 
-  liveStocks = results;
+  if (status) {
+    status.textContent = manual ? 'Refreshing live prices...' : 'Loading live prices... backup prices are showing until Finnhub responds.';
+  }
+
+  const quotePromises = stockSymbols.map(async (sym) => {
+    try {
+      return { ok: true, symbol: sym, data: await fetchQuote(sym) };
+    } catch (err) {
+      console.warn(err);
+      return { ok: false, symbol: sym, data: fallbackQuote(sym) };
+    }
+  });
+
+  const settled = await Promise.all(quotePromises);
+  liveStocks = settled.map(item => item.data);
   lastUpdated = new Date();
   renderStocks();
   renderTicker();
 
-  const demoMode = !FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE";
+  const failed = settled.filter(item => !item.ok).map(item => item.symbol);
 
   if (status) {
     if (currentSearchSymbol) {
       status.textContent = `Showing only ${currentSearchSymbol}. Price updated ${lastUpdated.toLocaleTimeString()}. Click Show All to return to the full watchlist.`;
-    } else if (demoMode) {
-      status.textContent = 'Demo fallback prices showing. Add your Finnhub API key to make the prices truly live and update every 60 seconds.';
-    } else if (results.length === 0) {
+    } else if (failed.length === stockSymbols.length) {
       status.textContent = 'Finnhub did not return live prices, so backup demo prices are showing. Check your API key, internet connection, or API limit.';
-    } else if (errors.length > 0) {
-      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Backup demo prices are showing for some tickers: ${errors.join(', ')}. Auto-refresh: every 60 seconds. Large watchlists may depend on Finnhub rate limits.`;
+    } else if (failed.length > 0) {
+      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Backup demo prices are showing for some tickers: ${failed.slice(0,8).join(', ')}.`;
     } else {
-      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Auto-refresh: every 60 seconds. Large watchlists may depend on Finnhub rate limits.`;
+      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Auto-refresh: every 60 seconds.`;
     }
   }
 }
@@ -1817,6 +1831,7 @@ if (new URLSearchParams(window.location.search).get('pro') === 'true') {
 
 
 // INIT
+initializeFallbackStocksNow();
 loadLiveStocks();
 setInterval(loadLiveStocks, 60000);
 </script>
