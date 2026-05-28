@@ -2039,6 +2039,14 @@ nav {
   }
 }
 
+
+/* TABLE QUIZ BUTTON */
+.stock-table .stock-search-btn.secondary {
+  padding: 6px 10px;
+  font-size: 11px;
+  border-radius: 8px;
+}
+
 </style>
 </head>
 <body>
@@ -2913,7 +2921,7 @@ nav {
   </div>
 
   <div class="watchlist-active-banner" id="watchlistBanner"><span>Showing your saved watchlist.</span><button class="unlock-btn" onclick="showAllStocks()">Show All Stocks</button></div>
-  <div class="stock-note" id="personalSortNote">Use <strong>Top Stocks For Me</strong> after the quiz to rank stocks by your risk comfort, time horizon, ETF readiness, and investing style. Best matches can now score in the 90s. Free users can favorite stocks, while Pro users see the full personalized fit list.</div>
+  <div class="stock-note" id="personalSortNote">Use <strong>Top Stocks For Me</strong> after the quiz to rank stocks by your risk comfort, time horizon, ETF readiness, and investing style. Fit percentages only appear after the quiz is completed. Free users can favorite stocks, while Pro users see the full personalized fit list.</div>
   <div class="stock-note">Free users see TSLA, AMZN, and NVDA with one clean unlock message. Pro users see all stocks normally with no blur or shaded locked rows.</div>
 
   <div class="stock-table-wrap">
@@ -3478,18 +3486,17 @@ function getFiltered() {
   if (currentSector !== 'all') {
     data = data.filter(s => s.sector === currentSector);
   }
-
-  
   if (currentSort === 'personal') {
     const profile = getSavedProfile();
-    data.sort((a,b) => {
-      const af = getPersonalFit(a).score ?? -1;
-      const bf = getPersonalFit(b).score ?? -1;
-      return bf - af || Math.abs(b.day) - Math.abs(a.day);
-    });
 
-    // If no quiz profile exists yet, keep the list beginner-friendly instead of random.
-    if (!profile) {
+    if (profile) {
+      data.sort((a,b) => {
+        const af = getPersonalFit(a).score ?? -1;
+        const bf = getPersonalFit(b).score ?? -1;
+        return bf - af || Math.abs(b.day) - Math.abs(a.day);
+      });
+    } else {
+      // No quiz yet: show beginner-friendly starter ranking, but no % fit.
       const starter = ['VOO','VTI','SPY','QQQ','AAPL','MSFT','AMZN','NVDA','TSLA'];
       data.sort((a,b) => {
         const ai = starter.includes(a.ticker) ? starter.indexOf(a.ticker) : 999;
@@ -3586,8 +3593,11 @@ function renderStocks() {
     const favoriteClass = isFavorited(s.ticker) ? 'active' : '';
     const favoriteIcon = isFavorited(s.ticker) ? '★' : '☆';
     const fit = getPersonalFit(s);
+    const hasProfile = !!getSavedProfile();
     const fitHTML = isPro
-      ? `<span class="fit-badge ${fit.cls}">${fit.label}</span>`
+      ? (hasProfile
+          ? `<span class="fit-badge ${fit.cls}">${fit.label}</span>`
+          : `<button class="stock-search-btn secondary" onclick="event.stopPropagation(); openInvestorQuiz()">Take Quiz</button>`)
       : `<span class="fit-locked">Pro</span>`;
 
     htmlRows += `<tr class="stock-row${proClass}" onclick="openStockChart('${s.ticker}')">
@@ -3784,33 +3794,137 @@ async function sendQ() {
 }
 
 function getCashFloAnswer(question) {
-  const q = question.toLowerCase();
+  const q = question.toLowerCase().trim();
+  const profile = typeof getSavedProfile === 'function' ? getSavedProfile() : null;
 
-  if (q.includes('nvda') || q.includes('nvidia')) {
-    return "NVDA is one of the biggest companies in AI chips, which makes it exciting, but also risky because expectations are already very high. The upside is AI demand, data centers, and strong growth. The downside is that if growth slows or the stock gets too expensive, it can drop fast. For beginners, it may be better to compare NVDA with safer broad ETFs before putting too much into one stock. Educational only — not financial advice.";
+  function profileLine() {
+    if (!profile) {
+      return "Take the Investor Profile Quiz to make this more specific to your risk level and goals.";
+    }
+    return `Based on your quiz profile (${profile.type}), your risk comfort is ${profile.risk}%, your long-term mindset is ${profile.longTerm}%, and your ETF readiness is ${profile.etf}%.`;
   }
 
-  if (q.includes('apple') || q.includes('aapl')) {
-    return "Apple is a strong company with a huge brand, loyal customers, and steady cash flow. The risk is that Apple is already massive, so future growth may be slower than smaller tech companies. It can be a solid long-term company to study, but beginners should still avoid putting all their money into one stock. Educational only — not financial advice.";
+  function topFitsAnswer() {
+    if (!profile || !liveStocks || liveStocks.length === 0) {
+      return "To see stock fit percentages, first take the Investor Profile Quiz. Before the quiz, Cash Flo can show a beginner-friendly starter list, but it should not show % fit because it does not know your risk comfort or goals yet. Educational only — not financial advice.";
+    }
+
+    const ranked = [...liveStocks]
+      .map(s => ({ ...s, fit: getPersonalFit(s) }))
+      .filter(s => s.fit && typeof s.fit.score === 'number')
+      .sort((a,b) => b.fit.score - a.fit.score)
+      .slice(0, 5);
+
+    if (!ranked.length) {
+      return "I could not rank your matches yet. Take the quiz, then refresh the stock list and try the “Top Stocks For Me” filter. Educational only — not financial advice.";
+    }
+
+    const list = ranked.map((s, i) => `${i + 1}. ${s.ticker} — ${s.fit.label}`).join("\n");
+
+    return `${profileLine()}\n\nYour strongest matches right now are:\n${list}\n\nUse these as stocks or ETFs to research, not automatic buys. Click “Top Stocks For Me” in the stock tracker to see the full personalized ranking. Educational only — not financial advice.`;
   }
 
-  if (q.includes('tesla') || q.includes('tsla')) {
-    return "Tesla is a high-growth company, but it is also very volatile. People like it because of electric vehicles, energy, AI, and Elon Musk’s vision. The risk is competition, price cuts, and the stock often moving more on hype than fundamentals. It may fit risk-tolerant investors, but it is not a safe beginner-only stock. Educational only — not financial advice.";
+  function millionFormulaAnswer() {
+    return "The basic million-dollar investing formula is compound interest: Future Value = monthly investment × [((1 + monthly return)^(months) - 1) / monthly return].\n\nSimple examples assuming about a 7.5% yearly return:\n• 45 years: about $300/month can grow to around $1 million+\n• 40 years: about $450/month\n• 35 years: about $650/month\n• 30 years: about $950/month\n• 25 years: about $1,450/month\n\nThe more years you have, the less you need per month because compounding has more time to work. These are estimates only, not guaranteed returns.";
+  }
+
+  function stockAnswer(symbol, name, riskText, upsideText, cautionText) {
+    let fitText = "";
+    const stock = liveStocks?.find(s => s.ticker === symbol) || { ticker: symbol, sector: symbolSector?.[symbol] || 'other', day: 0 };
+    if (profile && typeof getPersonalFit === 'function') {
+      const fit = getPersonalFit(stock);
+      fitText = `\n\nPersonal fit from your quiz: ${fit.label}. ${profileLine()}`;
+    } else {
+      fitText = "\n\nFor a personal fit score, take the Investor Profile Quiz first.";
+    }
+
+    return `${name} (${symbol}) can be worth researching, but Cash Flo should not tell you it is a guaranteed “buy.”\n\nWhy people like it: ${upsideText}\n\nMain risks: ${riskText}\n\nWhat to check before buying: ${cautionText}${fitText}\n\nA smart next step is to compare ${symbol} to an ETF like VOO, VTI, or QQQ and decide if the extra single-stock risk makes sense. Educational only — not financial advice.`;
+  }
+
+  if (q.includes('hello') || q === 'hi' || q === 'hey') {
+    return "Hey — I’m Cash Flo AI. Ask me about a stock, ETF, investing term, risk, or your quiz-based fit. Try: “best stock fits for me,” “NVDA good buy?”, or “how much per month to reach $1 million?”";
+  }
+
+  if (
+    q.includes('fit for me') ||
+    q.includes('fits for me') ||
+    q.includes('best stock') ||
+    q.includes('top stock') ||
+    q.includes('for me specifically') ||
+    q.includes('based on my quiz')
+  ) {
+    return topFitsAnswer();
+  }
+
+  if (
+    q.includes('million') ||
+    q.includes('1 million') ||
+    q.includes('$1m') ||
+    q.includes('milliion') ||
+    q.includes('formula') ||
+    q.includes('how much a month') ||
+    q.includes('per month')
+  ) {
+    return millionFormulaAnswer();
+  }
+
+  if (q.includes('nvda') || q.includes('nvidia') || q.includes('nvida')) {
+    return stockAnswer(
+      'NVDA',
+      'Nvidia',
+      'It can be very volatile because expectations for AI growth are already high. If growth slows, competition rises, or the stock gets too expensive, it can drop fast.',
+      'Nvidia is a major AI chip and data center company, and many investors like it because AI demand has been strong.',
+      'Check valuation, earnings growth, AI demand, competition, and whether you are putting too much into one high-growth company.'
+    );
+  }
+
+  if (q.includes('tsla') || q.includes('tesla')) {
+    return stockAnswer(
+      'TSLA',
+      'Tesla',
+      'Tesla can move heavily on hype, competition, price cuts, delivery numbers, and Elon Musk-related news.',
+      'People like Tesla for electric vehicles, energy, software, AI, and long-term growth potential.',
+      'Check whether the business growth supports the stock price, and compare it to a broader ETF before making it a big position.'
+    );
+  }
+
+  if (q.includes('aapl') || q.includes('apple')) {
+    return stockAnswer(
+      'AAPL',
+      'Apple',
+      'Apple is a huge company, so growth may be slower than smaller tech names. It can still drop if iPhone demand or services growth disappoints.',
+      'Apple has a powerful brand, loyal customers, strong cash flow, and services revenue.',
+      'Check growth, valuation, product demand, and whether you already have too much big-tech exposure.'
+    );
+  }
+
+  if (q.includes('amzn') || q.includes('amazon')) {
+    return stockAnswer(
+      'AMZN',
+      'Amazon',
+      'Amazon has risks from valuation, retail margins, cloud competition, and overall consumer spending.',
+      'People like Amazon because of AWS cloud, e-commerce, advertising, and long-term growth potential.',
+      'Check AWS growth, profit margins, competition, and compare it to QQQ or VOO.'
+    );
+  }
+
+  if (q.includes('voo') || q.includes('spy') || q.includes('vti') || q.includes('qqq') || q.includes('etf')) {
+    return "An ETF is a basket of investments you can buy in one ticker. Broad ETFs like VOO, SPY, and VTI spread your money across many companies, which usually lowers single-company risk. QQQ is more tech/growth focused, so it can have more upside and more volatility than a broad market ETF.\n\nFor beginners, ETFs are often easier to understand than trying to pick one perfect stock. Educational only — not financial advice.";
   }
 
   if (q.includes('p/e') || q.includes('pe ratio')) {
-    return "A P/E ratio means price-to-earnings ratio. It tells you how expensive a stock is compared to how much profit the company makes. A high P/E can mean investors expect big growth, but it can also mean the stock is overpriced. A low P/E can look cheap, but it may also mean the company has problems.";
+    return "A P/E ratio means price-to-earnings ratio. It compares a company’s stock price to its profits. A high P/E can mean investors expect strong growth, but it can also mean the stock is expensive. A low P/E can look cheap, but it can also mean investors are worried about the company.";
   }
 
-  if (q.includes('etf') || q.includes('voo') || q.includes('spy') || q.includes('vti')) {
-    return "An ETF is a basket of stocks you can buy all at once. For beginners, broad market ETFs like VOO, SPY, or VTI are popular because they spread your money across many companies instead of betting on one. This usually lowers risk compared to buying only individual stocks. Educational only — not financial advice.";
+  if (q.includes('risk') || q.includes('risky')) {
+    return `${profileLine()}\n\nA simple way to think about risk is: how much could this drop, how concentrated is it, and do you understand why you own it? Single stocks are usually riskier than broad ETFs because one company’s bad news can hurt more. Use Risk Check and Compare to ETF before treating any stock as a serious idea. Educational only — not financial advice.`;
   }
 
-  if (q.includes('start') || q.includes('$100') || q.includes('100')) {
-    return "If you are starting with $100, the smartest goal is learning and building consistency. A beginner could research broad ETFs, use fractional shares, and avoid risky hype stocks at first. Even small amounts can grow over time if you invest consistently and understand the risks. Educational only — not financial advice.";
+  if (q.includes('start') || q.includes('$100') || q.includes('100 dollars')) {
+    return "If you are starting with a small amount like $100, the best first goal is learning and building consistency. Research broad ETFs, understand risk, and avoid putting everything into a hype stock. Fractional shares can help beginners start small, but the main focus should be education first. Educational only — not financial advice.";
   }
 
-  return "Good question. A smart investor should look at the company, risk, long-term potential, price, and competition before buying anything. Beginners usually do better by learning first, avoiding hype, and not putting all their money into one stock. Educational only — not financial advice.";
+  return "I can help with that, but ask it with a little more detail so I can give a specific answer. Try asking about a ticker like NVDA, TSLA, AAPL, VOO, or ask “best fits for me based on my quiz,” “compare NVDA to QQQ,” or “how much per month to reach $1 million?” Educational only — not financial advice.";
 }
 
 function addMsg(text, role) {
