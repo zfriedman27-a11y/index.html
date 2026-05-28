@@ -785,6 +785,19 @@ button:hover,
   .app-menu{right:16px;top:68px}
 }
 
+
+.accuracy-note {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(247,195,95,0.07);
+  border: 1px solid rgba(247,195,95,0.20);
+  color: var(--muted2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.accuracy-note strong { color: var(--amber); }
+
 /* MODAL */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center}
 .modal-overlay.show{display:flex}
@@ -873,7 +886,9 @@ footer p{font-size:12px;color:var(--muted)}
       <div class="chart-loading" id="chartLoading">Loading chart...</div>
     </div>
 
-    <p class="modal-trial-note" id="chartNote">Historical data loads from Finnhub for Pro users. If Finnhub fails, a demo chart is shown.</p>
+    <div class="accuracy-note"><strong>Accuracy mode:</strong> Charts now use only real Finnhub candle data. If real data is not available, Cash Flo shows an error instead of making up a chart.</div>
+
+    <p class="modal-trial-note" id="chartNote">Historical chart data is shown only when Finnhub returns real candle data. No fake demo chart is shown.</p>
   </div>
 </div>
 
@@ -1200,7 +1215,7 @@ footer p{font-size:12px;color:var(--muted)}
     <button class="sort-chip" onclick="quickSort('etf', this)">ETFs</button>
   </div>
 
-  <div class="stock-note">TSLA, AMZN, and NVDA always show first. Filters stay simple. Backup prices appear first, then live Finnhub prices update if the API responds.</div>
+  <div class="stock-note">Free users always see TSLA, AMZN, and NVDA first. Pro users see the true order based on whatever filter or sort they choose.</div>
 
   <div class="stock-table-wrap">
     <table class="stock-table">
@@ -1744,6 +1759,12 @@ function getRating(s) {
 }
 
 function renderStocks() {
+  // Emergency guard: if live data has not loaded yet, create backup demo prices immediately.
+  if (!liveStocks || liveStocks.length === 0) {
+    liveStocks = stockSymbols.map(sym => fallbackQuote(sym));
+    lastUpdated = new Date();
+  }
+
   const filtered = getFiltered();
   const body = document.getElementById('stockBody');
   const freeTop = ['TSLA','AMZN','NVDA'];
@@ -1751,10 +1772,20 @@ function renderStocks() {
 
   if (currentSearchSymbol) {
     displayList = filtered;
+  } else if (isPro) {
+    // PRO USERS: use the real selected filter/sort order.
+    displayList = filtered;
   } else {
+    // FREE USERS: always show TSLA, AMZN, and NVDA first.
     const topThree = freeTop.map(t => liveStocks.find(s => s.ticker === t)).filter(Boolean);
     const rest = filtered.filter(s => !freeTop.includes(s.ticker));
     displayList = [...topThree, ...rest];
+  }
+
+  // Free emergency guard: if something filtered everything out, show the free top 3 anyway.
+  if (!isPro && !currentSearchSymbol && displayList.length === 0) {
+    displayList = freeTop.map(t => fallbackQuote(t));
+    liveStocks = [...displayList, ...stockSymbols.filter(s => !freeTop.includes(s)).map(sym => fallbackQuote(sym))];
   }
 
   let html = '';
@@ -1789,14 +1820,14 @@ function renderStocks() {
   if (!currentSearchSymbol && !isPro && displayList.length > 3) {
     html += `<tr><td colspan="6" class="lock-overlay-cell">
       <div class="lock-banner">
-        <p>🔒 <strong>${displayList.length - 3} more live stocks</strong> are locked. Free users see TSLA, AMZN, and NVDA. Pro unlocks stock charts and the full watchlist.</p>
+        <p>🔒 <strong>${displayList.length - 3} more live stocks</strong> are locked. Free users see TSLA, AMZN, and NVDA. Pro uses the true filter order and unlocks stock charts.</p>
         <button class="unlock-btn" onclick="openModal()">Unlock Pro →</button>
       </div>
     </td></tr>`;
   }
 
   if (displayList.length === 0) {
-    html = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted)">No matching stock found. Try a ticker like AAPL, NVDA, TSLA, VOO, or SPY.</td></tr>`;
+    html = `<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--muted)">No stocks match this filter. Try All Sectors or Show All.</td></tr>`;
   }
 
   body.innerHTML = html;
@@ -2095,8 +2126,10 @@ function getRangeConfig(range) {
 async function loadStockHistory(symbol, range) {
   const loading = document.getElementById('chartLoading');
   const note = document.getElementById('chartNote');
+  const canvas = document.getElementById('stockChartCanvas');
+
   if (loading) loading.style.display = 'flex';
-  if (note) note.textContent = 'Loading historical data from Finnhub...';
+  if (note) note.textContent = 'Loading real historical candle data from Finnhub...';
 
   try {
     const cfg = getRangeConfig(range);
@@ -2105,21 +2138,90 @@ async function loadStockHistory(symbol, range) {
     const data = await res.json();
 
     if (!data || data.s !== 'ok' || !data.c || data.c.length < 2) {
-      throw new Error('No candle data returned');
+      throw new Error(data && data.s ? `Finnhub returned: ${data.s}` : 'No candle data returned');
     }
 
     drawStockChart(data.c, symbol, range, false);
-    if (note) note.textContent = `${symbol} ${range} history loaded. Educational only, not financial advice.`;
+
+    if (note) {
+      note.textContent = `${symbol} ${range} chart is using real candle data returned by Finnhub. No demo/fake history is shown.`;
+    }
   } catch (err) {
     console.warn(err);
-    const quote = liveStocks.find(s => s.ticker === symbol);
-    const base = quote ? quote.price : 100;
-    const demo = generateDemoHistory(base, range);
-    drawStockChart(demo, symbol, range, true);
-    if (note) note.textContent = `Could not load live history for ${symbol}, so a demo chart is shown. Check Finnhub candle access/API limits.`;
+
+    clearChartWithMessage(
+      canvas,
+      `${symbol} ${range}`,
+      'Real chart unavailable',
+      'Finnhub did not return candle data for this range. No fake demo chart is shown.'
+    );
+
+    if (note) {
+      note.textContent = `Could not load real Finnhub candle data for ${symbol} ${range}. No fake/demo chart is shown. Try another range, refresh, or check your Finnhub API limits.`;
+    }
   } finally {
     if (loading) loading.style.display = 'none';
   }
+}
+
+function clearChartWithMessage(canvas, title, main, sub) {
+  if (!canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const ratio = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * ratio;
+  canvas.height = rect.height * ratio;
+  ctx.scale(ratio, ratio);
+
+  const w = rect.width;
+  const h = rect.height;
+
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = 'rgba(255,255,255,0.025)';
+  ctx.fillRect(0, 0, w, h);
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  for (let i = 1; i <= 4; i++) {
+    const y = (h / 5) * i;
+    ctx.beginPath();
+    ctx.moveTo(40, y);
+    ctx.lineTo(w - 40, y);
+    ctx.stroke();
+  }
+
+  ctx.fillStyle = '#f5f7fb';
+  ctx.font = '700 18px DM Sans';
+  ctx.fillText(title, 44, 42);
+
+  ctx.fillStyle = '#ff4d6a';
+  ctx.font = '800 22px DM Sans';
+  ctx.fillText(main, 44, h / 2 - 10);
+
+  ctx.fillStyle = 'rgba(181,189,204,0.95)';
+  ctx.font = '14px DM Sans';
+  wrapCanvasText(ctx, sub, 44, h / 2 + 24, w - 88, 22);
+}
+
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(' ');
+  let line = '';
+
+  for (let n = 0; n < words.length; n++) {
+    const testLine = line + words[n] + ' ';
+    const metrics = ctx.measureText(testLine);
+
+    if (metrics.width > maxWidth && n > 0) {
+      ctx.fillText(line, x, y);
+      line = words[n] + ' ';
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+
+  ctx.fillText(line, x, y);
 }
 
 function generateDemoHistory(base, range) {
@@ -2217,7 +2319,7 @@ function drawStockChart(prices, symbol, range, isDemo) {
   ctx.font = '12px DM Sans';
   ctx.fillText(`High $${max.toFixed(2)}`, w - pad - 105, pad - 10);
   ctx.fillText(`Low $${min.toFixed(2)}`, w - pad - 105, h - pad + 24);
-  ctx.fillText(isDemo ? 'Demo history' : 'Finnhub history', pad, h - 14);
+  ctx.fillText(isDemo ? 'Live/API history' : 'Finnhub history', pad, h - 14);
 }
 
 window.addEventListener('resize', () => {
