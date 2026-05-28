@@ -615,7 +615,7 @@ footer p{font-size:12px;color:var(--muted)}
       <div class="chart-loading" id="chartLoading">Loading chart...</div>
     </div>
 
-    <p class="modal-trial-note" id="chartNote">Historical data loads from Finnhub. If it does not load, a demo chart is shown.</p>
+    <p class="modal-trial-note" id="chartNote">Historical data loads from Finnhub for Pro users. If Finnhub fails, a demo chart is shown.</p>
   </div>
 </div>
 
@@ -789,7 +789,7 @@ footer p{font-size:12px;color:var(--muted)}
     <button class="sort-chip" onclick="quickSort('etf', this)">ETFs</button>
   </div>
 
-  <div class="stock-note">This shows a large live watchlist and lets users add any ticker symbol. A static website cannot literally preload every stock on Earth without an API database/backend.</div>
+  <div class="stock-note">TSLA, AMZN, and NVDA always stay at the top for free users. If Finnhub fails or hits a limit, backup demo prices show so the site does not go blank.</div>
 
   <div class="stock-table-wrap">
     <table class="stock-table">
@@ -1134,6 +1134,39 @@ async function fetchQuote(symbol) {
   };
 }
 
+
+function fallbackQuote(symbol) {
+  const s = symbol.toUpperCase();
+  const f = fallbackPrices[s];
+
+  if (f) {
+    return {
+      ...getStockMeta(s),
+      price: Number(f.c),
+      day: Number(f.dp || 0),
+      change: Number(f.d || 0),
+      previousClose: Number(f.pc || 0),
+      demo: true
+    };
+  }
+
+  // Generated backup so even searched tickers do not make the table disappear.
+  let seed = 0;
+  for (let i = 0; i < s.length; i++) seed += s.charCodeAt(i) * (i + 1);
+  const price = 40 + (seed % 500) + ((seed % 97) / 100);
+  const day = ((seed % 700) / 100) - 3.5;
+  const change = price * day / 100;
+
+  return {
+    ...getStockMeta(s),
+    price,
+    day,
+    change,
+    previousClose: price - change,
+    demo: true
+  };
+}
+
 async function loadLiveStocks(manual=false) {
   const status = document.getElementById('liveStatus');
   if (status) status.textContent = manual ? 'Refreshing live prices...' : 'Loading live prices...';
@@ -1147,6 +1180,7 @@ async function loadLiveStocks(manual=false) {
     } catch (err) {
       console.warn(err);
       errors.push(sym);
+      results.push(fallbackQuote(sym));
     }
   }
 
@@ -1163,9 +1197,9 @@ async function loadLiveStocks(manual=false) {
     } else if (demoMode) {
       status.textContent = 'Demo fallback prices showing. Add your Finnhub API key to make the prices truly live and update every 60 seconds.';
     } else if (results.length === 0) {
-      status.textContent = 'Could not load live prices. Check your Finnhub API key, internet connection, or API limit.';
+      status.textContent = 'Finnhub did not return live prices, so backup demo prices are showing. Check your API key, internet connection, or API limit.';
     } else if (errors.length > 0) {
-      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Some tickers failed: ${errors.join(', ')}. Auto-refresh: every 60 seconds. Large watchlists may depend on Finnhub rate limits.`;
+      status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Backup demo prices are showing for some tickers: ${errors.join(', ')}. Auto-refresh: every 60 seconds. Large watchlists may depend on Finnhub rate limits.`;
     } else {
       status.textContent = `Live prices updated ${lastUpdated.toLocaleTimeString()}. Auto-refresh: every 60 seconds. Large watchlists may depend on Finnhub rate limits.`;
     }
@@ -1205,8 +1239,21 @@ async function addTickerFromSearch() {
     }
   } catch (err) {
     console.warn(err);
+
+    const backup = fallbackQuote(symbol);
+    const existingIndex = liveStocks.findIndex(s => s.ticker === symbol);
+
+    if (existingIndex >= 0) {
+      liveStocks[existingIndex] = backup;
+    } else {
+      liveStocks.unshift(backup);
+    }
+
+    lastUpdated = new Date();
     renderStocks();
-    if (status) status.textContent = `Could not find live data for ${symbol}. Check the ticker symbol or your Finnhub limit/API key.`;
+    renderTicker();
+
+    if (status) status.textContent = `Could not load live Finnhub data for ${symbol}, so backup demo data is showing. Check the ticker, API key, or Finnhub limit.`;
   }
 }
 
