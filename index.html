@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- TRADINGVIEW_FINAL_FIX_1779938966 -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cash Flo — Smart Investing for Everyone</title>
@@ -1351,6 +1352,38 @@ nav {
   top: -9999px;
 }
 
+
+/* FINAL TRADINGVIEW IFRAME CHART FIX */
+.tradingview-wrap {
+  height: 560px !important;
+  min-height: 560px !important;
+  padding: 0 !important;
+  background: #0d1118 !important;
+  border-radius: 18px !important;
+  overflow: hidden !important;
+}
+
+#tradingViewIframe {
+  width: 100% !important;
+  height: 560px !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: #0d1118 !important;
+}
+
+.accuracy-note {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(247,195,95,0.07);
+  border: 1px solid rgba(247,195,95,0.20);
+  color: var(--muted2);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.accuracy-note strong { color: var(--amber); }
+
 </style>
 </head>
 <body>
@@ -2639,8 +2672,9 @@ document.getElementById('advisorInput').addEventListener('keydown', e => { if(e.
 
 
 
+
 // STOCK HISTORY CHARTS - PRO ONLY
-// FINAL FIX: charts use a direct TradingView iframe, not Finnhub candle/canvas code.
+// FINAL FIX: chart popups use TradingView iframe, not Finnhub candle/canvas code.
 let currentChartSymbol = null;
 let currentChartRange = '1D';
 
@@ -2764,10 +2798,6 @@ function loadTradingViewIframe(symbol, range) {
     `&timezone=America%2FNew_York` +
     `&withdateranges=1` +
     `&hideideas=1` +
-    `&studies_overrides={}` +
-    `&overrides={}` +
-    `&enabled_features=[]` +
-    `&disabled_features=[]` +
     `&locale=en`;
 
   iframe.onload = () => {
