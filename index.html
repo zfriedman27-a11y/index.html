@@ -1380,6 +1380,27 @@ nav {
 
 .accuracy-note strong { color: var(--amber); }
 
+
+/* CLICKABLE STOCK TABLE HEADERS */
+.stock-table th.sortable-th {
+  cursor: pointer;
+  user-select: none;
+  transition: color .18s ease, background .18s ease;
+}
+
+.stock-table th.sortable-th:hover {
+  color: var(--accent);
+  background: rgba(143,183,255,0.045);
+}
+
+.stock-table th.sortable-th .sort-arrow {
+  display: inline-block;
+  margin-left: 6px;
+  color: var(--accent);
+  font-size: 10px;
+  opacity: .85;
+}
+
 </style>
 </head>
 <body>
@@ -1854,12 +1875,12 @@ nav {
     <table class="stock-table">
       <thead>
         <tr>
-          <th>Stock</th>
-          <th>Price</th>
-          <th>Today</th>
-          <th>Change</th>
-          <th>Updated</th>
-          <th>Rating</th>
+          <th class="sortable-th" onclick="sortByColumn('stock')">Stock <span class="sort-arrow" id="sortArrow-stock"></span></th>
+          <th class="sortable-th" onclick="sortByColumn('price')">Price <span class="sort-arrow" id="sortArrow-price"></span></th>
+          <th class="sortable-th" onclick="sortByColumn('today')">Today <span class="sort-arrow" id="sortArrow-today"></span></th>
+          <th class="sortable-th" onclick="sortByColumn('change')">Change <span class="sort-arrow" id="sortArrow-change"></span></th>
+          <th class="sortable-th" onclick="sortByColumn('updated')">Updated <span class="sort-arrow" id="sortArrow-updated"></span></th>
+          <th class="sortable-th" onclick="sortByColumn('rating')">Rating <span class="sort-arrow" id="sortArrow-rating"></span></th>
         </tr>
       </thead>
       <tbody id="stockBody"></tbody>
@@ -1926,6 +1947,8 @@ const FREE_Q_LIMIT = 1;
 let currentSort = 'top';
 let currentSector = 'all';
 let currentSearchSymbol = '';
+let activeColumnSort = null;
+let activeColumnDirection = 'desc';
 
 // LIVE STOCK DATA
 // Step 1: Create a free Finnhub account.
@@ -2337,6 +2360,63 @@ function showAllStocks() {
   loadLiveStocks(true);
 }
 
+
+function sortByColumn(column) {
+  if (activeColumnSort === column) {
+    activeColumnDirection = activeColumnDirection === 'desc' ? 'asc' : 'desc';
+  } else {
+    activeColumnSort = column;
+    activeColumnDirection = 'desc';
+  }
+
+  // Header sorting should not force the user back into a dropdown mode.
+  // It sorts whatever list is currently visible. Free still shows TSLA, AMZN, NVDA only.
+  updateHeaderSortArrows();
+  renderStocks();
+}
+
+function updateHeaderSortArrows() {
+  document.querySelectorAll('.sort-arrow').forEach(el => el.textContent = '');
+  if (!activeColumnSort) return;
+  const arrow = document.getElementById('sortArrow-' + activeColumnSort);
+  if (arrow) arrow.textContent = activeColumnDirection === 'desc' ? '▼' : '▲';
+}
+
+function compareForColumn(a, b, column) {
+  let av;
+  let bv;
+
+  if (column === 'stock') {
+    av = a.ticker || '';
+    bv = b.ticker || '';
+    return activeColumnDirection === 'desc' ? bv.localeCompare(av) : av.localeCompare(bv);
+  }
+
+  if (column === 'price') {
+    av = Number(a.price || 0);
+    bv = Number(b.price || 0);
+  } else if (column === 'today') {
+    av = Number(a.day || 0);
+    bv = Number(b.day || 0);
+  } else if (column === 'change') {
+    av = Number(a.change || 0);
+    bv = Number(b.change || 0);
+  } else if (column === 'updated') {
+    av = lastUpdated ? lastUpdated.getTime() : 0;
+    bv = lastUpdated ? lastUpdated.getTime() : 0;
+  } else if (column === 'rating') {
+    const order = { BUY: 3, WATCH: 2, HOLD: 1 };
+    av = order[getRating(a)] || 0;
+    bv = order[getRating(b)] || 0;
+  } else {
+    av = 0;
+    bv = 0;
+  }
+
+  return activeColumnDirection === 'desc' ? bv - av : av - bv;
+}
+
+
 function getFiltered() {
   let data = [...liveStocks];
 
@@ -2413,6 +2493,11 @@ function renderStocks() {
     displayList = freeTop.map(t => liveStocks.find(s => s.ticker === t) || fallbackQuote(t));
   }
 
+  if (activeColumnSort) {
+    displayList.sort((a, b) => compareForColumn(a, b, activeColumnSort));
+  }
+  updateHeaderSortArrows();
+
   let html = '';
 
   displayList.forEach((s) => {
@@ -2481,6 +2566,9 @@ function quickSort(val, btn) {
   const input = document.getElementById('stockSearch');
   if (input) input.value = '';
   currentSort = val;
+  activeColumnSort = null;
+  activeColumnDirection = 'desc';
+  updateHeaderSortArrows();
   document.querySelectorAll('.sort-chip').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
@@ -2503,6 +2591,9 @@ function setSort(val, label) {
   const input = document.getElementById('stockSearch');
   if (input) input.value = '';
   currentSort = val;
+  activeColumnSort = null;
+  activeColumnDirection = 'desc';
+  updateHeaderSortArrows();
   document.getElementById('sortLabel').textContent = label;
   document.querySelectorAll('#sortMenu .dropdown-item').forEach(i => i.classList.remove('active'));
   if (event && event.target) event.target.classList.add('active');
