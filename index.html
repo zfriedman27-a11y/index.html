@@ -3877,7 +3877,7 @@ body {
     <h1>Investing,<br><em>finally simple.</em></h1>
     <p class="hero-subline">An easier way to learn stocks, understand high and low risks, and build smarter money habits for your future.</p>
     <div class="hero-btns">
-      <button class="btn-primary" onclick="openInvestorQuiz()">Learn Your Investing Style →</button>
+      <button class="btn-primary" onclick="jumpToSection('startHere')">Learn Your Investing Style →</button>
       <button class="btn-ghost" onclick="showAppPage('stocks'); setTimeout(()=>document.getElementById('stocks')?.scrollIntoView({behavior:'smooth'}),80)">See Live Stocks</button>
     </div>
     <p class="free-note"><strong>Build your edge.</strong> Cash Flo helps you learn smarter strategies, compare risks, and approach the market with more confidence than random advice.</p>
@@ -3900,7 +3900,7 @@ body {
     <div class="section-tag">Start here</div>
     <div class="guide-title">Pick where you want to start.</div>
     <div class="site-map-grid">
-      <div class="site-map-card" onclick="openInvestorQuiz()">
+      <div class="site-map-card" onclick="openInvestorQuizFromStartCard()">
         <h3>1. Investor Profile Quiz</h3>
         <p>Set your risk style and unlock profile match rankings.</p>
       </div>
@@ -5908,9 +5908,37 @@ function selectQuizOption(question, value, btn) {
 }
 
 
+
+function openInvestorQuizFromStartCard() {
+  const overlay = document.getElementById('appMenuOverlay');
+  if (overlay) overlay.classList.remove('show');
+
+  if (!isPro) {
+    openModal();
+    return;
+  }
+
+  openInvestorQuiz();
+}
+
 function openInvestorQuiz() {
   const overlay = document.getElementById('appMenuOverlay');
   if (overlay) overlay.classList.remove('show');
+
+  if (!isPro) {
+    openModal();
+    return;
+  }
+
+
+  // FIX: the quiz is inside the Profile page. If the user clicks this from Home,
+  // the Profile page must be activated first or the quiz stays hidden.
+  if (typeof showAppPage === 'function') {
+    showAppPage('profile');
+  } else {
+    document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active-page'));
+    document.querySelectorAll('.page-section[data-page="profile"]').forEach(section => section.classList.add('active-page'));
+  }
 
   const gateway = document.getElementById('investorQuizGateway');
   const quiz = document.getElementById('investorProfileQuiz');
@@ -5918,18 +5946,22 @@ function openInvestorQuiz() {
   if (gateway) gateway.classList.add('hide');
   if (quiz) {
     quiz.classList.add('show');
-    setTimeout(() => quiz.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    setTimeout(() => quiz.scrollIntoView({ behavior: 'smooth', block: 'start' }), 140);
   }
 }
 
 function closeInvestorQuiz() {
+  if (typeof showAppPage === 'function') {
+    showAppPage('profile');
+  }
+
   const gateway = document.getElementById('investorQuizGateway');
   const quiz = document.getElementById('investorProfileQuiz');
 
   if (quiz) quiz.classList.remove('show');
   if (gateway) {
     gateway.classList.remove('hide');
-    setTimeout(() => gateway.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    setTimeout(() => gateway.scrollIntoView({ behavior: 'smooth', block: 'start' }), 90);
   }
 }
 
