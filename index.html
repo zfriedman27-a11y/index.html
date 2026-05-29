@@ -3570,6 +3570,65 @@ body {
   }
 }
 
+
+/* WORKING GROWTH CALCULATOR RESULT BOX */
+.growth-result-box {
+  margin-top: 18px;
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 18px;
+  padding: 18px;
+  color: var(--muted2);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.growth-result-box h4 {
+  font-family: 'Syne', sans-serif;
+  color: var(--accent);
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.growth-result-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 14px;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.growth-result-table th,
+.growth-result-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  text-align: right;
+  font-size: 13px;
+}
+
+.growth-result-table th:first-child,
+.growth-result-table td:first-child {
+  text-align: left;
+}
+
+.growth-result-table th {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-size: 11px;
+  background: rgba(255,255,255,0.035);
+}
+
+.growth-good {
+  color: var(--green);
+  font-weight: 900;
+}
+
+.growth-warning {
+  color: var(--amber);
+  font-weight: 900;
+}
+
 </style>
 </head>
 <body>
@@ -4267,17 +4326,36 @@ body {
 <section class="calculator-section page-section" data-page="calculator" id="calculatorPage">
   <div class="quiz-inner">
     <div class="section-tag">Growth Calculator</div>
-    <div class="money-goal-card" id="moneyGoalCalculator">
-        <h3>Future Money Growth Calculator</h3>
-        <p>Enter your age, an average yearly return, and either a monthly amount OR a one-time amount. Cash Flo will project what it could become every 5 years.</p>
+    
+<div class="money-goal-card" id="moneyGoalCalculator">
+  <h3>Future Money Growth Calculator</h3>
+  <p>
+    Enter your age and either a monthly amount OR money putting in. Add your own return %, or leave it blank to use the homepage S&P 500 average.
+  </p>
 
-        <div class="money-goal-grid">
-          <input class="money-goal-input" id="goalAgeNow" type="number" min="1" max="100" placeholder="Age now" />
-          <input class="money-goal-input" id="goalReturn" type="number" min="0" max="50" step="0.1" placeholder="Avg yearly return (%)" />
-          <input class="money-goal-input" id="goalMonthly" type="number" min="0" placeholder="Monthly investing ($)" />
-          <input class="money-goal-input" id="goalLumpSum" type="number" min="0" placeholder="Money putting in ($)" />
-        </div>
+  <div class="tool-row">
+    <input class="tool-input" id="growthAgeNow" type="number" min="1" max="100" placeholder="Age now" />
+    <input class="tool-input" id="growthReturn" type="number" step="0.1" placeholder="Avg yearly return (%)" />
   </div>
+
+  <div class="tool-row">
+    <input class="tool-input" id="growthMonthly" type="number" min="0" step="1" placeholder="Monthly investing ($)" />
+    <input class="tool-input" id="growthOneTime" type="number" min="0" step="1" placeholder="Money putting in ($)" />
+  </div>
+
+  <div class="tool-row">
+    <button class="tool-button" onclick="calculateGrowthProjection()">Calculate Growth →</button>
+    <button class="stock-search-btn secondary" onclick="fillGrowthExample()">Example: $10/mo</button>
+  </div>
+
+  <div class="growth-result-box" id="growthResultBox">
+    Fill in age and only one money box: monthly investing OR money putting in. Return % is optional.
+  </div>
+
+  <p class="modal-trial-note">
+    Educational only. This does not tell you what to buy and does not guarantee returns.
+  </p>
+</div>
 </section>
 
 <section class="different-section page-section" data-page="tools" id="cashFloTools">
@@ -6467,6 +6545,144 @@ function runMistakeDetector(){
   warnings.push('Cash Flo does not place trades. You stay responsible for every decision.');
 
   document.getElementById('mistakeOutput').innerHTML=`<h3>${ticker} Mistake Check</h3><ul class="tool-list warning-list">${warnings.map(w=>`<li>${w}</li>`).join('')}</ul>`;
+}
+
+
+
+function formatMoney(value) {
+  const number = Number(value || 0);
+  return number.toLocaleString(undefined, {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0
+  });
+}
+
+function calculateGrowthProjection() {
+  const ageInput = document.getElementById('growthAgeNow');
+  const returnInput = document.getElementById('growthReturn');
+  const monthlyInput = document.getElementById('growthMonthly');
+  const oneTimeInput = document.getElementById('growthOneTime');
+  const resultBox = document.getElementById('growthResultBox');
+
+  if (!resultBox) return;
+
+  const age = Number(ageInput?.value || 0);
+  const yearlyReturn = returnInput?.value === '' ? 10.5 : Number(returnInput?.value);
+  const monthly = Number(monthlyInput?.value || 0);
+  const oneTime = Number(oneTimeInput?.value || 0);
+
+  if (!age || age <= 0 || age > 100) {
+    resultBox.innerHTML = '<span class="growth-warning">Enter a real age first.</span>';
+    return;
+  }
+
+  if (!Number.isFinite(yearlyReturn) || yearlyReturn < -50 || yearlyReturn > 50) {
+    resultBox.innerHTML = '<span class="growth-warning">Enter a realistic yearly return, or leave it blank to use 10.5%.</span>';
+    return;
+  }
+
+  if (monthly > 0 && oneTime > 0) {
+    resultBox.innerHTML = '<span class="growth-warning">Only fill ONE money box: monthly investing OR money putting in.</span>';
+    return;
+  }
+
+  if (monthly <= 0 && oneTime <= 0) {
+    resultBox.innerHTML = '<span class="growth-warning">Enter either a monthly investing amount or a one-time amount.</span>';
+    return;
+  }
+
+  const monthlyRate = Math.pow(1 + yearlyReturn / 100, 1 / 12) - 1;
+  const rows = [];
+
+  for (let years = 5; years <= 50; years += 5) {
+    const futureAge = age + years;
+    const months = years * 12;
+
+    let futureValue = 0;
+    let totalPutIn = 0;
+
+    if (monthly > 0) {
+      totalPutIn = monthly * months;
+
+      if (Math.abs(monthlyRate) < 0.0000001) {
+        futureValue = totalPutIn;
+      } else {
+        futureValue = monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+      }
+    } else {
+      totalPutIn = oneTime;
+      futureValue = oneTime * Math.pow(1 + yearlyReturn / 100, years);
+    }
+
+    const gain = futureValue - totalPutIn;
+    rows.push({ years, futureAge, totalPutIn, futureValue, gain });
+  }
+
+  const firstYearPutIn = monthly > 0 ? monthly * 12 : oneTime;
+  const firstYearValue = monthly > 0
+    ? monthly * ((Math.pow(1 + monthlyRate, 12) - 1) / (monthlyRate || 1))
+    : oneTime * (1 + yearlyReturn / 100);
+  const firstYearGain = firstYearValue - firstYearPutIn;
+
+  const modeText = monthly > 0
+    ? `${formatMoney(monthly)} per month`
+    : `${formatMoney(oneTime)} one time`;
+
+  resultBox.innerHTML = `
+    <h4>Growth estimate</h4>
+    <p>
+      Using <strong>${modeText}</strong> at an average yearly return of
+      <strong>${yearlyReturn}%</strong>.
+      ${returnInput?.value === '' ? 'Since return was blank, Cash Flo used the homepage S&P 500 average example.' : ''}
+    </p>
+
+    <p style="margin-top:10px">
+      Example after 1 year: you put in <strong>${formatMoney(firstYearPutIn)}</strong>
+      and estimated growth is about <strong class="${firstYearGain >= 0 ? 'growth-good' : 'growth-warning'}">${formatMoney(firstYearGain)}</strong>.
+    </p>
+
+    <table class="growth-result-table">
+      <thead>
+        <tr>
+          <th>Years</th>
+          <th>Age</th>
+          <th>Put In</th>
+          <th>Estimated Value</th>
+          <th>Estimated Gain</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(row => `
+          <tr>
+            <td>${row.years}</td>
+            <td>${row.futureAge}</td>
+            <td>${formatMoney(row.totalPutIn)}</td>
+            <td><strong>${formatMoney(row.futureValue)}</strong></td>
+            <td class="${row.gain >= 0 ? 'growth-good' : 'growth-warning'}">${formatMoney(row.gain)}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+
+    <p style="margin-top:12px;color:var(--muted);font-size:12px">
+      This is an educational projection only. Real returns change and are not guaranteed.
+    </p>
+  `;
+}
+
+function fillGrowthExample() {
+  const age = document.getElementById('growthAgeNow');
+  const yearlyReturn = document.getElementById('growthReturn');
+  const monthly = document.getElementById('growthMonthly');
+  const oneTime = document.getElementById('growthOneTime');
+
+  if (age) age.value = age.value || 18;
+  if (yearlyReturn) yearlyReturn.value = 10;
+  if (monthly) monthly.value = 10;
+  if (oneTime) oneTime.value = '';
+
+  calculateGrowthProjection();
 }
 
 
