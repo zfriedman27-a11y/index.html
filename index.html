@@ -4704,8 +4704,8 @@ body {
   </div>
 
   <div class="watchlist-active-banner" id="watchlistBanner"><span>Showing your saved watchlist.</span><button class="unlock-btn" onclick="showAllStocks()">Show All Stocks</button></div>
-  <div class="stock-note" id="personalSortNote">Use <strong>Top Stocks For Me</strong> after the quiz to rank stocks by your risk comfort, time horizon, ETF readiness, and investing style. Profile Match is educational, not a buy recommendation. Free users can view the starter list. Pro users unlock sorting, filters, watchlist, charts, and personalized match rankings.</div>
-  <div class="stock-note">Free users see TSLA, AMZN, and NVDA. Clicking Pro filters, watchlist, charts, or match rankings opens the $5/month upgrade prompt.</div>
+  <div class="stock-note" id="personalSortNote">Use <strong>Top Stocks For Me</strong> after the quiz to rank stocks by your risk comfort, time horizon, ETF readiness, and investing style. Profile Match is educational, not a buy recommendation. Free users can view the starter list. Pro users unlock stock search, sorting, filters, watchlist, charts, and personalized match rankings.</div>
+  <div class="stock-note">Free users see TSLA, AMZN, and NVDA. Clicking Pro search results, filters, watchlist, charts, or match rankings opens the $5/month upgrade prompt.</div>
 
   <div class="stock-table-wrap">
     <table class="stock-table">
@@ -5361,6 +5361,43 @@ async function loadLiveStocks(manual=false) {
   }
 }
 
+
+function requireStockSearchPro(symbol = 'this stock') {
+  if (isPro) return true;
+  requireProFeature(`Search ${symbol.toUpperCase()}`);
+  return false;
+}
+
+function handleSearchSuggestionClick(symbol) {
+  symbol = String(symbol || '').trim().toUpperCase();
+  if (!symbol) return;
+
+  if (!requireStockSearchPro(symbol)) {
+    clearSearchSuggestions();
+    return;
+  }
+
+  const input = document.getElementById('stockSearch');
+  if (input) input.value = symbol;
+  addTickerFromSearch();
+}
+
+
+function clearSearchSuggestions() {
+  const possible = [
+    document.getElementById('searchSuggestions'),
+    document.getElementById('globalSearchResults'),
+    document.querySelector('.search-suggestions'),
+    document.querySelector('.global-search-results')
+  ].filter(Boolean);
+
+  possible.forEach(el => {
+    el.innerHTML = '';
+    el.style.display = 'none';
+    el.classList.remove('show');
+  });
+}
+
 async function addTickerFromSearch() {
   const input = document.getElementById('stockSearch');
   const rawSearch = input.value.trim();
@@ -5580,7 +5617,11 @@ function renderStocks() {
     lastUpdated = new Date();
   }
 
-  const filtered = getFiltered();
+    if (!isPro && currentSearchSymbol) {
+    currentSearchSymbol = '';
+  }
+
+const filtered = getFiltered();
   const body = document.getElementById('stockBody');
   if (!body) return;
 
@@ -7674,6 +7715,25 @@ function goToQuizFromDashboard() {
     }
   }, 120);
 }
+
+
+document.addEventListener('click', e => {
+  const suggestion = e.target.closest('.search-suggestion, .search-result, .ticker-suggestion, .global-search-result, .search-dropdown-item');
+  if (!suggestion) return;
+
+  const symbolEl = suggestion.querySelector('.s-ticker, .ticker, strong, h4, h3');
+  const raw = suggestion.dataset.symbol || suggestion.getAttribute('data-symbol') || (symbolEl ? symbolEl.textContent : suggestion.textContent);
+  const symbol = String(raw || '').trim().split(/\s+/)[0].replace(/[^A-Za-z.\-]/g,'').toUpperCase();
+
+  if (!symbol) return;
+
+  if (!isPro) {
+    e.preventDefault();
+    e.stopPropagation();
+    requireStockSearchPro(symbol);
+    if (typeof clearSearchSuggestions === 'function') clearSearchSuggestions();
+  }
+}, true);
 
 // INIT
 showPlanChoiceOnLoad();
