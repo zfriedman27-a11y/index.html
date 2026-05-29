@@ -3629,9 +3629,102 @@ body {
   font-weight: 900;
 }
 
+
+/* STOCK FILTER BUTTON FIX: readable, no shifting, Pro-gated by JS */
+.sort-chip,
+.dropdown-btn,
+.stock-search-btn.secondary {
+  color: var(--muted2) !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+.sort-chip:hover,
+.dropdown-btn:hover,
+.stock-search-btn.secondary:hover {
+  color: var(--text) !important;
+  transform: none !important;
+}
+
+.sort-chip.active,
+.dropdown-btn.active-filter {
+  color: #041018 !important;
+  background: linear-gradient(135deg, var(--accent), #38f2b5) !important;
+  border-color: transparent !important;
+  box-shadow: 0 0 18px rgba(82,214,255,0.16) !important;
+}
+
+.sort-chip:active,
+.dropdown-btn:active,
+.stock-search-btn:active,
+.stock-search-btn.secondary:active {
+  transform: none !important;
+}
+
+.stocks-controls button,
+.sort-chip-row button {
+  min-height: 42px;
+}
+
+.pro-locked-click {
+  position: relative;
+}
+
+.pro-locked-click::after {
+  content: "PRO";
+  margin-left: 7px;
+  font-size: 9px;
+  font-weight: 1000;
+  letter-spacing: .7px;
+  color: var(--amber);
+}
+
+
+/* SUBTLE PRO ACKNOWLEDGEMENT */
+.pro-toast {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 260;
+  padding: 12px 15px;
+  border-radius: 14px;
+  background: rgba(16,20,29,0.94);
+  border: 1px solid rgba(82,214,255,0.22);
+  color: var(--muted2);
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 18px 60px rgba(0,0,0,0.38);
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease;
+}
+
+.pro-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pro-toast strong {
+  color: var(--accent);
+}
+
+
+.logo[role="button"] {
+  cursor: pointer;
+}
+
+.logo[role="button"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
 </style>
 </head>
 <body>
+<div class="pro-toast" id="proToast"><strong>Pro active.</strong> Full features unlocked.</div>
 
 
 <!-- MODAL -->
@@ -3643,7 +3736,7 @@ body {
     <p>Pro will be <strong style="color:var(--accent)">$5/month</strong>. Payment setup is coming later.</p>
     <div class="modal-features">
       <div class="modal-feat">Full live stock screener with all filters</div>
-      <div class="modal-feat">AI Advisor — unlimited questions</div>
+      <div class="modal-feat">AI Advisor — unlimited questions, no 24-hour wait</div>
       <div class="modal-feat">Investor Profile Quiz with personal match scores</div>
       <div class="modal-feat">Stock history charts and cleaner research tools</div>
       <div class="modal-feat">Weekly educational watchlist ideas</div>
@@ -3674,7 +3767,7 @@ body {
         <p class="plan-choice-desc">Simple and calm.</p>
         <ul class="plan-choice-list">
           <li>TSLA, AMZN, and NVDA basic view</li>
-          <li>1 AI Advisor preview question</li>
+          <li>1 AI Advisor preview every 24 hours question every 24 hours</li>
           <li>Live ticker tape</li>
           <li>Investor guide and checklist</li>
           <li class="no">Full research view</li>
@@ -3757,7 +3850,7 @@ body {
 
 <!-- NAV -->
 <nav>
-  <div class="logo"><div class="logo-icon">$</div><span>Cash Flo</span></div>
+  <div class="logo" onclick="goToStartupFromLogo()" title="Back to start" role="button" tabindex="0"><div class="logo-icon">$</div><span>Cash Flo</span></div>
   <div class="nav-right">
 
     <div class="top-search-wrap">
@@ -4234,7 +4327,7 @@ body {
         <button class="pill" onclick="askPill(this)">How do I start with $100?</button>
       </div>
       <div id="advisorLock" class="advisor-lock-banner" style="display:none">
-        <p>🔒 <strong>Free preview used.</strong> Upgrade to Cash Flo Pro for unlimited AI investing explanations.</p>
+        <p>🔒 <strong>Daily free preview used.</strong> Come back in 24 hours for another free preview, or upgrade to Cash Flo Pro for unlimited AI investing explanations.</p>
         <button class="unlock-btn" onclick="openModal()">Unlock Unlimited →</button>
       </div>
       <div class="input-row" id="inputRow">
@@ -4555,7 +4648,7 @@ body {
         <input class="stock-search" id="stockSearch" placeholder="Search ticker or company, ex: Tesla" />
         <button class="stock-search-btn" onclick="addTickerFromSearch()">Search</button>
         <button class="stock-search-btn secondary" onclick="showAllStocks()">Show All</button>
-        <button class="stock-search-btn secondary" onclick="showWatchlistOnly()">★ My Watchlist</button>
+        <button class="stock-search-btn secondary pro-locked-click" onclick="showWatchlistOnly()">★ My Watchlist</button>
       </div>
       <button class="dropdown-btn" onclick="loadLiveStocks(true)">↻ Refresh</button>
       <!-- SORT DROPDOWN -->
@@ -4611,8 +4704,8 @@ body {
   </div>
 
   <div class="watchlist-active-banner" id="watchlistBanner"><span>Showing your saved watchlist.</span><button class="unlock-btn" onclick="showAllStocks()">Show All Stocks</button></div>
-  <div class="stock-note" id="personalSortNote">Use <strong>Top Stocks For Me</strong> after the quiz to rank stocks by your risk comfort, time horizon, ETF readiness, and investing style. Profile Match is educational, not a buy recommendation. Free users can favorite stocks, while Pro users see the full personalized match list.</div>
-  <div class="stock-note">Free users see TSLA, AMZN, and NVDA with one clean unlock message. Pro users see all stocks normally with no blur or shaded locked rows.</div>
+  <div class="stock-note" id="personalSortNote">Use <strong>Top Stocks For Me</strong> after the quiz to rank stocks by your risk comfort, time horizon, ETF readiness, and investing style. Profile Match is educational, not a buy recommendation. Free users can view the starter list. Pro users unlock sorting, filters, watchlist, charts, and personalized match rankings.</div>
+  <div class="stock-note">Free users see TSLA, AMZN, and NVDA. Clicking Pro filters, watchlist, charts, or match rankings opens the $5/month upgrade prompt.</div>
 
   <div class="stock-table-wrap">
     <table class="stock-table">
@@ -4675,7 +4768,7 @@ body {
         <div class="price-sub">Always free, no card needed</div>
         <ul class="price-features">
           <li>Top 3 stocks (basic view)</li>
-          <li>1 AI Advisor preview question</li>
+          <li>1 AI Advisor preview every 24 hours question every 24 hours</li>
           <li>Live ticker tape</li>
           <li class="no">Advanced filters & sorts</li>
           <li class="no">Full stock screener (50+)</li>
@@ -4763,8 +4856,9 @@ body {
 /// Free users can preview the app. If they click a Pro-only feature,
 /// Cash Flo prompts them to upgrade to the planned $5/month Pro plan.
 let isPro = false;
-let questionsUsed = 0;
 const FREE_Q_LIMIT = 1;
+const AI_PREVIEW_WINDOW_MS = 24 * 60 * 60 * 1000;
+let questionsUsed = getFreeAIQuestionsUsed();
 let currentSort = 'top';
 let currentSector = 'all';
 let currentSearchSymbol = '';
@@ -5323,7 +5417,17 @@ async function addTickerFromSearch() {
 
 
 function sortByColumn(column) {
-  if (column === 'fit' && !requireProFeature('Personal Fit Scores')) return;
+  const headerLabels = {
+    stock: 'Stock Table Sorting',
+    price: 'Price Sorting',
+    today: 'Today Sorting',
+    change: 'Change Sorting',
+    updated: 'Updated Sorting',
+    rating: 'Rating Sorting',
+    fit: 'Personal Fit Scores'
+  };
+
+  if (!requireStockControlPro(headerLabels[column] || 'Stock Table Sorting')) return;
 
   if (activeColumnSort === column) {
     activeColumnDirection = activeColumnDirection === 'desc' ? 'asc' : 'desc';
@@ -5458,6 +5562,18 @@ function getRating(s) {
   return 'HOLD';
 }
 
+
+function updateStockControlLockLabels() {
+  document.querySelectorAll('#quickSortRow .sort-chip').forEach(btn => {
+    btn.classList.toggle('pro-locked-click', !isPro);
+  });
+
+  const sortBtn = document.getElementById('sortBtn');
+  const sectorBtn = document.getElementById('sectorBtn');
+  if (sortBtn) sortBtn.classList.toggle('pro-locked-click', !isPro);
+  if (sectorBtn) sectorBtn.classList.toggle('pro-locked-click', !isPro);
+}
+
 function renderStocks() {
   if (!liveStocks || liveStocks.length === 0) {
     liveStocks = stockSymbols.map(sym => fallbackQuote(sym));
@@ -5575,8 +5691,27 @@ function toggleDropdown(which) {
 }
 
 
+
+function requireStockControlPro(label = 'Stock Filters') {
+  if (isPro) return true;
+  requireProFeature(label);
+  return false;
+}
+
 function quickSort(val, btn) {
-  if (val === 'personal' && !requireProFeature('Top Stocks For Me')) return;
+  const proLabels = {
+    top:'Top Today',
+    personal:'Top Stocks For Me',
+    gainers:'Biggest Gainers',
+    losers:'Biggest Losers',
+    movers:'Biggest Movers',
+    priceHigh:'Highest Price',
+    priceLow:'Lowest Price',
+    alphabetical:'A–Z',
+    etf:'ETFs'
+  };
+
+  if (!requireStockControlPro(proLabels[val] || 'Stock Filters')) return;
 
   currentSearchSymbol = '';
   watchlistOnly = false;
@@ -5605,7 +5740,7 @@ function quickSort(val, btn) {
 }
 
 function setSort(val, label, evt) {
-  if (val === 'personal' && !requireProFeature('Top Stocks For Me')) {
+  if (!requireStockControlPro(label.replace(/[⭐📈📉🚀💵🪙🔤🏆🛡💰]/g,'').trim() || 'Stock Sorts')) {
     closeDropdowns();
     return;
   }
@@ -5628,6 +5763,11 @@ function setSort(val, label, evt) {
 }
 
 function setSector(val, label, evt) {
+  if (!requireStockControlPro('Sector Filters')) {
+    closeDropdowns();
+    return;
+  }
+
   currentSearchSymbol = '';
   const input = document.getElementById('stockSearch');
   if (input) input.value = '';
@@ -5648,8 +5788,28 @@ document.addEventListener('click', e => {
   if (!e.target.closest('.dropdown-wrap')) closeDropdowns();
 });
 
+
+function subtleProAcknowledge(message = 'Cash Flo Pro is active.') {
+  const toast = document.getElementById('proToast');
+  if (!toast) return;
+
+  toast.innerHTML = `<strong>Pro active.</strong> ${message}`;
+  toast.classList.add('show');
+
+  clearTimeout(window.cashFloProToastTimer);
+  window.cashFloProToastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 1900);
+}
+
 // MODAL
 function openModal() {
+  // If Pro is active, never prompt the user to buy again.
+  if (isPro) {
+    subtleProAcknowledge('You already have Cash Flo Pro active.');
+    return;
+  }
+
   const modal = document.getElementById('upgradeModal');
   if (!modal) return;
   modal.classList.add('show');
@@ -5667,7 +5827,119 @@ function demoSignUp(provider) {
 }
 
 function activatePro() {
+  if (isPro) {
+    subtleProAcknowledge('You already have Cash Flo Pro active.');
+    return;
+  }
   alert("Pro Tools are part of the $5/month plan. Payment setup is coming later. For testing, add ?pro=true to the end of your website URL.");
+}
+
+
+function getFreeAIState() {
+  try {
+    const raw = localStorage.getItem('cashFloFreeAIState');
+    if (!raw) return { used: 0, resetAt: 0 };
+    const state = JSON.parse(raw);
+    return {
+      used: Number(state.used || 0),
+      resetAt: Number(state.resetAt || 0)
+    };
+  } catch (e) {
+    return { used: 0, resetAt: 0 };
+  }
+}
+
+function saveFreeAIState(state) {
+  localStorage.setItem('cashFloFreeAIState', JSON.stringify(state));
+}
+
+function resetFreeAIIfExpired() {
+  const state = getFreeAIState();
+  const now = Date.now();
+
+  if (!state.resetAt || now >= state.resetAt) {
+    const fresh = { used: 0, resetAt: 0 };
+    saveFreeAIState(fresh);
+    questionsUsed = 0;
+    unlockAIAdvisorPreview();
+    return fresh;
+  }
+
+  questionsUsed = state.used;
+  return state;
+}
+
+function getFreeAIQuestionsUsed() {
+  const state = getFreeAIState();
+  if (!state.resetAt || Date.now() >= state.resetAt) return 0;
+  return Number(state.used || 0);
+}
+
+function getAIResetText() {
+  const state = resetFreeAIIfExpired();
+  if (!state.resetAt) return 'now';
+
+  const remaining = Math.max(0, state.resetAt - Date.now());
+  const hours = Math.floor(remaining / (60 * 60 * 1000));
+  const minutes = Math.ceil((remaining % (60 * 60 * 1000)) / (60 * 1000));
+
+  if (hours <= 0) return `${minutes} minute${minutes === 1 ? '' : 's'}`;
+  return `${hours} hour${hours === 1 ? '' : 's'} ${minutes} minute${minutes === 1 ? '' : 's'}`;
+}
+
+function markFreeAIQuestionUsed() {
+  const now = Date.now();
+  const state = {
+    used: 1,
+    resetAt: now + AI_PREVIEW_WINDOW_MS
+  };
+  saveFreeAIState(state);
+  questionsUsed = 1;
+  updateAIAdvisorDailyState();
+}
+
+function unlockAIAdvisorPreview() {
+  const advisorLock = document.getElementById('advisorLock');
+  const inputRow = document.getElementById('inputRow');
+  const sendBtn = document.getElementById('sendBtn');
+
+  if (advisorLock) advisorLock.style.display = 'none';
+  if (inputRow) inputRow.style.display = 'flex';
+  if (sendBtn) {
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'Ask →';
+  }
+}
+
+function lockAIAdvisorPreview() {
+  const advisorLock = document.getElementById('advisorLock');
+  const inputRow = document.getElementById('inputRow');
+  const resetText = getAIResetText();
+
+  if (advisorLock) {
+    advisorLock.style.display = 'flex';
+    const p = advisorLock.querySelector('p');
+    if (p) {
+      p.innerHTML = `🔒 <strong>Daily free preview used.</strong> Your next free AI question resets in ${resetText}. Upgrade to Cash Flo Pro for unlimited AI investing explanations.`;
+    }
+  }
+
+  if (inputRow) inputRow.style.display = 'none';
+}
+
+function updateAIAdvisorDailyState() {
+  if (isPro) {
+    unlockAIAdvisorPreview();
+    return;
+  }
+
+  const state = resetFreeAIIfExpired();
+
+  if (state.used >= FREE_Q_LIMIT && state.resetAt && Date.now() < state.resetAt) {
+    lockAIAdvisorPreview();
+  } else {
+    unlockAIAdvisorPreview();
+  }
 }
 
 // AI ADVISOR
@@ -5676,10 +5948,10 @@ async function sendQ() {
   const q = input.value.trim();
   if (!q) return;
 
-  // Free users get only 1 AI preview question
+  // Free users get 1 AI preview question every 24 hours.
+  resetFreeAIIfExpired();
   if (!isPro && questionsUsed >= FREE_Q_LIMIT) {
-    document.getElementById('advisorLock').style.display = 'flex';
-    document.getElementById('inputRow').style.display = 'none';
+    lockAIAdvisorPreview();
     openModal();
     return;
   }
@@ -5702,12 +5974,10 @@ async function sendQ() {
     const answer = getCashFloAnswer(q);
     addMsg(answer, 'ai');
 
-    questionsUsed++;
-
-    if (!isPro && questionsUsed >= FREE_Q_LIMIT) {
+    if (!isPro) {
+      markFreeAIQuestionUsed();
       setTimeout(() => {
-        document.getElementById('advisorLock').style.display = 'flex';
-        document.getElementById('inputRow').style.display = 'none';
+        updateAIAdvisorDailyState();
       }, 600);
     }
 
@@ -5901,6 +6171,7 @@ const investorQuizAnswers = {};
 
 
 function requireProFeature(featureName = 'Cash Flo Pro') {
+  // Pro users already paid/unlocked. Never show the upgrade prompt to them.
   if (isPro) return true;
 
   const modal = document.getElementById('upgradeModal');
@@ -6985,6 +7256,27 @@ function quickAskFromMenu(question) {
 
 
 
+
+function goToStartupFromLogo() {
+  const overlay = document.getElementById('appMenuOverlay');
+  if (overlay) overlay.classList.remove('show');
+
+  if (typeof showAppPage === 'function') {
+    showAppPage('home');
+  } else {
+    document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active-page'));
+    document.querySelectorAll('.page-section[data-page="home"]').forEach(section => section.classList.add('active-page'));
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  setTimeout(() => {
+    if (typeof openPlanChoice === 'function') {
+      openPlanChoice();
+    }
+  }, 350);
+}
+
 // OPENING PLAN CHOOSER
 function openPlanChoice() {
   const modal = document.getElementById('planChoiceModal');
@@ -7004,6 +7296,10 @@ function chooseFreePlan() {
 
 function chooseProPlan() {
   closePlanChoice();
+  if (isPro) {
+    subtleProAcknowledge('You already have Cash Flo Pro active.');
+    return;
+  }
   openModal();
 }
 
@@ -7029,6 +7325,41 @@ const appSearchItems = [
   { title: 'Investor Guide', subtitle: 'Learn before using real money', page: 'learn', target: 'investorGuide', icon: '📘', keywords: ['learn','guide','education','beginner','etf','risk'] },
   { title: 'Pricing', subtitle: '$5/month Pro plan later', page: 'pricing', target: null, icon: '💸', keywords: ['pricing','price','pro','payment','cost'] },
 ];
+
+
+function updatePricingForProStatus() {
+  const pricingSection = document.querySelector('.pricing-section');
+  if (!pricingSection) return;
+
+  let proNote = document.getElementById('proPricingNote');
+
+  if (isPro) {
+    if (!proNote) {
+      proNote = document.createElement('div');
+      proNote.id = 'proPricingNote';
+      proNote.className = 'accuracy-note';
+      proNote.style.maxWidth = '680px';
+      proNote.style.margin = '0 auto 24px';
+      proNote.innerHTML = '<strong>Pro active:</strong> You already have Cash Flo Pro unlocked in this session.';
+      const pricingInner = pricingSection.querySelector('.pricing-inner');
+      const pricingGrid = pricingSection.querySelector('.pricing-grid');
+      if (pricingInner && pricingGrid) pricingInner.insertBefore(proNote, pricingGrid);
+    }
+
+    const proButtons = pricingSection.querySelectorAll('.price-btn.pro, .plan-choice-btn.pro');
+    proButtons.forEach(btn => {
+      btn.textContent = 'Pro Active ✓';
+      btn.onclick = () => subtleProAcknowledge('You already have access to Pro features.');
+    });
+
+    const freeButtons = pricingSection.querySelectorAll('.price-btn.free');
+    freeButtons.forEach(btn => {
+      btn.textContent = 'Free Plan Available';
+    });
+  } else if (proNote) {
+    proNote.remove();
+  }
+}
 
 function showAppPage(page, clickedTab = null) {
   const validPages = ['home','dashboard','profile','tools','calculator','stocks','learn','pricing','about'];
@@ -7074,6 +7405,8 @@ function showAppPage(page, clickedTab = null) {
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  updatePricingForProStatus();
+  if (page === 'pricing' && isPro) subtleProAcknowledge('Pricing is open. Pro is already active.');
 
   if (shouldPromptForProTools) {
     setTimeout(() => requireProFeature('Pro Tools'), 180);
@@ -7352,6 +7685,7 @@ updateProToolAccess();
 initializeFallbackStocksNow();
 loadLiveStocks();
 setInterval(loadLiveStocks, 60000);
+setInterval(updateAIAdvisorDailyState, 60000);
 </script>
 
 <!-- GOOGLE SIGN-UP ONLY: FIREBASE SETUP -->
