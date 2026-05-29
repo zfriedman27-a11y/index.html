@@ -3877,7 +3877,7 @@ body {
     <h1>Investing,<br><em>finally simple.</em></h1>
     <p class="hero-subline">An easier way to learn stocks, understand high and low risks, and build smarter money habits for your future.</p>
     <div class="hero-btns">
-      <button class="btn-primary" onclick="jumpToSection('startHere')">Learn Your Investing Style →</button>
+      <button class="btn-primary" onclick="scrollToStartHereFromHero()">Learn Your Investing Style →</button>
       <button class="btn-ghost" onclick="showAppPage('stocks'); setTimeout(()=>document.getElementById('stocks')?.scrollIntoView({behavior:'smooth'}),80)">See Live Stocks</button>
     </div>
     <p class="free-note"><strong>Build your edge.</strong> Cash Flo helps you learn smarter strategies, compare risks, and approach the market with more confidence than random advice.</p>
@@ -3887,7 +3887,7 @@ body {
     <div class="mini-label">Start here</div>
     <h3>Not sure where to begin?</h3>
     <p>Jump to the guide cards and choose the best path: profile quiz, AI guide, Pro tools, or stock tracker.</p>
-    <button class="hero-start-btn" onclick="jumpToSection('startHere')">Start Here ↓</button>
+    <button class="hero-start-btn" onclick="scrollToStartHereFromHero()">Start Here ↓</button>
     <div class="small-note">Built to help beginners find the right next step.</div>
   </div>
 
@@ -4019,7 +4019,7 @@ body {
       <div class="section-tag">Investor Profile</div>
       <h2>Get your personal investor type.</h2>
       <p>Take the full 10-question quiz to see whether you are more long-term, cautious, growth-focused, or high-risk. Pro users also get a profile match score on each stock.</p>
-      <button class="btn-primary" onclick="openInvestorQuiz()">Learn Your Investing Style →</button>
+      <button class="btn-primary" onclick="scrollToStartHereFromHero()">Learn Your Investing Style →</button>
       <button class="btn-ghost" onclick="jumpToSection('stocks')" style="margin-left:8px">Skip to watchlist</button>
     </div>
     <div class="profile-small-card" id="profileMiniCard">
@@ -4759,6 +4759,9 @@ body {
 
 <script>
 // STATE
+// Free/Pro rule:
+/// Free users can preview the app. If they click a Pro-only feature,
+/// Cash Flo prompts them to upgrade to the planned $5/month Pro plan.
 let isPro = false;
 let questionsUsed = 0;
 const FREE_Q_LIMIT = 1;
@@ -5320,6 +5323,8 @@ async function addTickerFromSearch() {
 
 
 function sortByColumn(column) {
+  if (column === 'fit' && !requireProFeature('Personal Fit Scores')) return;
+
   if (activeColumnSort === column) {
     activeColumnDirection = activeColumnDirection === 'desc' ? 'asc' : 'desc';
   } else {
@@ -5571,6 +5576,8 @@ function toggleDropdown(which) {
 
 
 function quickSort(val, btn) {
+  if (val === 'personal' && !requireProFeature('Top Stocks For Me')) return;
+
   currentSearchSymbol = '';
   watchlistOnly = false;
   const input = document.getElementById('stockSearch');
@@ -5598,6 +5605,11 @@ function quickSort(val, btn) {
 }
 
 function setSort(val, label, evt) {
+  if (val === 'personal' && !requireProFeature('Top Stocks For Me')) {
+    closeDropdowns();
+    return;
+  }
+
   currentSearchSymbol = '';
   watchlistOnly = false;
   const input = document.getElementById('stockSearch');
@@ -5637,7 +5649,11 @@ document.addEventListener('click', e => {
 });
 
 // MODAL
-function openModal() { document.getElementById('upgradeModal').classList.add('show'); }
+function openModal() {
+  const modal = document.getElementById('upgradeModal');
+  if (!modal) return;
+  modal.classList.add('show');
+}
 function closeModal() { document.getElementById('upgradeModal').classList.remove('show'); }
 function openAuthModal() { document.getElementById('authModal').classList.add('show'); }
 function closeAuthModal() { document.getElementById('authModal').classList.remove('show'); }
@@ -5883,18 +5899,25 @@ document.getElementById('advisorInput').addEventListener('keydown', e => { if(e.
 const investorQuizAnswers = {};
 
 
-function requireProForQuizAnswer() {
+
+function requireProFeature(featureName = 'Cash Flo Pro') {
   if (isPro) return true;
 
   const modal = document.getElementById('upgradeModal');
-  if (modal) {
-    modal.classList.add('show');
-  } else if (typeof openModal === 'function') {
-    openModal();
+  const modalTitle = modal ? modal.querySelector('h2') : null;
+  const modalText = modal ? modal.querySelector('p') : null;
+
+  if (modalTitle) modalTitle.textContent = `Unlock ${featureName}`;
+  if (modalText) {
+    modalText.innerHTML = `This is a Cash Flo Pro feature. Pro will be <strong style="color:var(--accent)">$5/month</strong> and unlocks the personalized guidance path. Payment setup is coming later.`;
   }
 
-  const note = document.getElementById('authNote');
+  openModal();
   return false;
+}
+
+function requireProForQuizAnswer() {
+  return requireProFeature('Investor Profile Quiz');
 }
 
 function selectQuizOption(question, value, btn) {
@@ -5909,14 +5932,28 @@ function selectQuizOption(question, value, btn) {
 
 
 
+
+function scrollToStartHereFromHero() {
+  const overlay = document.getElementById('appMenuOverlay');
+  if (overlay) overlay.classList.remove('show');
+
+  if (typeof showAppPage === 'function') {
+    showAppPage('home');
+  }
+
+  setTimeout(() => {
+    const el = document.getElementById('startHere');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, 120);
+}
+
 function openInvestorQuizFromStartCard() {
   const overlay = document.getElementById('appMenuOverlay');
   if (overlay) overlay.classList.remove('show');
 
-  if (!isPro) {
-    openModal();
-    return;
-  }
+  if (!requireProFeature('Investor Profile Quiz')) return;
 
   openInvestorQuiz();
 }
@@ -5925,10 +5962,7 @@ function openInvestorQuiz() {
   const overlay = document.getElementById('appMenuOverlay');
   if (overlay) overlay.classList.remove('show');
 
-  if (!isPro) {
-    openModal();
-    return;
-  }
+  if (!requireProFeature('Investor Profile Quiz')) return;
 
 
   // FIX: the quiz is inside the Profile page. If the user clicks this from Home,
@@ -5984,10 +6018,7 @@ function updateProfileMiniCard() {
 function toggleFavorite(symbol, event) {
   if (event) event.stopPropagation();
 
-  if (!isPro) {
-    openModal();
-    return;
-  }
+  if (!requireProFeature('My Watchlist')) return;
 
   symbol = symbol.toUpperCase();
   if (savedWatchlist.includes(symbol)) {
@@ -6004,6 +6035,8 @@ function isFavorited(symbol) {
 }
 
 function showWatchlistOnly() {
+  if (!requireProFeature('My Watchlist')) return;
+
   watchlistOnly = true;
   currentSearchSymbol = '';
   const input = document.getElementById('stockSearch');
@@ -6263,6 +6296,8 @@ function updateProfileGuidance() {
 }
 
 function openRecommendedProTool() {
+  if (!requireProFeature('Pro Guided Research Path')) return;
+
   const profile = getSavedProfile();
   const guide = getProfileGuidance(profile);
   const tabMap = { risk: 0, compare: 1, beforeBuy: 2, builder: 3, mistake: 4 };
@@ -6485,11 +6520,7 @@ function updateProToolAccess() {
 }
 
 function requireProTools(actionName) {
-  if (!isPro) {
-    openModal();
-    return false;
-  }
-  return true;
+  return requireProFeature('Pro Tools');
 }
 
 
@@ -6751,10 +6782,7 @@ const tradingViewSymbolMap = {
 };
 
 function openStockChart(symbol) {
-  if (!isPro) {
-    openModal();
-    return;
-  }
+  if (!requireProFeature('Stock History Charts')) return;
 
   currentChartSymbol = symbol;
   currentChartRange = '1D';
@@ -7005,6 +7033,7 @@ const appSearchItems = [
 function showAppPage(page, clickedTab = null) {
   const validPages = ['home','dashboard','profile','tools','calculator','stocks','learn','pricing','about'];
   if (!validPages.includes(page)) page = 'home';
+  const shouldPromptForProTools = page === 'tools' && !isPro;
 
   document.querySelectorAll('.page-section').forEach(section => {
     section.classList.remove('active-page');
@@ -7045,6 +7074,10 @@ function showAppPage(page, clickedTab = null) {
   }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (shouldPromptForProTools) {
+    setTimeout(() => requireProFeature('Pro Tools'), 180);
+  }
 }
 
 function navigateToAppItem(item) {
