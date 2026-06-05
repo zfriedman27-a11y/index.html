@@ -3758,7 +3758,7 @@ body {
 }
 
 
-/* TRADINGVIEW TOP TICKER - REAL MARKET WIDGET */
+/* OLD STYLE LIVE TOP TICKER */
 .tradingview-ticker-wrap {
   height: 44px !important;
   padding: 0 !important;
@@ -3776,6 +3776,47 @@ body {
 
 .cashflo-tv-ticker iframe {
   height: 44px !important;
+}
+
+
+/* CASH FLO CUSTOM TOP TICKER LOOK */
+.ticker-wrap {
+  overflow: hidden !important;
+  border-bottom: 0.5px solid var(--border) !important;
+  background: var(--surface) !important;
+  padding: 6px 0 !important;
+  margin-top: 49px !important;
+  height: auto !important;
+  display: block !important;
+}
+
+.ticker-inner {
+  display: flex !important;
+  gap: 40px !important;
+  animation: ticker 25s linear infinite !important;
+  white-space: nowrap !important;
+  width: max-content !important;
+  min-height: 18px;
+}
+
+.ticker-item {
+  font-size: 12px !important;
+  font-family: 'Syne', sans-serif !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  gap: 7px !important;
+  align-items: center !important;
+  letter-spacing: .1px;
+}
+
+.ticker-sym {
+  color: var(--muted2) !important;
+}
+
+.cashflo-tv-ticker,
+.tradingview-ticker-wrap,
+.tradingview-widget-container__widget {
+  display: none !important;
 }
 
 </style>
@@ -3997,36 +4038,16 @@ body {
 
 <!-- TICKER -->
 
-<div class="ticker-wrap tradingview-ticker-wrap">
-  <div class="tradingview-widget-container cashflo-tv-ticker">
-    <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    {
-      "symbols": [
-        { "proName": "NASDAQ:NVDA", "title": "NVDA" },
-        { "proName": "NASDAQ:AAPL", "title": "AAPL" },
-        { "proName": "NASDAQ:MSFT", "title": "MSFT" },
-        { "proName": "NASDAQ:GOOGL", "title": "GOOGL" },
-        { "proName": "NASDAQ:GOOG", "title": "GOOG" },
-        { "proName": "NASDAQ:META", "title": "META" },
-        { "proName": "NASDAQ:AMD", "title": "AMD" },
-        { "proName": "NASDAQ:AVGO", "title": "AVGO" },
-        { "proName": "NASDAQ:NFLX", "title": "NFLX" },
-        { "proName": "NASDAQ:TSLA", "title": "TSLA" },
-        { "proName": "AMEX:VOO", "title": "VOO" },
-        { "proName": "AMEX:SPY", "title": "SPY" },
-        { "proName": "NASDAQ:QQQ", "title": "QQQ" },
-        { "proName": "AMEX:VTI", "title": "VTI" }
-      ],
-      "showSymbolLogo": false,
-      "isTransparent": true,
-      "displayMode": "adaptive",
-      "colorTheme": "dark",
-      "locale": "en"
-    }
-    </script>
+
+<div class="ticker-wrap">
+  <div class="ticker-inner" id="topTickerInner">
+    <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading live prices...</span></span>
+    <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing now</span></span>
+    <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading live prices...</span></span>
+    <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing now</span></span>
   </div>
 </div>
+
 
 
 
@@ -5830,6 +5851,7 @@ const filtered = getFiltered();
 }
 
 
+
 function loadCachedTopTickerPrices() {
   try {
     const raw = localStorage.getItem(TOP_TICKER_CACHE_KEY);
@@ -5869,27 +5891,24 @@ function hydrateTopTickerFromCache() {
 }
 
 async function loadTopTickerPrices() {
-  const ticker = document.querySelector('.ticker-inner');
+  const ticker = document.getElementById('topTickerInner') || document.querySelector('.ticker-inner');
   if (!ticker) return;
 
-  topTickerIsLoading = true;
   if (!topTickerLiveStocks.length) {
-    // TradingView top ticker handles live display.
+    hydrateTopTickerFromCache();
     renderTicker();
   }
 
   if (!FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE") {
-    topTickerIsLoading = false;
     renderTicker();
     return;
   }
 
   try {
-    // Fetch all top ticker symbols at the same time so prices appear much faster on page open.
     const settled = await Promise.allSettled(
       topTickerSymbols.map(async sym => {
         const quote = await fetchQuote(sym);
-        return quote && !quote.demo && quote.price > 0 ? quote : null;
+        return quote && !quote.demo && Number(quote.price) > 0 ? quote : null;
       })
     );
 
@@ -5900,22 +5919,45 @@ async function loadTopTickerPrices() {
     if (results.length) {
       topTickerLiveStocks = results;
       saveCachedTopTickerPrices(results);
+      renderTicker();
     } else {
-      // TradingView top ticker handles live display.
+      hydrateTopTickerFromCache();
+      renderTicker();
     }
   } catch (err) {
     console.warn("Top ticker live refresh failed:", err);
-    // TradingView top ticker handles live display.
-  } finally {
-    topTickerIsLoading = false;
+    hydrateTopTickerFromCache();
     renderTicker();
   }
 }
 
+
 function renderTicker() {
-  // Top ticker is handled by TradingView's ticker tape widget for more reliable live market display.
-  // Keep this function as a safe no-op so older refresh calls do not overwrite the widget.
-  return;
+  const ticker = document.getElementById('topTickerInner') || document.querySelector('.ticker-inner');
+  if (!ticker) return;
+
+  const liveOnly = (topTickerLiveStocks || []).filter(s => s && !s.demo && Number(s.price) > 0);
+
+  if (!liveOnly.length) {
+    ticker.innerHTML = `
+      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading live prices...</span></span>
+      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing now</span></span>
+      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading live prices...</span></span>
+      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing now</span></span>
+    `;
+    return;
+  }
+
+  const sorted = [...liveOnly].sort((a, b) => Math.abs(Number(b.day || 0)) - Math.abs(Number(a.day || 0)));
+
+  const items = sorted.slice(0, 14).map(s => {
+    const day = Number(s.day || 0);
+    const cls = day >= 0 ? 'up' : 'down';
+    const sign = day >= 0 ? '+' : '';
+    return `<span class="ticker-item"><span class="ticker-sym">${s.ticker}</span><span class="${cls}">$${Number(s.price).toFixed(2)} ${sign}${day.toFixed(2)}%</span></span>`;
+  }).join('');
+
+  ticker.innerHTML = items + items;
 }
 
 document.getElementById('stockSearch')?.addEventListener('keydown', e => {
@@ -7946,10 +7988,11 @@ updateProToolAccess();
 initializeFallbackStocksNow();
 // TradingView top ticker handles live display.
 renderTicker();
-// TradingView top ticker handles its own refresh.
+
 loadLiveStocks();
 setInterval(loadLiveStocks, 60000);
-// TradingView top ticker handles its own refresh.
+setInterval(loadTopTickerPrices, 60000);
+
 setInterval(updateAIAdvisorDailyState, 60000);
 </script>
 
