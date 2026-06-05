@@ -3747,6 +3747,16 @@ body {
   position: relative;
 }
 
+
+/* TOP TICKER LIVE-FIRST FIX */
+.ticker-inner {
+  min-height: 18px;
+}
+
+.ticker-item .ticker-sym {
+  letter-spacing: .4px;
+}
+
 </style>
 </head>
 <body>
@@ -5774,28 +5784,111 @@ const filtered = getFiltered();
   body.innerHTML = htmlRows;
 }
 
+
+function loadCachedTopTickerPrices() {
+  try {
+    const raw = localStorage.getItem(TOP_TICKER_CACHE_KEY);
+    if (!raw) return [];
+
+    const cached = JSON.parse(raw);
+    if (!cached || !Array.isArray(cached.items)) return [];
+
+    const age = Date.now() - Number(cached.savedAt || 0);
+    if (age > TOP_TICKER_CACHE_MAX_AGE) return [];
+
+    return cached.items.filter(s => s && !s.demo && Number(s.price) > 0);
+  } catch (err) {
+    return [];
+  }
+}
+
+function saveCachedTopTickerPrices(items) {
+  try {
+    localStorage.setItem(TOP_TICKER_CACHE_KEY, JSON.stringify({
+      savedAt: Date.now(),
+      items: items.filter(s => s && !s.demo && Number(s.price) > 0)
+    }));
+  } catch (err) {
+    console.warn("Could not cache top ticker prices:", err);
+  }
+}
+
+function hydrateTopTickerFromCache() {
+  const cached = loadCachedTopTickerPrices();
+  if (cached.length) {
+    topTickerLiveStocks = cached;
+    renderTicker();
+    return true;
+  }
+  return false;
+}
+
+async function loadTopTickerPrices() {
+  const ticker = document.querySelector('.ticker-inner');
+  if (!ticker) return;
+
+  topTickerIsLoading = true;
+  if (!topTickerLiveStocks.length) {
+    hydrateTopTickerFromCache();
+    renderTicker();
+  }
+
+  if (!FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE") {
+    topTickerIsLoading = false;
+    renderTicker();
+    return;
+  }
+
+  try {
+    // Fetch all top ticker symbols at the same time so prices appear much faster on page open.
+    const settled = await Promise.allSettled(
+      topTickerSymbols.map(async sym => {
+        const quote = await fetchQuote(sym);
+        return quote && !quote.demo && quote.price > 0 ? quote : null;
+      })
+    );
+
+    const results = settled
+      .filter(r => r.status === "fulfilled" && r.value && !r.value.demo && Number(r.value.price) > 0)
+      .map(r => r.value);
+
+    if (results.length) {
+      topTickerLiveStocks = results;
+      saveCachedTopTickerPrices(results);
+    } else {
+      hydrateTopTickerFromCache();
+    }
+  } catch (err) {
+    console.warn("Top ticker live refresh failed:", err);
+    hydrateTopTickerFromCache();
+  } finally {
+    topTickerIsLoading = false;
+    renderTicker();
+  }
+}
+
 function renderTicker() {
   const ticker = document.querySelector('.ticker-inner');
   if (!ticker) return;
 
+  // Use live quotes only. Recent cached live quotes are allowed so the bar is filled immediately on page open.
   const liveOnly = (topTickerLiveStocks || []).filter(s => s && !s.demo && Number(s.price) > 0);
 
-  if (liveOnly.length === 0) {
+  if (!liveOnly.length) {
     ticker.innerHTML = `
-      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading accurate market prices...</span></span>
-      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Top ticker only shows live quotes</span></span>
-      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">If unavailable, prices are hidden</span></span>
-      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing every 60 seconds</span></span>
+      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading live prices...</span></span>
+      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing now</span></span>
+      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading live prices...</span></span>
+      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing now</span></span>
     `;
     return;
   }
 
-  // Sort by biggest absolute daily move so the moving ticker actually feels useful.
   const sorted = [...liveOnly].sort((a, b) => Math.abs(b.day || 0) - Math.abs(a.day || 0));
 
-  const items = sorted.slice(0, 12).map(s => {
-    const cls = s.day >= 0 ? 'up' : 'down';
-    const pct = (s.day >= 0 ? '+' : '') + Number(s.day || 0).toFixed(2) + '%';
+  const items = sorted.slice(0, 14).map(s => {
+    const cls = Number(s.day || 0) >= 0 ? 'up' : 'down';
+    const pct = (Number(s.day || 0) >= 0 ? '+' : '') + Number(s.day || 0).toFixed(2) + '%';
     return `<span class="ticker-item"><span class="ticker-sym">${s.ticker}</span><span class="${cls}">$${Number(s.price).toFixed(2)} ${pct}</span></span>`;
   }).join('');
 
@@ -7828,6 +7921,7 @@ updateProfileGuidance();
 updateDashboardProfileCard();
 updateProToolAccess();
 initializeFallbackStocksNow();
+hydrateTopTickerFromCache();
 renderTicker();
 loadTopTickerPrices();
 loadLiveStocks();
