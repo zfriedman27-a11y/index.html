@@ -3757,6 +3757,27 @@ body {
   letter-spacing: .4px;
 }
 
+
+/* TRADINGVIEW TOP TICKER - REAL MARKET WIDGET */
+.tradingview-ticker-wrap {
+  height: 44px !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  background: rgba(17,26,38,0.92) !important;
+  overflow: hidden;
+}
+
+.cashflo-tv-ticker,
+.cashflo-tv-ticker .tradingview-widget-container__widget {
+  width: 100%;
+  height: 44px;
+}
+
+.cashflo-tv-ticker iframe {
+  height: 44px !important;
+}
+
 </style>
 </head>
 <body>
@@ -3975,14 +3996,38 @@ body {
 
 
 <!-- TICKER -->
-<div class="ticker-wrap">
-  <div class="ticker-inner">
-    <span class="ticker-item"><span class="ticker-sym">Loading</span><span class="up">Live stock prices...</span></span>
-    <span class="ticker-item"><span class="ticker-sym">Cash Flo</span><span class="up">Updating every 60 seconds</span></span>
-    <span class="ticker-item"><span class="ticker-sym">Loading</span><span class="up">Live stock prices...</span></span>
-    <span class="ticker-item"><span class="ticker-sym">Cash Flo</span><span class="up">Updating every 60 seconds</span></span>
+
+<div class="ticker-wrap tradingview-ticker-wrap">
+  <div class="tradingview-widget-container cashflo-tv-ticker">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+      "symbols": [
+        { "proName": "NASDAQ:NVDA", "title": "NVDA" },
+        { "proName": "NASDAQ:AAPL", "title": "AAPL" },
+        { "proName": "NASDAQ:MSFT", "title": "MSFT" },
+        { "proName": "NASDAQ:GOOGL", "title": "GOOGL" },
+        { "proName": "NASDAQ:GOOG", "title": "GOOG" },
+        { "proName": "NASDAQ:META", "title": "META" },
+        { "proName": "NASDAQ:AMD", "title": "AMD" },
+        { "proName": "NASDAQ:AVGO", "title": "AVGO" },
+        { "proName": "NASDAQ:NFLX", "title": "NFLX" },
+        { "proName": "NASDAQ:TSLA", "title": "TSLA" },
+        { "proName": "AMEX:VOO", "title": "VOO" },
+        { "proName": "AMEX:SPY", "title": "SPY" },
+        { "proName": "NASDAQ:QQQ", "title": "QQQ" },
+        { "proName": "AMEX:VTI", "title": "VTI" }
+      ],
+      "showSymbolLogo": false,
+      "isTransparent": true,
+      "displayMode": "adaptive",
+      "colorTheme": "dark",
+      "locale": "en"
+    }
+    </script>
   </div>
 </div>
+
 
 
 <!-- APP PAGE TABS -->
@@ -5829,7 +5874,7 @@ async function loadTopTickerPrices() {
 
   topTickerIsLoading = true;
   if (!topTickerLiveStocks.length) {
-    hydrateTopTickerFromCache();
+    // TradingView top ticker handles live display.
     renderTicker();
   }
 
@@ -5856,11 +5901,11 @@ async function loadTopTickerPrices() {
       topTickerLiveStocks = results;
       saveCachedTopTickerPrices(results);
     } else {
-      hydrateTopTickerFromCache();
+      // TradingView top ticker handles live display.
     }
   } catch (err) {
     console.warn("Top ticker live refresh failed:", err);
-    hydrateTopTickerFromCache();
+    // TradingView top ticker handles live display.
   } finally {
     topTickerIsLoading = false;
     renderTicker();
@@ -5868,31 +5913,9 @@ async function loadTopTickerPrices() {
 }
 
 function renderTicker() {
-  const ticker = document.querySelector('.ticker-inner');
-  if (!ticker) return;
-
-  // Use live quotes only. Recent cached live quotes are allowed so the bar is filled immediately on page open.
-  const liveOnly = (topTickerLiveStocks || []).filter(s => s && !s.demo && Number(s.price) > 0);
-
-  if (!liveOnly.length) {
-    ticker.innerHTML = `
-      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading live prices...</span></span>
-      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing now</span></span>
-      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading live prices...</span></span>
-      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing now</span></span>
-    `;
-    return;
-  }
-
-  const sorted = [...liveOnly].sort((a, b) => Math.abs(b.day || 0) - Math.abs(a.day || 0));
-
-  const items = sorted.slice(0, 14).map(s => {
-    const cls = Number(s.day || 0) >= 0 ? 'up' : 'down';
-    const pct = (Number(s.day || 0) >= 0 ? '+' : '') + Number(s.day || 0).toFixed(2) + '%';
-    return `<span class="ticker-item"><span class="ticker-sym">${s.ticker}</span><span class="${cls}">$${Number(s.price).toFixed(2)} ${pct}</span></span>`;
-  }).join('');
-
-  ticker.innerHTML = items + items;
+  // Top ticker is handled by TradingView's ticker tape widget for more reliable live market display.
+  // Keep this function as a safe no-op so older refresh calls do not overwrite the widget.
+  return;
 }
 
 document.getElementById('stockSearch')?.addEventListener('keydown', e => {
@@ -7921,12 +7944,12 @@ updateProfileGuidance();
 updateDashboardProfileCard();
 updateProToolAccess();
 initializeFallbackStocksNow();
-hydrateTopTickerFromCache();
+// TradingView top ticker handles live display.
 renderTicker();
-loadTopTickerPrices();
+// TradingView top ticker handles its own refresh.
 loadLiveStocks();
 setInterval(loadLiveStocks, 60000);
-setInterval(loadTopTickerPrices, 60000);
+// TradingView top ticker handles its own refresh.
 setInterval(updateAIAdvisorDailyState, 60000);
 </script>
 
