@@ -3737,6 +3737,16 @@ body {
   }
 }
 
+
+/* TOP TICKER ACCURACY FIX */
+.ticker-item .ticker-sym {
+  letter-spacing: .4px;
+}
+
+.ticker-wrap {
+  position: relative;
+}
+
 </style>
 </head>
 <body>
@@ -4739,7 +4749,7 @@ body {
       <tbody id="stockBody"></tbody>
     </table>
   </div>
-  <div class="live-status" id="liveStatus">Market data loads from Finnhub when available. Some data may be delayed or limited.</div>
+  <div class="live-status" id="liveStatus">Market data loads from Finnhub when available. The top moving ticker only displays live quotes; fallback/demo prices are hidden there.</div>
 </section>
 
 
@@ -4891,6 +4901,13 @@ const FINNHUB_API_KEY = "d8bojmpr01qkc5gcqvd0d8bojmpr01qkc5gcqvdg";
 
 // This is your starting watchlist. Users can add any ticker with the search box.
 let stockSymbols = ["TSLA", "AMZN", "NVDA", "AAPL", "MSFT", "GOOGL", "GOOG", "META", "AMD", "AVGO", "NFLX", "ORCL", "ADBE", "CRM", "INTC", "QCOM", "CSCO", "TXN", "IBM", "NOW", "SHOP", "UBER", "PYPL", "SQ", "SNOW", "PLTR", "MU", "AMAT", "LRCX", "PANW", "JPM", "BAC", "WFC", "GS", "MS", "V", "MA", "AXP", "C", "BLK", "SCHW", "COF", "USB", "WMT", "COST", "HD", "LOW", "TGT", "NKE", "SBUX", "MCD", "DIS", "CMG", "PEP", "KO", "PG", "EL", "LULU", "ABNB", "JNJ", "LLY", "UNH", "MRK", "PFE", "ABBV", "TMO", "ABT", "ISRG", "AMGN", "GILD", "CVS", "XOM", "CVX", "COP", "SLB", "EOG", "OXY", "BA", "CAT", "GE", "HON", "LMT", "RTX", "DE", "UPS", "VOO", "SPY", "QQQ", "VTI", "DIA", "IWM", "SCHD", "VYM", "XLK", "XLF", "XLE", "XLV", "ARKK"];
+
+// Top moving ticker uses live-only data.
+// It is intentionally smaller than the full stock table to avoid API limits.
+// Cash Flo will not show backup/fake prices in the moving ticker.
+let topTickerSymbols = ["NVDA", "TSLA", "AMZN", "AAPL", "MSFT", "META", "GOOGL", "AMD", "VOO", "SPY", "QQQ", "VTI"];
+let topTickerLiveStocks = [];
+
 let liveStocks = [];
 let lastUpdated = null;
 
@@ -5325,6 +5342,41 @@ function fallbackQuote(symbol) {
 }
 
 
+
+async function loadTopTickerPrices() {
+  const ticker = document.querySelector('.ticker-inner');
+  if (!ticker) return;
+
+  if (!FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE") {
+    topTickerLiveStocks = [];
+    renderTicker();
+    return;
+  }
+
+  try {
+    const results = [];
+
+    // Fetch a small live-only ticker set. This avoids the full table rate-limit problem.
+    for (const sym of topTickerSymbols) {
+      try {
+        const quote = await fetchQuote(sym);
+        if (quote && !quote.demo && quote.price > 0) {
+          results.push(quote);
+        }
+      } catch (err) {
+        console.warn("Top ticker live quote failed:", sym, err);
+      }
+    }
+
+    topTickerLiveStocks = results;
+    renderTicker();
+  } catch (err) {
+    console.warn("Top ticker refresh failed:", err);
+    topTickerLiveStocks = [];
+    renderTicker();
+  }
+}
+
 function initializeFallbackStocksNow() {
   liveStocks = stockSymbols.map(sym => fallbackQuote(sym));
   lastUpdated = new Date();
@@ -5724,12 +5776,29 @@ const filtered = getFiltered();
 
 function renderTicker() {
   const ticker = document.querySelector('.ticker-inner');
-  if (!ticker || liveStocks.length === 0) return;
-  const items = liveStocks.slice(0,12).map(s => {
+  if (!ticker) return;
+
+  const liveOnly = (topTickerLiveStocks || []).filter(s => s && !s.demo && Number(s.price) > 0);
+
+  if (liveOnly.length === 0) {
+    ticker.innerHTML = `
+      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading accurate market prices...</span></span>
+      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Top ticker only shows live quotes</span></span>
+      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">If unavailable, prices are hidden</span></span>
+      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing every 60 seconds</span></span>
+    `;
+    return;
+  }
+
+  // Sort by biggest absolute daily move so the moving ticker actually feels useful.
+  const sorted = [...liveOnly].sort((a, b) => Math.abs(b.day || 0) - Math.abs(a.day || 0));
+
+  const items = sorted.slice(0, 12).map(s => {
     const cls = s.day >= 0 ? 'up' : 'down';
-    const pct = (s.day >= 0 ? '+' : '') + s.day.toFixed(2) + '%';
-    return `<span class="ticker-item"><span class="ticker-sym">${s.ticker}</span><span class="${cls}">$${s.price.toFixed(2)} ${pct}</span></span>`;
+    const pct = (s.day >= 0 ? '+' : '') + Number(s.day || 0).toFixed(2) + '%';
+    return `<span class="ticker-item"><span class="ticker-sym">${s.ticker}</span><span class="${cls}">$${Number(s.price).toFixed(2)} ${pct}</span></span>`;
   }).join('');
+
   ticker.innerHTML = items + items;
 }
 
@@ -7759,8 +7828,11 @@ updateProfileGuidance();
 updateDashboardProfileCard();
 updateProToolAccess();
 initializeFallbackStocksNow();
+renderTicker();
+loadTopTickerPrices();
 loadLiveStocks();
 setInterval(loadLiveStocks, 60000);
+setInterval(loadTopTickerPrices, 60000);
 setInterval(updateAIAdvisorDailyState, 60000);
 </script>
 
