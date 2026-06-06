@@ -5419,38 +5419,110 @@ function fallbackQuote(symbol) {
 
 
 
+
+function getYahooSymbol(symbol) {
+  const map = {
+    "BRK.B": "BRK-B",
+    "BRK-A": "BRK-A"
+  };
+  return map[symbol] || symbol;
+}
+
+async function fetchYahooQuote(symbol) {
+  const s = symbol.toUpperCase();
+  const yahooSymbol = encodeURIComponent(getYahooSymbol(s));
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${yahooSymbol}?range=1d&interval=1m`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 6500);
+
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) throw new Error("Yahoo quote fetch failed for " + s);
+
+    const data = await res.json();
+    const result = data?.chart?.result?.[0];
+    const meta = result?.meta || {};
+
+    const price = Number(meta.regularMarketPrice || meta.chartPreviousClose || 0);
+    const prev = Number(meta.previousClose || meta.chartPreviousClose || 0);
+    if (!price || price <= 0) throw new Error("Yahoo returned no price for " + s);
+
+    const change = prev ? price - prev : 0;
+    const day = prev ? (change / prev) * 100 : 0;
+
+    return {
+      ...getStockMeta(s),
+      price,
+      day,
+      change,
+      previousClose: prev,
+      demo: false,
+      source: "yahoo"
+    };
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+async function fetchTopTickerQuote(symbol) {
+  const s = symbol.toUpperCase();
+
+  // Try Finnhub first because the rest of the app already uses it.
+  try {
+    const q = await fetchQuote(s);
+    if (q && !q.demo && Number(q.price) > 0) return q;
+  } catch (err) {
+    console.warn("Finnhub top ticker failed, trying Yahoo:", s, err);
+  }
+
+  // Backup live source for the top ticker.
+  try {
+    return await fetchYahooQuote(s);
+  } catch (err) {
+    console.warn("Yahoo top ticker failed:", s, err);
+    return null;
+  }
+}
+
 async function loadTopTickerPrices() {
-  const ticker = document.querySelector('.ticker-inner');
+  const ticker = document.getElementById('topTickerInner') || document.querySelector('.ticker-inner');
   if (!ticker) return;
 
+  if (!topTickerLiveStocks.length) {
+    hydrateTopTickerFromCache();
+    renderTicker();
+  }
+
   if (!FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE") {
-    topTickerLiveStocks = [];
     renderTicker();
     return;
   }
 
   try {
-    const results = [];
+    const settled = await Promise.allSettled(
+      topTickerSymbols.map(async sym => {
+        const quote = await fetchTopTickerQuote(sym);
+        return quote && !quote.demo && Number(quote.price) > 0 ? quote : null;
+      })
+    );
 
-    // Fetch a small live-only ticker set. This avoids the full table rate-limit problem.
-    for (const sym of topTickerSymbols) {
-      try {
-        const quote = await fetchQuote(sym);
-        if (quote && !quote.demo && quote.price > 0) {
-          results.push(quote);
-        }
-      } catch (err) {
-        console.warn("Top ticker live quote failed:", sym, err);
-      }
+    const results = settled
+      .filter(r => r.status === "fulfilled" && r.value && !r.value.demo && Number(r.value.price) > 0)
+      .map(r => r.value);
+
+    if (results.length) {
+      topTickerLiveStocks = results;
+      saveCachedTopTickerPrices(results);
+    } else {
+      hydrateTopTickerFromCache();
     }
-
-    topTickerLiveStocks = results;
-    renderTicker();
   } catch (err) {
-    console.warn("Top ticker refresh failed:", err);
-    topTickerLiveStocks = [];
-    renderTicker();
+    console.warn("Top ticker live refresh failed:", err);
+    hydrateTopTickerFromCache();
   }
+
+  renderTicker();
 }
 
 function initializeFallbackStocksNow() {
@@ -5907,7 +5979,7 @@ async function loadTopTickerPrices() {
   try {
     const settled = await Promise.allSettled(
       topTickerSymbols.map(async sym => {
-        const quote = await fetchQuote(sym);
+        const quote = await fetchTopTickerQuote(sym);
         return quote && !quote.demo && Number(quote.price) > 0 ? quote : null;
       })
     );
@@ -5940,10 +6012,10 @@ function renderTicker() {
 
   if (!liveOnly.length) {
     ticker.innerHTML = `
-      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading live prices...</span></span>
-      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing now</span></span>
-      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading live prices...</span></span>
-      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Refreshing now</span></span>
+      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading prices...</span></span>
+      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Connecting to market data</span></span>
+      <span class="ticker-item"><span class="ticker-sym">LIVE DATA</span><span class="up">Loading prices...</span></span>
+      <span class="ticker-item"><span class="ticker-sym">CASH FLO</span><span class="up">Connecting to market data</span></span>
     `;
     return;
   }
@@ -7989,9 +8061,13 @@ initializeFallbackStocksNow();
 // TradingView top ticker handles live display.
 renderTicker();
 
+hydrateTopTickerFromCache();
+renderTicker();
+loadTopTickerPrices();
 loadLiveStocks();
 setInterval(loadLiveStocks, 60000);
 setInterval(loadTopTickerPrices, 60000);
+setTimeout(loadTopTickerPrices, 1500);
 
 setInterval(updateAIAdvisorDailyState, 60000);
 </script>
