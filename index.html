@@ -5360,27 +5360,27 @@ function getStockMeta(symbol) {
 async function fetchQuote(symbol) {
   const s = symbol.toUpperCase();
 
-  if (!FINNHUB_API_KEY || FINNHUB_API_KEY === "PASTE_YOUR_FINNHUB_API_KEY_HERE") {
-    const f = fallbackPrices[s] || {c:0, dp:0, d:0, pc:0};
-    return {...getStockMeta(s), price:f.c, day:f.dp, change:f.d, previousClose:f.pc, demo:true};
-  }
+  // IMPORTANT:
+  // Live quotes now come from the Vercel backend route /api/quote.
+  // This keeps the Finnhub API key private and avoids browser/CORS problems.
+  const url = `/api/quote?symbol=${encodeURIComponent(s)}`;
 
-  const url = `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(s)}&token=${FINNHUB_API_KEY}`;
   const res = await fetch(url);
   if (!res.ok) throw new Error('Quote fetch failed for ' + s);
+
   const data = await res.json();
 
-  if (!data || !data.c || data.c === 0) {
+  if (!data || !data.price || Number(data.price) <= 0) {
     throw new Error('No live quote found for ' + s);
   }
 
   return {
     ...getStockMeta(s),
-    price: Number(data.c),
-    day: Number(data.dp || 0),
-    change: Number(data.d || 0),
-    previousClose: Number(data.pc || 0),
-    demo:false
+    price: Number(data.price),
+    day: Number(data.day || 0),
+    change: Number(data.change || 0),
+    previousClose: Number(data.previousClose || 0),
+    demo: false
   };
 }
 
@@ -5468,21 +5468,14 @@ async function fetchYahooQuote(symbol) {
 async function fetchTopTickerQuote(symbol) {
   const s = symbol.toUpperCase();
 
-  // Try Finnhub first because the rest of the app already uses it.
   try {
     const q = await fetchQuote(s);
     if (q && !q.demo && Number(q.price) > 0) return q;
   } catch (err) {
-    console.warn("Finnhub top ticker failed, trying Yahoo:", s, err);
+    console.warn("Backend top ticker quote failed:", s, err);
   }
 
-  // Backup live source for the top ticker.
-  try {
-    return await fetchYahooQuote(s);
-  } catch (err) {
-    console.warn("Yahoo top ticker failed:", s, err);
-    return null;
-  }
+  return null;
 }
 
 async function loadTopTickerPrices() {
